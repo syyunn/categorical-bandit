@@ -67,8 +67,8 @@ def plot_results(solvers, solver_names, figname):
     ax3.set_xlabel("Actions")
     ax3.set_ylabel("Frac. # trials")
     ax3.grid("k", ls="--", alpha=0.3)
-    plt.show()
     plt.savefig(figname)
+    plt.show()
 
 
 def experiment(K, C, N):
