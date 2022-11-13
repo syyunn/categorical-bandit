@@ -1,11 +1,9 @@
-import time
 import numpy as np
 
 
 class Bandit(object):
     def generate_reward(self, i):
         raise NotImplementedError
-
 
 class CategoricalBandit(Bandit):
     """
@@ -17,19 +15,23 @@ class CategoricalBandit(Bandit):
     """
 
     def __init__(
-        self, k, c, probas=None, coi=0, seed=int(time.time())
+        self, k, c, probas=None, coi=0, seed=2139
     ):  # k is number of arms
         assert probas is None or probas.shape == (k, c)
+
         self.k = k
         self.c = c
         self.seed = seed
-        self.coi = 0
+        self.coi = coi
+        self.ncoi = [i for i in range(c)].remove(self.coi)
+
         if probas is None:
             np.random.seed(self.seed)
             self.probas = np.random.dirichlet(np.ones(self.c), size=self.k)
         else:
             self.probas = probas  # give initial probas maunally
 
+        self.best_arm = np.argmax(self.probas[:, self.coi])
         self.best_proba = max(
             self.probas[:, self.coi]
         )  # unlike Bern, we need reward function of bandit to compute best
