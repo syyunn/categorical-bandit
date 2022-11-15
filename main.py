@@ -37,11 +37,11 @@ def plot_results(solvers, solver_names, figname, show):
 
     # Sub.fig. 1: Regrets in time.
     for i, s in enumerate(solvers):
-        ax1.plot(range(len(s.regrets)), s.regrets, label="Regret")
+        ax1.plot(range(len(s.regrets)), s.regrets, label="regret")
         ax1.plot(
             range(len(s.regrets)),
             [(s.bandit.best_proba-s.bandit.worst_proba) * i for i in range(len(s.regrets))],
-            label="Upper bound of regret"
+            label="upper bound of regret"
         )
         pass
 
@@ -68,18 +68,20 @@ def plot_results(solvers, solver_names, figname, show):
     # ax1.legend()
 
     # Sub.fig. 2: Probabilities estimated by solvers.
-    ax2.plot(range(b.k), [b.probas[i][b.coi] for i in range(b.k)], "k--", markersize=12)
+    ax2.plot(range(b.k), [b.probas[i][b.coi] for i in range(b.k)], "k--", markeredgewidth=2, label="real prob")
     for s in solvers:
         ax2.plot(
             range(b.k),
             [s.estimated_probas[i] for i in range(b.k)],
             "x",
             markeredgewidth=2,
+            label="estimated prob",
         )
     # ax2.set_xlabel("Actions sorted by " + r"$\theta$")
     ax2.set_xlabel("Actions by " + r"$\theta$")
     ax2.set_ylabel("Estimated")
     ax2.grid("k", ls="--", alpha=0.3)
+    ax2.legend()
 
     # Sub.fig. 3: Action counts
     for s in solvers:
@@ -91,7 +93,7 @@ def plot_results(solvers, solver_names, figname, show):
             lw=2,
         )
     ax3.set_xlabel("Actions")
-    ax3.set_ylabel("Frac. # trials")
+    ax3.set_ylabel("# of trials (in ratio)")
     ax3.grid("k", ls="--", alpha=0.3)
     plt.savefig(figname)
     if show:
@@ -127,4 +129,5 @@ def experiment(K, C, N, show=False):
 
 
 if __name__ == "__main__":
-    experiment(10, 4, 5000, show=True)
+    for i in range(12):
+        experiment(10, 2**i, 5000, show=False)
