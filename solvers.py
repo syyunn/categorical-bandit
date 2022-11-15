@@ -187,10 +187,8 @@ class ThompsonSamplingCategorical(Solver):
         i = max(
             range(10), key=lambda x: samples[x][self.bandit.coi]
         )  # best arm as far as bandit knows
-        r = self.bandit.generate_reward(i)
-
-        self._alpha[i][self.bandit.coi] += r
-        self._alpha[i][self.bandit.ncoi] += 1 - r
+        res = self.bandit.generate_reward(i)
+        self._alpha[i][res["sampled"]] += 1
 
         # print(self._alpha)
         return i

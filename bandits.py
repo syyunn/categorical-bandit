@@ -38,8 +38,16 @@ class CategoricalBandit(Bandit):
 
     def generate_reward(self, i):
         # The player selected the i-th machine.
-        res = np.random.choice(self.c, size=1, p=self.probas[i])[0]
+        sampled = np.random.choice(self.c, size=1, p=self.probas[i])[0]
+        res = {"reward": None, "sampled": sampled}
+
         if res == self.coi:
-            return 1
+            reward = 1
+            res["reward"] = reward
         else:
-            return 0
+            reward = 0
+            res["reward"] = reward
+
+        return res
+        
+            
