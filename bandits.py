@@ -32,9 +32,15 @@ class CategoricalBandit(Bandit):
             self.probas = probas  # give initial probas maunally
 
         self.best_arm = np.argmax(self.probas[:, self.coi])
+
         self.best_proba = max(
             self.probas[:, self.coi]
         )  # unlike Bern, we need reward function of bandit to compute best
+
+        self.worst_proba = min(
+            self.probas[:, self.coi]
+        )  # unlike Bern, we need reward function of bandit to compute best
+
 
     def generate_reward(self, i):
         # The player selected the i-th machine.

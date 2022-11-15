@@ -9,7 +9,7 @@ from bandits import CategoricalBandit
 from solvers import Solver, ThompsonSamplingCategorical
 
 
-def plot_results(solvers, solver_names, figname):
+def plot_results(solvers, solver_names, figname, show):
     """
     Plot the results by multi-armed bandit solvers.
 
@@ -24,20 +24,24 @@ def plot_results(solvers, solver_names, figname):
 
     b = solvers[0].bandit
 
-    fig = plt.figure(figsize=(14, 4))
+    fig = plt.figure(figsize=(14, 8))
     fig.subplots_adjust(bottom=0.3, wspace=0.3)
 
-    ax1 = fig.add_subplot(131)
-    ax2 = fig.add_subplot(132)
-    ax3 = fig.add_subplot(133)
+    ax1 = fig.add_subplot(231)
+    ax2 = fig.add_subplot(232)
+    ax3 = fig.add_subplot(233)
+
+    ax4 = fig.add_subplot(234)
+    # ax5 = fig.add_subplot(235)
+    # ax6 = fig.add_subplot(236)
 
     # Sub.fig. 1: Regrets in time.
     for i, s in enumerate(solvers):
-        ax1.plot(range(len(s.regrets)), s.regrets, label=solver_names[i])
+        ax1.plot(range(len(s.regrets)), s.regrets, label="Regret")
         ax1.plot(
             range(len(s.regrets)),
-            [s.bandit.best_proba * i for i in range(len(s.regrets))],
-            label=solver_names[i],
+            [(s.bandit.best_proba-s.bandit.worst_proba) * i for i in range(len(s.regrets))],
+            label="Upper bound of regret"
         )
         pass
 
@@ -45,6 +49,23 @@ def plot_results(solvers, solver_names, figname):
     ax1.set_ylabel("Cumulative regret")
     # ax1.legend(loc=9, bbox_to_anchor=(1.82, -0.25), ncol=5)
     ax1.grid("k", ls="--", alpha=0.3)
+    ax1.legend()
+
+    # Sub.fig. 4: Regrets in time in ratio.
+    for i, s in enumerate(solvers):
+        # ax1.plot(range(len(s.regrets)), s.regrets, label="Regret")
+        ax4.plot(
+            range(len(s.regrets)),
+            [(s.regrets[i] / ((s.bandit.best_proba-s.bandit.worst_proba) * i)) for i in range(len(s.regrets))],
+            # label="Upper bound of regret"
+        )
+        pass
+
+    ax4.set_xlabel("Time step")
+    ax4.set_ylabel("Normalized Cumulative regret")
+    # ax1.legend(loc=9, bbox_to_anchor=(1.82, -0.25), ncol=5)
+    ax4.grid("k", ls="--", alpha=0.3)
+    # ax1.legend()
 
     # Sub.fig. 2: Probabilities estimated by solvers.
     ax2.plot(range(b.k), [b.probas[i][b.coi] for i in range(b.k)], "k--", markersize=12)
@@ -73,10 +94,11 @@ def plot_results(solvers, solver_names, figname):
     ax3.set_ylabel("Frac. # trials")
     ax3.grid("k", ls="--", alpha=0.3)
     plt.savefig(figname)
-    plt.show()
+    if show:
+        plt.show()
 
 
-def experiment(K, C, N):
+def experiment(K, C, N, show=False):
     """
     Run a small experiment on solving a Categorical bandit with K slot machines,
     each with a randomly initialized reward probability.
@@ -101,8 +123,8 @@ def experiment(K, C, N):
     for s in test_solvers:
         s.run(N)
 
-    plot_results(test_solvers, names, "results_K{}_C{}_N{}.png".format(K, C, N))
+    plot_results(test_solvers, names, "results_K{}_C{}_N{}.png".format(K, C, N), show)
 
 
 if __name__ == "__main__":
-    experiment(10, 4, 5000)
+    experiment(10, 4, 5000, show=True)
