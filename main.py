@@ -65,6 +65,7 @@ def plot_results(solvers, solver_names, figname, show):
     ax4.set_ylabel("Normalized Cumulative regret")
     # ax1.legend(loc=9, bbox_to_anchor=(1.82, -0.25), ncol=5)
     ax4.grid("k", ls="--", alpha=0.3)
+    ax4.set_yticks(np.arange(0, 1, 0.1))
     # ax1.legend()
 
     # Sub.fig. 2: Probabilities estimated by solvers.
