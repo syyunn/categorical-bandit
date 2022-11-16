@@ -64,7 +64,7 @@ class ThompsonSamplingCategorical(Solver):
             np.random.dirichlet(self._alpha[i]) for i in range(self.bandit.k)
         ]  # exploit what agent knows
         i = max(
-            range(10), key=lambda x: samples[x][self.bandit.coi]
+            range(self.bandit.k), key=lambda x: samples[x][self.bandit.coi]
         )  # best arm as far as bandit knows
         res = self.bandit.generate_reward(i)
         self._alpha[i][res["sampled"]] += 1
