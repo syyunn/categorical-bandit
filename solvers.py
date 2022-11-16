@@ -44,127 +44,6 @@ class Solver(object):
         return None
 
 
-class EpsilonGreedy(Solver):
-    def __init__(self, bandit, eps, init_proba=1.0):
-        """
-        eps (float): the probability to explore at each time step.
-        init_proba (float): default to be 1.0; optimistic initialization
-        """
-        super(EpsilonGreedy, self).__init__(bandit)
-
-        assert 0.0 <= eps <= 1.0
-        self.eps = eps
-
-        self.estimates = [init_proba] * self.bandit.n  # Optimistic initialization
-
-    @property
-    def estimated_probas(self):
-        return self.estimates
-
-    def run_one_step(self):
-        if np.random.random() < self.eps:
-            # Let's do random exploration!
-            i = np.random.randint(0, self.bandit.n)
-        else:
-            # Pick the best one.
-            i = max(range(self.bandit.n), key=lambda x: self.estimates[x])
-
-        r = self.bandit.generate_reward(i)
-        self.estimates[i] += 1.0 / (self.counts[i] + 1) * (r - self.estimates[i])
-
-        return i
-
-
-class UCB1(Solver):
-    def __init__(self, bandit, init_proba=1.0):
-        super(UCB1, self).__init__(bandit)
-        self.t = 0
-        self.estimates = [init_proba] * self.bandit.n
-
-    @property
-    def estimated_probas(self):
-        return self.estimates
-
-    def run_one_step(self):
-        self.t += 1
-
-        # Pick the best one with consideration of upper confidence bounds.
-        i = max(
-            range(self.bandit.n),
-            key=lambda x: self.estimates[x]
-            + np.sqrt(2 * np.log(self.t) / (1 + self.counts[x])),
-        )
-        r = self.bandit.generate_reward(i)
-
-        self.estimates[i] += 1.0 / (self.counts[i] + 1) * (r - self.estimates[i])
-
-        return i
-
-
-class BayesianUCB(Solver):
-    """Assuming Beta prior."""
-
-    def __init__(self, bandit, c=3, init_a=1, init_b=1):
-        """
-        c (float): how many standard dev to consider as upper confidence bound.
-        init_a (int): initial value of a in Beta(a, b).
-        init_b (int): initial value of b in Beta(a, b).
-        """
-        super(BayesianUCB, self).__init__(bandit)
-        self.c = c
-        self._as = [init_a] * self.bandit.n
-        self._bs = [init_b] * self.bandit.n
-
-    @property
-    def estimated_probas(self):
-        return [
-            self._as[i] / float(self._as[i] + self._bs[i]) for i in range(self.bandit.n)
-        ]
-
-    def run_one_step(self):
-        # Pick the best one with consideration of upper confidence bounds.
-        i = max(
-            range(self.bandit.n),
-            key=lambda x: self._as[x] / float(self._as[x] + self._bs[x])
-            + beta.std(self._as[x], self._bs[x]) * self.c,
-        )
-        r = self.bandit.generate_reward(i)
-
-        # Update Gaussian posterior
-        self._as[i] += r
-        self._bs[i] += 1 - r
-
-        return i
-
-
-class ThompsonSampling(Solver):
-    def __init__(self, bandit, init_a=1, init_b=1):
-        """
-        init_a (int): initial value of a in Beta(a, b).
-        init_b (int): initial value of b in Beta(a, b).
-        """
-        super(ThompsonSampling, self).__init__(bandit)
-
-        self._as = [init_a] * self.bandit.n
-        self._bs = [init_b] * self.bandit.n
-
-    @property
-    def estimated_probas(self):
-        return [self._as[i] / (self._as[i] + self._bs[i]) for i in range(self.bandit.n)]
-
-    def run_one_step(self):
-        samples = [
-            np.random.beta(self._as[x], self._bs[x]) for x in range(self.bandit.n)
-        ]
-        i = max(range(self.bandit.n), key=lambda x: samples[x])
-        r = self.bandit.generate_reward(i)
-
-        self._as[i] += r
-        self._bs[i] += 1 - r
-
-        return i
-
-
 class ThompsonSamplingCategorical(Solver):
     def __init__(self, bandit):
         super(ThompsonSamplingCategorical, self).__init__(bandit)
@@ -185,7 +64,7 @@ class ThompsonSamplingCategorical(Solver):
             np.random.dirichlet(self._alpha[i]) for i in range(self.bandit.k)
         ]  # exploit what agent knows
         i = max(
-            range(10), key=lambda x: samples[x][self.bandit.coi]
+            range(self.bandit.k), key=lambda x: samples[x][self.bandit.coi]
         )  # best arm as far as bandit knows
         res = self.bandit.generate_reward(i)
         self._alpha[i][res["sampled"]] += 1
