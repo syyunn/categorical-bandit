@@ -86,6 +86,12 @@ def plot_results(solvers, solver_names, figname, show):
 
     # Sub.fig. 3: Action counts
     for s in solvers:
+        print("Most frequently used arm: {}".format(np.argmax(s.counts)))
+        if np.argmax(s.counts) == b.best_arm:
+            print("Best arm found.")
+        else:
+            print("Best arm not found.")
+        
         # ax3.plot(range(b.n), np.array(s.counts) / float(len(solvers[0].regrets)), ls='steps', lw=2)
         ax3.plot(
             range(b.k),
@@ -113,10 +119,11 @@ def experiment(K, C, N, show=False):
     """
 
     b = CategoricalBandit(K, C)
-    print("Randomly generated Categorical bandit has reward probabilities:\n", b.probas)
+    print("Config: K={}, C={}, N={}".format(K, C, N))
+    # print("Randomly generated Categorical bandit has reward probabilities:\n", b.probas)
     print(
-        "The best machine has index for category of interest {}: {} and proba: {}".format(
-            b.coi, b.best_arm, b.best_proba
+        "The best machine has index {} for category of interest {} and best proba {}".format(
+            b.best_arm, b.coi, b.best_proba
         )
     )
 
@@ -131,4 +138,4 @@ def experiment(K, C, N, show=False):
 
 if __name__ == "__main__":
     for i in range(12):
-        experiment(10, 2**i, 5000, show=False)
+        experiment(10, 2**(i+1), 5000, show=False)
