@@ -40,8 +40,11 @@ def plot_results(solvers, solver_names, figname, show):
         ax1.plot(range(len(s.regrets)), s.regrets, label="regret")
         ax1.plot(
             range(len(s.regrets)),
-            [(s.bandit.best_proba-s.bandit.worst_proba) * i for i in range(len(s.regrets))],
-            label="upper bound of regret"
+            [
+                (s.bandit.best_proba - s.bandit.worst_proba) * i
+                for i in range(len(s.regrets))
+            ],
+            label="upper bound of regret",
         )
         pass
 
@@ -56,7 +59,10 @@ def plot_results(solvers, solver_names, figname, show):
         # ax1.plot(range(len(s.regrets)), s.regrets, label="Regret")
         ax4.plot(
             range(len(s.regrets)),
-            [(s.regrets[i] / ((s.bandit.best_proba-s.bandit.worst_proba) * i)) for i in range(len(s.regrets))],
+            [
+                (s.regrets[i] / ((s.bandit.best_proba - s.bandit.worst_proba) * i))
+                for i in range(len(s.regrets))
+            ],
             # label="Upper bound of regret"
         )
         pass
@@ -69,7 +75,13 @@ def plot_results(solvers, solver_names, figname, show):
     # ax1.legend()
 
     # Sub.fig. 2: Probabilities estimated by solvers.
-    ax2.plot(range(b.k), [b.probas[i][b.coi] for i in range(b.k)], "k--", markeredgewidth=2, label="real prob")
+    ax2.plot(
+        range(b.k),
+        [b.probas[i][b.coi] for i in range(b.k)],
+        "k--",
+        markeredgewidth=2,
+        label="real prob",
+    )
     for s in solvers:
         ax2.plot(
             range(b.k),
@@ -91,7 +103,7 @@ def plot_results(solvers, solver_names, figname, show):
             print("Best arm found.")
         else:
             print("Best arm not found.")
-        
+
         # ax3.plot(range(b.n), np.array(s.counts) / float(len(solvers[0].regrets)), ls='steps', lw=2)
         ax3.plot(
             range(b.k),
@@ -138,4 +150,5 @@ def experiment(K, C, N, show=False):
 
 if __name__ == "__main__":
     for i in range(12):
-        experiment(10, 2**(i+1), 5000, show=False)
+        # experiment(10, 2**(i+1), 5000, show=False)
+        experiment(2 ** (i + 1), 10, 5000, show=False)

@@ -50,7 +50,7 @@ class ThompsonSamplingCategorical(Solver):
 
         self._alpha = np.ones(
             [self.bandit.k, self.bandit.c]
-        )  # initialize Dirichlet distribution's param alpha to 1s
+        )  # Initialize Dirichlet distribution's param alpha to 1s. This is internal belief of the agent over slot-machines.
 
     @property
     def estimated_probas(self):

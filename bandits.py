@@ -5,6 +5,7 @@ class Bandit(object):
     def generate_reward(self, i):
         raise NotImplementedError
 
+
 class CategoricalBandit(Bandit):
     """
     k: # of arms
@@ -14,9 +15,7 @@ class CategoricalBandit(Bandit):
     seed: random seed to generate underlying probabilities for all arms
     """
 
-    def __init__(
-        self, k, c, probas=None, coi=0, seed=2139
-    ):  # k is number of arms
+    def __init__(self, k, c, probas=None, coi=0, seed=2139):  # k is number of arms
         assert probas is None or probas.shape == (k, c)
 
         self.k = k
@@ -27,9 +26,11 @@ class CategoricalBandit(Bandit):
 
         if probas is None:
             np.random.seed(self.seed)
-            self.probas = np.random.dirichlet(np.ones(self.c), size=self.k)
+            self.probas = np.random.dirichlet(
+                np.ones(self.c), size=self.k
+            )  # generate true proba randomly
         else:
-            self.probas = probas  # give initial probas maunally
+            self.probas = probas  # give true probas maunally
 
         self.best_arm = np.argmax(self.probas[:, self.coi])
 
@@ -41,10 +42,12 @@ class CategoricalBandit(Bandit):
             self.probas[:, self.coi]
         )  # unlike Bern, we need reward function of bandit to compute best
 
+    def generate_reward(self, i):  # i is the best arm choice at run-timt t
+        # The player selected the i-th machine. We use actual probas in this case.
+        sampled = np.random.choice(self.c, size=1, p=self.probas[i])[
+            0
+        ]  # pull the lever of slot-machine i. If the machine gives the same category of interest, it gets reward 1. You can accomodate any types of reward as you want.
 
-    def generate_reward(self, i):
-        # The player selected the i-th machine.
-        sampled = np.random.choice(self.c, size=1, p=self.probas[i])[0]
         res = {"reward": None, "sampled": sampled}
 
         if res == self.coi:
@@ -55,5 +58,3 @@ class CategoricalBandit(Bandit):
             res["reward"] = reward
 
         return res
-        
-            
