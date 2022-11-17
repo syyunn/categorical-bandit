@@ -18,11 +18,10 @@ class CategoricalBandit(Bandit):
     def __init__(self, env, probas=None, coi=0):
         assert probas is None or probas.shape == (k, c)
 
-        self.k = env.k
-        self.c = env.c
+        self.env = env
         self.seed = env.seed
         self.coi = coi
-        self.ncoi = [i for i in range(self.c)].remove(
+        self.ncoi = [i for i in range(self.env.c)].remove(
             self.coi
         )  # bandit doesn't interest in any categories in self.ncoi
 
@@ -31,31 +30,47 @@ class CategoricalBandit(Bandit):
         self.worst_proba = min(self.env.probas[:, self.coi])
 
         self.belief = np.ones(
-            [self.bandit.k, self.bandit.c]
+            [self.env.k, self.env.c]
         )  # Initialize Dirichlet distribution's param \alpha to 1s. This is internal belief of the agent over slot-machines.
+
+        self.counts = [0] * self.env.k
+        self.actions = []  # A list of machine ids, 0 to k-1.
+        self.regret = 0.0  # Cumulative regret.
+        self.regrets = [0.0]  # History of cumulative regret.
 
     def get_action(self):
         samples = [
-            np.random.dirichlet(self.belief[i]) for i in range(self.k)
-        ]  # exploit what agent knows
+            np.random.dirichlet(self.belief[i]) for i in range(self.env.k)
+        ]  # exploit what agent believes about each arms' probas
         i = max(
-            range(self.k), key=lambda x: samples[x][self.bandit.coi]
+            range(self.env.k), key=lambda k: samples[k][self.coi]
         )  # best rewarding arm for category of interest as far as bandit knows
+        
+        # update counts and actions
+        self.counts[i] += 1
+        self.actions.append(i)
+
         return i
 
-    def generate_reward(self, i):  # i is the best arm choice at run-timt t
-        # The player selected the i-th machine. We use actual probas in this case.
-        sampled = np.random.choice(self.c, size=1, p=self.probas[i])[
-            0
-        ]  # pull the lever of slot-machine i. If the machine gives the same category of interest, it gets reward 1. You can accomodate any types of reward as you want.
+    def generate_reward(self, i, sampled):  
+        # update belief
+        self.belief[i][sampled] += 1
 
-        res = {"reward": None, "sampled": sampled}
-
-        if res == self.coi:
+        # recognize the reward
+        if sampled == self.coi:
             reward = 1
-            res["reward"] = reward
         else:
             reward = 0
-            res["reward"] = reward
 
-        return res
+        # update regret
+        self.regret += self.best_proba - self.env.probas[i][self.coi]
+        self.regrets.append(self.regret)
+
+        return reward
+
+    @property
+    def estimated_probas(self):
+        return [
+            self.belief[i][self.coi] / np.sum(self.belief[i])
+            for i in range(self.env.k)
+        ]

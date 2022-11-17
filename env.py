@@ -44,19 +44,15 @@ class CategoricalBanditEnv(object):
         self.actions[:, t] = pool.map(self.get_action, self.bandits)
 
     def generate_reward(self, bandit: CategoricalBandit, i: int):
-        "Generate output for a bandit for his/her choice"
+        """
+        Generate sampling output for a bandit for his/her choice.
+        bandit: bandit instance
+        i: arm index that the bandit chose
+        """
         sampled = np.random.choice(self.c, size=1, p=self.probas[i])[
             0
-        ]  # 0 is to read value out of np.array
-        return bandit.generate_reward(sampled)
-
-        # if sampled == bandit.coi:
-        #     reward = 1  # We use vanilla reward yet
-        #     # but you can design your own reward like:
-        #     # reward = 1 * CUSTOM_REWARD(ARGS)
-        # else:
-        #     reward = 0
-        # return reward
+        ]  # 0 is to read the value out of np.array
+        return bandit.generate_reward(i, sampled) # This process includes the update of internal belief at the bandit's side.
 
     def generate_rewards(self, t: int):
         """
@@ -67,19 +63,8 @@ class CategoricalBanditEnv(object):
             self.generate_reward, zip(self.bandits, self.actions[:, t])
         )
 
-    def update_bandit(self, bandit: CategoricalBandit, action: int, reward: int):
-        """
-        Update bandit's parameters.
-        """
-        bandit.update(action, reward)
-
-    def update_bandits(self, t):
-        """
-        Update all bandits' parameters.
-        """
-        pool = Pool(processes=len(self.bandits))
-        self.rewards[:, t] = pool.map(
-            self.update_bandit,
-            zip(self.bandits, self.actions[:, t], self.rewards[:, t]),
-        )  # Don't worry! Pool gives results in order.
-
+    def run(self):
+        for t in range(self.n):
+            print(t)
+            self.get_actions(t)
+            self.generate_rewards(t)
