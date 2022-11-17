@@ -15,32 +15,33 @@ class CategoricalBandit(Bandit):
     seed: random seed to generate underlying probabilities for all arms
     """
 
-    def __init__(self, k, c, probas=None, coi=0, seed=2139):  # k is number of arms
+    def __init__(self, env, probas=None, coi=0):
         assert probas is None or probas.shape == (k, c)
 
-        self.k = k
-        self.c = c
-        self.seed = seed
+        self.k = env.k
+        self.c = env.c
+        self.seed = env.seed
         self.coi = coi
-        self.ncoi = [i for i in range(c)].remove(self.coi)
+        self.ncoi = [i for i in range(self.c)].remove(
+            self.coi
+        )  # bandit doesn't interest in any categories in self.ncoi
 
-        if probas is None:
-            np.random.seed(self.seed)
-            self.probas = np.random.dirichlet(
-                np.ones(self.c), size=self.k
-            )  # generate true proba randomly
-        else:
-            self.probas = probas  # give true probas maunally
+        self.best_arm = np.argmax(self.env.probas[:, self.coi])
+        self.best_proba = max(self.env.probas[:, self.coi])
+        self.worst_proba = min(self.env.probas[:, self.coi])
 
-        self.best_arm = np.argmax(self.probas[:, self.coi])
+        self.belief = np.ones(
+            [self.bandit.k, self.bandit.c]
+        )  # Initialize Dirichlet distribution's param \alpha to 1s. This is internal belief of the agent over slot-machines.
 
-        self.best_proba = max(
-            self.probas[:, self.coi]
-        )  # unlike Bern, we need reward function of bandit to compute best
-
-        self.worst_proba = min(
-            self.probas[:, self.coi]
-        )  # unlike Bern, we need reward function of bandit to compute best
+    def get_action(self):
+        samples = [
+            np.random.dirichlet(self.belief[i]) for i in range(self.k)
+        ]  # exploit what agent knows
+        i = max(
+            range(self.k), key=lambda x: samples[x][self.bandit.coi]
+        )  # best rewarding arm for category of interest as far as bandit knows
+        return i
 
     def generate_reward(self, i):  # i is the best arm choice at run-timt t
         # The player selected the i-th machine. We use actual probas in this case.

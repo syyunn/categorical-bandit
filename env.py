@@ -32,16 +32,8 @@ class CategoricalBanditEnv(object):
         Run the `make_choice` method in given bandit instance from Categorical Bandit
         """
         return (
-            bandit.make_choice()
-        )  # It should return a integer that refers to one arm among K number of arms
-
-    def get_reward(self, bandit: CategoricalBandit, action: int):
-        """
-        Run the `make_choice` method in given bandit instance from Categorical Bandit
-        """
-        return bandit.get_reward(
-            action
-        )  # It should return a reward that bandit has gotten.
+            bandit.get_action()
+        )  # It returns a integer that refers to a arm among K number of possible choices of the given bandit.
 
     def get_actions(self, t):
         """
@@ -49,18 +41,31 @@ class CategoricalBanditEnv(object):
         """
 
         pool = Pool(processes=len(self.bandits))
-        self.actions[:, t] = pool.map(
-            self.get_action, self.bandits
-        )  # Don't worry! Pool gives results in order.
+        self.actions[:, t] = pool.map(self.get_action, self.bandits)
 
-    def get_rewards(self, t):
+    def generate_reward(self, bandit: CategoricalBandit, i: int):
+        "Generate output for a bandit for his/her choice"
+        sampled = np.random.choice(self.c, size=1, p=self.probas[i])[
+            0
+        ]  # 0 is to read value out of np.array
+        return bandit.generate_reward(sampled)
+
+        # if sampled == bandit.coi:
+        #     reward = 1  # We use vanilla reward yet
+        #     # but you can design your own reward like:
+        #     # reward = 1 * CUSTOM_REWARD(ARGS)
+        # else:
+        #     reward = 0
+        # return reward
+
+    def generate_rewards(self, t: int):
         """
-        Compute rewards for all bandits.
+        Generate rewards for all bandits based on their action choices at time t.
         """
         pool = Pool(processes=len(self.bandits))
         self.rewards[:, t] = pool.map(
-            self.get_reward, zip(self.bandits, self.actions[:, t])
-        )  # Don't worry! Pool gives results in order.
+            self.generate_reward, zip(self.bandits, self.actions[:, t])
+        )
 
     def update_bandit(self, bandit: CategoricalBandit, action: int, reward: int):
         """
@@ -74,6 +79,7 @@ class CategoricalBanditEnv(object):
         """
         pool = Pool(processes=len(self.bandits))
         self.rewards[:, t] = pool.map(
-            self.update_bandit, self.bandits
+            self.update_bandit,
+            zip(self.bandits, self.actions[:, t], self.rewards[:, t]),
         )  # Don't worry! Pool gives results in order.
 
