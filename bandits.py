@@ -15,8 +15,7 @@ class CategoricalBandit(Bandit):
     seed: random seed to generate underlying probabilities for all arms
     """
 
-    def __init__(self, env, probas=None, coi=0):
-        assert probas is None or probas.shape == (k, c)
+    def __init__(self, env, coi=1):
 
         self.env = env
         self.seed = env.seed

@@ -1,5 +1,6 @@
 from typing import List
-from multiprocessing import Pool
+from threading import Thread
+import queue
 
 import numpy as np
 
@@ -8,8 +9,9 @@ from bandits import CategoricalBandit
 
 class CategoricalBanditEnv(object):
     def __init__(
-        self, n, k, c, bandits: List[CategoricalBandit], probas=None, seed=2139
-    ):
+        self, b, n, k, c, probas=None, seed=2139
+    ):  
+        self.b = b  # number of bandits
         self.n = n  # Number of trials
         self.k = k  # Number of arms
         self.c = c  # Number of categories for each arm
@@ -23,9 +25,9 @@ class CategoricalBanditEnv(object):
             )  # Generate true probababilities of slot machines randomly.
         else:  # We assume the case that we use the actual probabilities from LDA data
             self.probas = probas  # Assign true proba maunally
-        self.bandits = bandits  # All bandits participating in this casino is stored in this variable.
-        self.actions = np.empty([len(bandits), n])
-        self.rewards = np.empty([len(bandits), n])
+        self.bandits = None  # All bandits participating in this casino is stored in this variable.
+        self.actions = np.empty([b, n])
+        self.rewards = np.empty([b, n])
 
     def get_action(self, bandit: CategoricalBandit):
         """
@@ -39,9 +41,11 @@ class CategoricalBanditEnv(object):
         """
         Get all bandits' decision in parallel at time t
         """
-
-        pool = Pool(processes=len(self.bandits))
-        self.actions[:, t] = pool.map(self.get_action, self.bandits)
+        que = queue.Queue()
+        for i in range(len(self.bandits)):
+            thr = Thread(target = lambda q, arg : q.put(self.get_action(arg)), args = (que, self.bandits[i]))
+            thr.start()
+        self.actions[:, t] = np.array([que.get() for i in range(len(self.bandits))])
 
     def generate_reward(self, bandit: CategoricalBandit, i: int):
         """
@@ -58,13 +62,15 @@ class CategoricalBanditEnv(object):
         """
         Generate rewards for all bandits based on their action choices at time t.
         """
-        pool = Pool(processes=len(self.bandits))
-        self.rewards[:, t] = pool.map(
-            self.generate_reward, zip(self.bandits, self.actions[:, t])
-        )
+
+        que = queue.Queue()
+        for i in range(len(self.bandits)):
+            thr = Thread(target = lambda q, arg1, arg2 : q.put(self.generate_reward(arg1, arg2)), args = (que, self.bandits[i], int(self.actions[i, t])))
+            thr.start()
+
+        self.rewards[:, t] = np.array([que.get() for i in range(len(self.bandits))])
 
     def run(self):
         for t in range(self.n):
-            print(t)
             self.get_actions(t)
             self.generate_rewards(t)

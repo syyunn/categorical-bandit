@@ -55,10 +55,10 @@ def plot_results(bandit: CategoricalBandit, env: CategoricalBanditEnv, show=Fals
     pass
 
     ax4.set_xlabel("Time step")
-    ax4.set_ylabel("Normalized Cumulative regret")
+    ax4.set_ylabel("Normalized regret")
     # ax1.legend(loc=9, bbox_to_anchor=(1.82, -0.25), ncol=5)
     ax4.grid("k", ls="--", alpha=0.3)
-    ax4.set_yticks(np.arange(0, 1, 0.1))
+    ax4.set_yticks(np.arange(0, 1.1, 0.1))
     # ax1.legend()
 
     # Sub.fig. 2: Probabilities estimated by solvers.
@@ -74,14 +74,15 @@ def plot_results(bandit: CategoricalBandit, env: CategoricalBanditEnv, show=Fals
         [bandit.estimated_probas[i] for i in range(env.k)],
         "x",
         markeredgewidth=2,
-        label="estimated prob",
+        label="estimated prob"
     )
-    ax2.set_xlabel("Actions by " + r"$\theta$")
-    ax2.set_ylabel("Estimated")
+    ax2.set_xlabel("Actions")
+    ax2.set_ylabel("(Estimated) Probabilities")
     ax2.grid("k", ls="--", alpha=0.3)
     ax2.legend()
 
     # Sub.fig. 3: Action counts
+    print("Best arm is: ", bandit.best_arm)
     print("Most frequently used arm: {}".format(np.argmax(bandit.counts)))
     if np.argmax(bandit.counts) == bandit.best_arm:
         print("Best arm found.")
@@ -115,14 +116,13 @@ def experiment(B, K, C, N, show=False):
         N (int): number of time steps to try.
     """
 
-    env = CategoricalBanditEnv(N, K, C, bandits=[])
-    bandits = [CategoricalBandit(env) for _ in range(B)]
-    env.bandits = bandits 
+    env = CategoricalBanditEnv(B, N, K, C)
+    env.bandits = [CategoricalBandit(env) for _ in range(B)] 
 
     env.run()
 
-    plot_results(bandits[0], env, show=True)
+    plot_results(env.bandits[0], env, show=show)
 
 
 if __name__ == "__main__":
-    experiment(B=1, K=10, C=4, N=10, show=True)
+    experiment(B=2, K=10, C=4, N=5000, show=True)
