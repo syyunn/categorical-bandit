@@ -28,8 +28,11 @@ class CategoricalBandit(Bandit):
         self.best_proba = max(self.env.probas[:, self.coi])
         self.worst_proba = min(self.env.probas[:, self.coi])
 
-        self.belief = np.ones( # create concentration parameters for Dirichlet distribution for each arm.
-            [self.env.k, self.env.c] # k is number of arms, c is number of categories. So k is legislators and c is categories of topcis.
+        self.belief = np.ones(  # create concentration parameters for Dirichlet distribution for each arm.
+            [
+                self.env.k,
+                self.env.c,
+            ]  # k is number of arms, c is number of categories. So k is legislators and c is categories of topcis.
         )  # Initialize Dirichlet distribution's param \alpha to 1s. This is internal belief of the agent over slot-machines.
 
         self.counts = [0] * self.env.k
@@ -44,21 +47,23 @@ class CategoricalBandit(Bandit):
         i = max(
             range(self.env.k), key=lambda k: samples[k][self.coi]
         )  # best rewarding arm for category of interest as far as bandit knows
-        
+
         # update counts and actions
         self.counts[i] += 1
         self.actions.append(i)
 
         return i
 
-    def generate_reward(self, i, sampled):  
+    def generate_reward(self, i, sampled):
         # update belief
         self.belief[i][sampled] += 1
 
         # recognize the reward
-        if sampled == self.coi: # if my category of interest coincides with sampled choice, then the agent gets reward 1.
+        if (
+            sampled == self.coi
+        ):  # if my category of interest coincides with sampled choice, then the agent gets reward 1.
             reward = 1
-        else: # else reward is 0.
+        else:  # else reward is 0.
             reward = 0
 
         # update regret
@@ -70,6 +75,5 @@ class CategoricalBandit(Bandit):
     @property
     def estimated_probas(self):
         return [
-            self.belief[i][self.coi] / np.sum(self.belief[i])
-            for i in range(self.env.k)
+            self.belief[i][self.coi] / np.sum(self.belief[i]) for i in range(self.env.k)
         ]

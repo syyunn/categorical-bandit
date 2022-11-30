@@ -8,9 +8,7 @@ from bandits import CategoricalBandit
 
 
 class CategoricalBanditEnv(object):
-    def __init__(
-        self, b, n, k, c, probas=None, seed=2139
-    ):  
+    def __init__(self, b, n, k, c, probas=None, seed=2139):
         self.b = b  # number of bandits
         self.n = n  # Number of trials
         self.k = k  # Number of arms
@@ -25,7 +23,9 @@ class CategoricalBanditEnv(object):
             )  # Generate true probababilities of slot machines randomly.
         else:  # We assume the case that we use the actual probabilities from LDA data
             self.probas = probas  # Assign true proba maunally
-        self.bandits = None  # All bandits participating in this casino is stored in this variable.
+        self.bandits = (
+            None  # All bandits participating in this casino is stored in this variable.
+        )
         self.actions = np.empty([b, n])
         self.rewards = np.empty([b, n])
 
@@ -43,7 +43,10 @@ class CategoricalBanditEnv(object):
         """
         que = queue.Queue()
         for i in range(len(self.bandits)):
-            thr = Thread(target = lambda q, arg : q.put(self.get_action(arg)), args = (que, self.bandits[i]))
+            thr = Thread(
+                target=lambda q, arg: q.put(self.get_action(arg)),
+                args=(que, self.bandits[i]),
+            )
             thr.start()
         self.actions[:, t] = np.array([que.get() for i in range(len(self.bandits))])  # type: ignore
 
@@ -56,7 +59,9 @@ class CategoricalBanditEnv(object):
         sampled = np.random.choice(self.c, size=1, p=self.probas[i])[
             0
         ]  # 0 is to read the value out of np.array
-        return bandit.generate_reward(i, sampled) # This process includes the update of internal belief at the bandit's side.
+        return bandit.generate_reward(
+            i, sampled
+        )  # This process includes the update of internal belief at the bandit's side.
 
     def generate_rewards(self, t: int):
         """
@@ -65,7 +70,10 @@ class CategoricalBanditEnv(object):
 
         que = queue.Queue()
         for i in range(len(self.bandits)):  # type: ignore
-            thr = Thread(target = lambda q, arg1, arg2 : q.put(self.generate_reward(arg1, arg2)), args = (que, self.bandits[i], int(self.actions[i, t])))
+            thr = Thread(
+                target=lambda q, arg1, arg2: q.put(self.generate_reward(arg1, arg2)),
+                args=(que, self.bandits[i], int(self.actions[i, t])),
+            )
             thr.start()
 
         self.rewards[:, t] = np.array([que.get() for i in range(len(self.bandits))])

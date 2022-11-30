@@ -50,7 +50,7 @@ def plot_results(bandit: CategoricalBandit, env: CategoricalBanditEnv, show=Fals
             (bandit.regrets[i] / ((bandit.best_proba - bandit.worst_proba) * i))
             for i in range(len(bandit.regrets))
         ],
-        label="Regrets in time normalized into [0, 1]"
+        label="Regrets in time normalized into [0, 1]",
     )
     pass
 
@@ -74,7 +74,7 @@ def plot_results(bandit: CategoricalBandit, env: CategoricalBanditEnv, show=Fals
         [bandit.estimated_probas[i] for i in range(env.k)],
         "x",
         markeredgewidth=2,
-        label="estimated prob"
+        label="estimated prob",
     )
     ax2.set_xlabel("Actions")
     ax2.set_ylabel("(Estimated) Probabilities")
@@ -117,7 +117,7 @@ def experiment(B, K, C, N, show=False):
     """
 
     env = CategoricalBanditEnv(B, N, K, C)
-    env.bandits = [CategoricalBandit(env) for _ in range(B)] 
+    env.bandits = [CategoricalBandit(env) for _ in range(B)]
 
     env.run()
 
