@@ -33,7 +33,7 @@ class CategoricalBanditEnv(object):
 
         # Define lobbyists living in this env.
         self.lobbyists = None  # All lobbyists participating in this political casino is stored in this variable.
-        self.counts_lobbyists = [0] * self.env.l
+        self.counts_lobbyists = [0] * self.l
 
     def get_action(self, bandit: CategoricalBandit):
         """
@@ -65,11 +65,14 @@ class CategoricalBanditEnv(object):
         i: arm index that the bandit chose
         """
         i, l = action
+        i, l = int(i), int(l)
         sampled = np.random.choice(self.c, size=1, p=self.probas[i])[
             0
         ]  # this is actual pulling in the real world # [0] is just to read out the value from np.array
 
-        self.update_lobbyist(i, l, sampled)
+        if l != -1:
+            self.update_lobbyist(i, l, sampled)
+
         reward = bandit.generate_reward(
             i, l, sampled
         )  # This process includes the update of internal belief at the bandit's side.

@@ -84,8 +84,10 @@ class CategoricalBandit(Bandit):
         self.hires.append(
             l
         )  # history of hiring lobbyists. if l=-1, then it means not hiring lobbyists.
-        self.counts_lobbyists[l] += 1
-        self.env.counts_lobbyists[l] += 1  # update global counter as well
+
+        if l != -1:
+            self.counts_lobbyists[l] += 1
+            self.env.counts_lobbyists[l] += 1  # update global counter as well
         return i, l  # return tuple as (action, lobbyist)
 
     def generate_reward(self, i, l, sampled):

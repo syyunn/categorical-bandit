@@ -130,4 +130,4 @@ def experiment(B, K, C, N, L=1, show=False):
 
 
 if __name__ == "__main__":
-    experiment(B=2, K=10, C=4, L=1, N=5000, show=True)
+    experiment(B=2, K=10, C=4, L=0, N=5000, show=True)
