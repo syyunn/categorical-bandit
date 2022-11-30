@@ -115,11 +115,14 @@ def experiment(B, K, C, N, L=1, show=False):
         K (int): number of slot machiens.
         C (int): number of categories.
         N (int): number of time steps to try.
+        show (bool): whether to show the plot or not.
     """
 
     env = CategoricalBanditEnv(B, N, K, C, L)
-    env.bandits = [CategoricalBandit(env) for _ in range(B)]
-    env.lobbyists = [CategoricalLobbyist(env) for _ in range(L)]
+    env.bandits = [
+        CategoricalBandit(env) for _ in range(B)
+    ]  # since we need env to initialize bandits, we need to do this after env is initialized
+    env.lobbyists = [CategoricalLobbyist(env) for _ in range(L)]  # same as above
 
     env.run()
 

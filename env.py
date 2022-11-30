@@ -50,10 +50,12 @@ class CategoricalBanditEnv(object):
         que = queue.Queue()
         for i in range(len(self.bandits)):
             thr = Thread(
-                target=lambda q, arg: q.put(self.get_action(arg)),
+                target=lambda q, arg: q.put(
+                    self.get_action(arg)
+                ),  # arg is bandit instance
                 args=(que, self.bandits[i]),
             )
-            thr.start()
+            thr.start()  # parallelize the process of getting actions from multiple bandits using multi-threading
         self.actions[:, :, t] = [que.get() for i in range(len(self.bandits))]  # type: ignore
 
     def generate_reward(self, bandit: CategoricalBandit, action: Tuple[int, int]):
@@ -65,13 +67,14 @@ class CategoricalBanditEnv(object):
         i, l = action
         sampled = np.random.choice(self.c, size=1, p=self.probas[i])[
             0
-        ]  # this is actual pulling in the real world # 0 is to read the value out of np.array
+        ]  # this is actual pulling in the real world # [0] is just to read out the value from np.array
 
         self.update_lobbyist(i, l, sampled)
-
-        return bandit.generate_reward(
+        reward = bandit.generate_reward(
             i, l, sampled
         )  # This process includes the update of internal belief at the bandit's side.
+
+        return reward
 
     def update_lobbyist(self, i, l, sampled):
         """
@@ -88,14 +91,21 @@ class CategoricalBanditEnv(object):
 
     def generate_rewards(self, t: int):
         """
-        Generate rewards for all bandits based on their action choices at time t.
+        1. Generate rewards for all bandits based on their action choices at time t.
+        2. Update bandits' internal belief based on the rewards.
+        2-1. We don't update bandits' internal belief in case they used the lobbyist's belief.
+        3. Update lobbyists' internal belief based on the rewards.
         """
 
         que = queue.Queue()
-        for i in range(len(self.bandits)):  # type: ignore
+        for b in range(len(self.bandits)):  # type: ignore
             thr = Thread(
                 target=lambda q, arg1, arg2: q.put(self.generate_reward(arg1, arg2)),
-                args=(que, self.bandits[i], int(self.actions[i, :, t])),
+                args=(
+                    que,
+                    self.bandits[b],
+                    self.actions[b, :, t],
+                ),  # arg2 is (i, l) tuple
             )
             thr.start()
 
@@ -117,11 +127,6 @@ class CategoricalBanditEnv(object):
         self.rewards[:, t] = np.array([que.get() for i in range(len(self.bandits))])
 
     def run(self):
-        if self.l == 0:
-            for t in range(self.n):
-                self.get_actions(t)
-                self.generate_rewards(t)
-        else:
-            for t in range(self.n):
-                self.get_actions(t)
-                self.generate_rewards(t)
+        for t in range(self.n):
+            self.get_actions(t)
+            self.generate_rewards(t)
