@@ -3,6 +3,7 @@ import matplotlib  # noqa
 # matplotlib.use("Agg")  # noqa
 
 import matplotlib.pyplot as plt
+import pandas as pd
 import numpy as np
 
 from bandits import CategoricalBandit
@@ -23,7 +24,7 @@ def plot_results(bandit: CategoricalBandit, env: CategoricalBanditEnv, show=Fals
     ax3 = fig.add_subplot(233)
 
     ax4 = fig.add_subplot(234)
-    # ax5 = fig.add_subplot(235)
+    ax5 = fig.add_subplot(235)
     # ax6 = fig.add_subplot(236)
 
     # Sub.fig 1: Regrets in time.
@@ -100,6 +101,14 @@ def plot_results(bandit: CategoricalBandit, env: CategoricalBanditEnv, show=Fals
     ax3.set_ylabel("# of trials (in ratio)")
     ax3.grid("k", ls="--", alpha=0.3)
     figname = "results_K{}_C{}_N{}.png".format(env.k, env.c, env.n)
+
+    # Sub.fig. 5: Ratio between using the self belief and lobbyists' belief.
+    df = pd.DataFrame({"freq": bandit.hires})
+    df["freq"].value_counts().plot(
+        ax=ax5, kind="bar", xlabel="lobbyist", ylabel="frequency"
+    )  # Save & Show plot
+
+    # Save & Show plot
     plt.savefig(figname)
     if show:
         plt.show()
