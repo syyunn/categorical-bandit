@@ -23,11 +23,14 @@ class CategoricalBanditEnv(object):
             )  # Generate true probababilities of slot machines randomly.
         else:  # We assume the case that we use the actual probabilities from LDA data
             self.probas = probas  # Assign true proba maunally
-        self.bandits = (
-            None  # All bandits participating in this casino is stored in this variable.
-        )
+
+        # Define bandits living in this env.
+        self.bandits = None  # All bandits participating in this political casino is stored in this variable.
         self.actions = np.empty([b, n])
         self.rewards = np.empty([b, n])
+
+        # Define lobbyists living in this env.
+        self.lobbyists = None  # All lobbyists participating in this political casino is stored in this variable.
 
     def get_action(self, bandit: CategoricalBandit):
         """
