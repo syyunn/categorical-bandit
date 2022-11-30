@@ -40,9 +40,8 @@ def plot_results(bandit: CategoricalBandit, env: CategoricalBanditEnv, show=Fals
     pass
 
     ax1.set_xlabel("Time step")
-    ax1.set_ylabel("Cumulative regret/reward")
+    ax1.set_ylabel("Cumulative regret")
     # ax1.legend(loc=9, bbox_to_anchor=(1.82, -0.25), ncol=5)
-    ax1.legend()
     ax1.grid("k", ls="--", alpha=0.3)
     ax1.legend()
 
