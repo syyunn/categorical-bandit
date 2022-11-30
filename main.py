@@ -121,7 +121,7 @@ def experiment(B, K, C, N, show=False):
 
     env.run()
 
-    plot_results(env.bandits[0], env, show=show)
+    plot_results(env.bandits[1], env, show=show)
 
 
 if __name__ == "__main__":

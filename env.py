@@ -45,7 +45,7 @@ class CategoricalBanditEnv(object):
         for i in range(len(self.bandits)):
             thr = Thread(target = lambda q, arg : q.put(self.get_action(arg)), args = (que, self.bandits[i]))
             thr.start()
-        self.actions[:, t] = np.array([que.get() for i in range(len(self.bandits))])
+        self.actions[:, t] = np.array([que.get() for i in range(len(self.bandits))])  # type: ignore
 
     def generate_reward(self, bandit: CategoricalBandit, i: int):
         """
@@ -64,7 +64,7 @@ class CategoricalBanditEnv(object):
         """
 
         que = queue.Queue()
-        for i in range(len(self.bandits)):
+        for i in range(len(self.bandits)):  # type: ignore
             thr = Thread(target = lambda q, arg1, arg2 : q.put(self.generate_reward(arg1, arg2)), args = (que, self.bandits[i], int(self.actions[i, t])))
             thr.start()
 

@@ -28,8 +28,8 @@ class CategoricalBandit(Bandit):
         self.best_proba = max(self.env.probas[:, self.coi])
         self.worst_proba = min(self.env.probas[:, self.coi])
 
-        self.belief = np.ones(
-            [self.env.k, self.env.c]
+        self.belief = np.ones( # create concentration parameters for Dirichlet distribution for each arm.
+            [self.env.k, self.env.c] # k is number of arms, c is number of categories. So k is legislators and c is categories of topcis.
         )  # Initialize Dirichlet distribution's param \alpha to 1s. This is internal belief of the agent over slot-machines.
 
         self.counts = [0] * self.env.k
@@ -40,7 +40,7 @@ class CategoricalBandit(Bandit):
     def get_action(self):
         samples = [
             np.random.dirichlet(self.belief[i]) for i in range(self.env.k)
-        ]  # exploit what agent believes about each arms' probas
+        ]  # exploit what agent believes about each arms' probas - sample from the belief posterior which is reprsented by Dirichlet distribution.
         i = max(
             range(self.env.k), key=lambda k: samples[k][self.coi]
         )  # best rewarding arm for category of interest as far as bandit knows
@@ -56,9 +56,9 @@ class CategoricalBandit(Bandit):
         self.belief[i][sampled] += 1
 
         # recognize the reward
-        if sampled == self.coi:
+        if sampled == self.coi: # if my category of interest coincides with sampled choice, then the agent gets reward 1.
             reward = 1
-        else:
+        else: # else reward is 0.
             reward = 0
 
         # update regret
