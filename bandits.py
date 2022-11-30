@@ -18,7 +18,7 @@ class CategoricalBandit(Bandit):
     def __init__(self, env, coi=1):
 
         self.env = env
-        self.seed = env.seed
+        self.seed = self.env.seed
         self.coi = coi
         self.ncoi = [i for i in range(self.env.c)].remove(
             self.coi

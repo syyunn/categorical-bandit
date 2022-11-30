@@ -15,11 +15,9 @@ class CategoricalLobbyist(Lobbyist):
     seed: random seed to generate underlying probabilities for all arms
     """
 
-    def __init__(self, env, coi=1):
+    def __init__(self, env):
 
         self.env = env
-        self.seed = env.seed
-
         self.belief = np.ones(  # create concentration parameters for Dirichlet distribution for each arm.
             [
                 self.env.k,
