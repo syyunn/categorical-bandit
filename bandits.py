@@ -35,28 +35,56 @@ class CategoricalBandit(Bandit):
             ]  # k is number of arms, c is number of categories. So k is legislators and c is categories of topcis.
         )  # Initialize Dirichlet distribution's param \alpha to 1s. This is internal belief of the agent over slot-machines.
 
-        self.counts = [0] * self.env.k
+        self.counts = [0] * self.env.k  # how many times each arm is pulled
         self.actions = []  # A list of machine ids, 0 to k-1.
+        self.hires = []  # A history of hiring lobbyists or not.
         self.regret = 0.0  # Cumulative regret.
         self.regrets = [0.0]  # History of cumulative regret.
+        self.counts_lobbyists = [
+            0
+        ] * self.env.l  # how many times each lobbyist is pulled
 
     def get_action(self):
-        samples = [
-            np.random.dirichlet(self.belief[i]) for i in range(self.env.k)
-        ]  # exploit what agent believes about each arms' probas - sample from the belief posterior which is reprsented by Dirichlet distribution.
-        i = max(
-            range(self.env.k), key=lambda k: samples[k][self.coi]
-        )  # best rewarding arm for category of interest as far as bandit knows
+        def _exploit(belief, coi=self.coi):
+            """
+            Return best arm to choose w/ its sampled proba from given belief. Belief is either a self.belief or a belief from lobbyists.
+            """
+            samples = [
+                np.random.dirichlet(belief[k]) for k in range(self.env.k)
+            ]  # exploit what agent believes about each arms' probas - sample from the belief posterior which is reprsented by Dirichlet distribution.
+            i = max(
+                range(self.env.k), key=lambda k: samples[k][coi]
+            )  # best rewarding arm for category of interest as far as bandit knows
+            return (
+                i,  # which is the best arm
+                samples[i][coi],  # with which proba
+            )  # tuple of selection of arm among k arms and its proba
 
-        # update counts and actions
+        candidates = []
+        candidates.append(_exploit(self.belief))  # choice from bandit's own belief
+        for l in range(self.env.l):  # choice from lobbyists' belief
+            candidates.append(_exploit(self.env.lobbyists[l].belief, coi=self.coi))
+        c = max(
+            range(len(candidates)), key=lambda c: candidates[c][1]
+        )  # select the best of best
+
+        i = candidates[c][0]  # i should be among k arms
+        l = (
+            c - 1
+        )  # l should be among l lobbyists; if l=-1, then it means bandit's using own belief and not hiring lobbyists
+
         self.counts[i] += 1
-        self.actions.append(i)
+        self.actions.append(i)  # "l" for lobbyist
 
-        return i
+        self.hires.append(l)
+        self.counts_lobbyists[l] += 1
+        self.env.counts_lobbyists[l] += 1  # update global counter as well
+        return i, l  # return tuple as (action, lobbyist)
 
-    def generate_reward(self, i, sampled):
-        # update belief
-        self.belief[i][sampled] += 1
+    def generate_reward(self, i, l, sampled):
+        if l == -1:
+            # update belief
+            self.belief[i][sampled] += 1
 
         # recognize the reward
         if (

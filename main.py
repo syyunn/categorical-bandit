@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from bandits import CategoricalBandit
+from lobbyists import CategoricalLobbyist
 from env import CategoricalBanditEnv
 
 
@@ -104,7 +105,7 @@ def plot_results(bandit: CategoricalBandit, env: CategoricalBanditEnv, show=Fals
         plt.show()
 
 
-def experiment(B, K, C, N, show=False):
+def experiment(B, K, C, N, L=1, show=False):
     """
     Run a small experiment on solving a Categorical bandit with K slot machines,
     each with a randomly initialized reward probability.
@@ -116,8 +117,9 @@ def experiment(B, K, C, N, show=False):
         N (int): number of time steps to try.
     """
 
-    env = CategoricalBanditEnv(B, N, K, C)
+    env = CategoricalBanditEnv(B, N, K, C, L)
     env.bandits = [CategoricalBandit(env) for _ in range(B)]
+    env.lobbyists = [CategoricalLobbyist(env) for _ in range(L)]
 
     env.run()
 
@@ -125,4 +127,4 @@ def experiment(B, K, C, N, show=False):
 
 
 if __name__ == "__main__":
-    experiment(B=2, K=10, C=4, N=5000, show=True)
+    experiment(B=2, K=10, C=4, L=1, N=5000, show=True)
