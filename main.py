@@ -25,7 +25,7 @@ def plot_results(bandit: CategoricalBandit, env: CategoricalBanditEnv, show=Fals
 
     ax4 = fig.add_subplot(234)
     ax5 = fig.add_subplot(235)
-    # ax6 = fig.add_subplot(236)
+    ax6 = fig.add_subplot(236)
 
     # Sub.fig 1: Regrets in time.
     ax1.plot(range(len(bandit.regrets)), bandit.regrets, label="regret")
@@ -87,9 +87,11 @@ def plot_results(bandit: CategoricalBandit, env: CategoricalBanditEnv, show=Fals
     print("Best arm is: ", bandit.best_arm)
     print("Most frequently used arm: {}".format(np.argmax(bandit.counts)))
     if np.argmax(bandit.counts) == bandit.best_arm:
-        print("Best arm found.")
+        best_arm_found_text = "Best arm found."
+        print(best_arm_found_text)
     else:
-        print("Best arm not found.")
+        best_arm_found_text = "Best arm not found."
+        print(best_arm_found_text)
 
     ax3.plot(
         range(env.k),
@@ -97,16 +99,27 @@ def plot_results(bandit: CategoricalBandit, env: CategoricalBanditEnv, show=Fals
         ls="--",
         lw=2,
     )
+
     ax3.set_xlabel("Actions")
     ax3.set_ylabel("# of trials (in ratio)")
+    ax3.annotate(best_arm_found_text, xy=(0.5, 0.5), xycoords="axes fraction")
     ax3.grid("k", ls="--", alpha=0.3)
-    figname = "results_K{}_C{}_N{}.png".format(env.k, env.c, env.n)
+    figname = "results_K{}_C{}_N{}_B_{}_L{}.png".format(
+        env.k, env.c, env.n, len(env.bandits), env.l
+    )
 
     # Sub.fig. 5: Ratio between using the self belief and lobbyists' belief.
     df = pd.DataFrame({"freq": bandit.hires})
     df["freq"].value_counts().plot(
         ax=ax5, kind="bar", xlabel="lobbyist", ylabel="frequency"
-    )  # Save & Show plot
+    )
+
+    # Sub.fig 6: Cumulative reward.
+    ax6.plot(range(len(bandit.regrets)), bandit.cum_rewards, label="cumulative reward")
+    ax6.set_xlabel("Time step")
+    ax6.set_ylabel("Cumulative reward")
+    ax6.grid("k", ls="--", alpha=0.3)
+    ax6.legend()
 
     # Save & Show plot
     plt.savefig(figname)
@@ -114,7 +127,7 @@ def plot_results(bandit: CategoricalBandit, env: CategoricalBanditEnv, show=Fals
         plt.show()
 
 
-def experiment(B, K, C, N, L=1, show=False):
+def experiment(B, K, C, N, L=1, show=False, bandit_index_to_plot=0):
     """
     Run a small experiment on solving a Categorical bandit with K slot machines,
     each with a randomly initialized reward probability.
@@ -135,8 +148,18 @@ def experiment(B, K, C, N, L=1, show=False):
 
     env.run()
 
-    plot_results(env.bandits[1], env, show=show)
+    plot_results(env.bandits[bandit_index_to_plot], env, show=show)
 
 
 if __name__ == "__main__":
-    experiment(B=2, K=10, C=4, L=0, N=5000, show=True)
+    # experiment(B=2, K=256, C=8, L=1, N=5000, show=True)
+    # experiment(B=1, K=256, C=8, L=0, N=2500, show=False, bandit_index_to_plot=0)
+    K = 256
+    C = 16
+    B = [1, 2, 3]
+    L = [0]
+    N = [2500, 5000, 7500]
+    for b in B:
+        for l in L:
+            for n in N:
+                experiment(B=b, K=K, C=C, L=l, N=n, show=False, bandit_index_to_plot=0)

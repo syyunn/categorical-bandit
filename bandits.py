@@ -35,6 +35,7 @@ class CategoricalBandit(Bandit):
             ]  # k is number of arms, c is number of categories. So k is legislators and c is categories of topcis.
         )  # Initialize Dirichlet distribution's param \alpha to 1s. This is internal belief of the agent over slot-machines.
 
+        self.cum_rewards = [0]
         self.counts = [0] * self.env.k  # how many times each arm is pulled
         self.actions = []  # A list of machine ids, 0 to k-1.
         self.hires = []  # A history of hiring lobbyists or not.
@@ -106,6 +107,7 @@ class CategoricalBandit(Bandit):
         # update regret
         self.regret += self.best_proba - self.env.probas[i][self.coi]
         self.regrets.append(self.regret)
+        self.cum_rewards.append(self.cum_rewards[-1] + reward)
 
         return reward
 
