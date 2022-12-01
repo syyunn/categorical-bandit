@@ -15,8 +15,12 @@ class CategoricalLobbyist(Lobbyist):
     seed: random seed to generate underlying probabilities for all arms
     """
 
-    def __init__(self, env):
-
+    def __init__(self, env, coe):
+        print("coe", coe)
+        """
+        coe: category of expertise
+        env: CategoricalEnv instance
+        """
         self.env = env
         self.belief = np.ones(  # create concentration parameters for Dirichlet distribution for each arm.
             [
@@ -24,6 +28,15 @@ class CategoricalLobbyist(Lobbyist):
                 self.env.c,
             ]  # k is number of arms, c is number of categories. So k is legislators and c is categories of topcis.
         )  # Initialize Dirichlet distribution's param \alpha to 1s. This is internal belief of the agent over slot-machines.
+
+        if coe != -1:
+            topicwise_true_probas = env.probas[:, coe]
+            topicwise_expertise_bias = [
+                int(round(e, 1) * 10 + 1)
+                for e in topicwise_true_probas  # +1 to prevent 0
+            ]  # it represents incomplete prior knowledge of the agent.
+
+            self.belief[:, coe] = topicwise_expertise_bias
 
     def update_belief(self, i, sampled):
         self.belief[i][sampled] += 1

@@ -25,7 +25,7 @@ class CategoricalBanditEnv(object):
             self.probas = np.random.dirichlet(
                 np.ones(self.c), size=self.k
             )  # Generate true probababilities of slot machines randomly.
-        else:  # We assume the case that we use the actual probabilities from LDA data
+        else:
             self.probas = probas  # Assign true proba maunally
 
         # Define bandits living in this env.

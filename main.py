@@ -295,11 +295,16 @@ def experiment(B, K, C, N, L, cois, show=False, bandit_index_to_plot=0):
     """
     assert B == len(cois)
 
+    uniq_cois = np.unique(cois)
+    print("uniq_cois", uniq_cois)
+
     env = CategoricalBanditEnv(B, N, K, C, L, cois)
     env.bandits = [
         CategoricalBandit(env, id=id, coi=coi) for id, coi in zip(range(B), cois)
     ]  # since we need env to initialize bandits, we need to do this after env is initialized
-    env.lobbyists = [CategoricalLobbyist(env) for _ in range(L)]  # same as above
+    env.lobbyists = [
+        CategoricalLobbyist(env=env, coe=coe) for _, coe in zip(range(L), uniq_cois)
+    ]  # same as above
 
     env.run()
 
