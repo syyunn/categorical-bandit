@@ -1,4 +1,5 @@
 import matplotlib  # noqa
+from tqdm import tqdm
 
 # matplotlib.use("Agg")  # noqa
 
@@ -152,6 +153,8 @@ def plot_results(bandit_index: int, env: CategoricalBanditEnv, show=False):
     ax11.plot(
         range(len(env.mean_rewards_of_bandits)),
         env.mean_rewards_of_bandits,
+        "x",
+        markeredgewidth=2,
         label="Mean of rewards of entire bandits",
     )
     ax11.set_xlabel("Time step")

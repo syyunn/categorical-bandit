@@ -1,6 +1,7 @@
 from typing import List, Tuple
 from threading import Thread
 import queue
+from tqdm import tqdm
 
 import numpy as np
 
@@ -52,7 +53,7 @@ class CategoricalBanditEnv(object):
         """
         Get all bandits' decision in parallel at time t
         """
-        que = queue.Queue()
+        que = queue.Queue(maxsize=len(self.bandits))
         for i in range(len(self.bandits)):
             thr = Thread(
                 target=lambda q, arg: q.put(
@@ -61,7 +62,7 @@ class CategoricalBanditEnv(object):
                 args=(que, self.bandits[i]),
             )
             thr.start()  # parallelize the process of getting actions from multiple bandits using multi-threading
-        self.actions[:, :, t] = [que.get() for i in range(len(self.bandits))]  # type: ignore
+        self.actions[:, :, t] = [que.get(block=True) for i in range(len(self.bandits))]  # type: ignore
 
     def generate_reward(self, bandit: CategoricalBandit, action: Tuple[int, int]):
         """
@@ -135,10 +136,12 @@ class CategoricalBanditEnv(object):
 
         [thread.join() for thread in threads]  # wait for all threads to finish
 
-        self.rewards[:, t] = np.array([que.get() for i in range(len(self.bandits))])
+        self.rewards[:, t] = np.array(
+            [que.get(block=True) for i in range(len(self.bandits))]
+        )
 
     def run(self):
-        for t in range(self.n):
+        for t in tqdm(range(self.n)):
             self.get_actions(t)
             self.generate_rewards(t)
             self.compute_environment_level_reward(t)
