@@ -19,13 +19,15 @@ def plot_results(bandit: CategoricalBandit, env: CategoricalBanditEnv, show=Fals
     fig = plt.figure(figsize=(14, 8))
     fig.subplots_adjust(bottom=0.3, wspace=0.3)
 
-    ax1 = fig.add_subplot(231)
-    ax2 = fig.add_subplot(232)
-    ax3 = fig.add_subplot(233)
+    ax1 = fig.add_subplot(331)
+    ax2 = fig.add_subplot(332)
+    ax3 = fig.add_subplot(333)
 
-    ax4 = fig.add_subplot(234)
-    ax5 = fig.add_subplot(235)
-    ax6 = fig.add_subplot(236)
+    ax4 = fig.add_subplot(334)
+    ax5 = fig.add_subplot(335)
+    ax6 = fig.add_subplot(336)
+
+    ax7 = fig.add_subplot(337)
 
     # Sub.fig 1: Regrets in time.
     ax1.plot(range(len(bandit.regrets)), bandit.regrets, label="regret")
@@ -121,13 +123,35 @@ def plot_results(bandit: CategoricalBandit, env: CategoricalBanditEnv, show=Fals
     ax6.grid("k", ls="--", alpha=0.3)
     ax6.legend()
 
+    # Sub.fig 7: Estimated Proba & Real Proba of Most Frequently Selected Lobbyist
+    # Sub.fig. 2: Probabilities estimated by solvers.
+    ax7.plot(
+        range(env.k),
+        [env.probas[i][bandit.coi] for i in range(env.k)],
+        "k--",
+        markeredgewidth=2,
+        label="real prob",
+    )
+    ax7.plot(
+        range(env.k),
+        env.lobbyists[bandit.most_freq_hired_lobbyist].estimated_probas(bandit.coi),
+        "x",
+        markeredgewidth=2,
+        label="estimated prob",
+    )
+    ax7.set_xlabel("Actions")
+    ax7.set_ylabel("(Estimated) Probabilities")
+    ax7.grid("k", ls="--", alpha=0.3)
+    ax7.legend()
+
     # Save & Show plot
+    plt.tight_layout()  # too add margins btw subplots
     plt.savefig(figname)
     if show:
         plt.show()
 
 
-def experiment(B, K, C, N, L=1, show=False, bandit_index_to_plot=0):
+def experiment(B, K, C, N, L, cois, show=False, bandit_index_to_plot=0):
     """
     Run a small experiment on solving a Categorical bandit with K slot machines,
     each with a randomly initialized reward probability.
@@ -142,7 +166,7 @@ def experiment(B, K, C, N, L=1, show=False, bandit_index_to_plot=0):
 
     env = CategoricalBanditEnv(B, N, K, C, L)
     env.bandits = [
-        CategoricalBandit(env) for _ in range(B)
+        CategoricalBandit(env, coi=coi) for _, coi in zip(range(B), cois)
     ]  # since we need env to initialize bandits, we need to do this after env is initialized
     env.lobbyists = [CategoricalLobbyist(env) for _ in range(L)]  # same as above
 
@@ -154,12 +178,22 @@ def experiment(B, K, C, N, L=1, show=False, bandit_index_to_plot=0):
 if __name__ == "__main__":
     # experiment(B=2, K=256, C=8, L=1, N=5000, show=True)
     # experiment(B=1, K=256, C=8, L=0, N=2500, show=False, bandit_index_to_plot=0)
-    K = 256
-    C = 32
-    B = [1, 2, 4, 8, 16, 32, 64]
-    L = [0, 1, 2, 4, 8]
-    N = [2500, 5000, 7500]
-    for b in B:
-        for l in L:
-            for n in N:
-                experiment(B=b, K=K, C=C, L=l, N=n, show=False, bandit_index_to_plot=0)
+    # K = 256
+    # C = 32
+    # B = [1, 2, 4, 8, 16, 32, 64]
+    # L = [0, 1, 2, 4, 8]
+    # N = [2500, 5000, 7500]
+    # for b in B:
+    #     for l in L:
+    #         for n in N:
+    #             experiment(B=b, K=K, C=C, L=l, N=n, show=False, bandit_index_to_plot=0)
+    experiment(
+        B=4,
+        K=256,
+        C=32,
+        L=1,
+        N=2500,
+        cois=[0, 0, 1, 1],
+        show=True,
+        bandit_index_to_plot=0,
+    )

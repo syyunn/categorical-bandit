@@ -27,3 +27,6 @@ class CategoricalLobbyist(Lobbyist):
 
     def update_belief(self, i, sampled):
         self.belief[i][sampled] += 1
+
+    def estimated_probas(self, coi):
+        return [self.belief[i][coi] / np.sum(self.belief[i]) for i in range(self.env.k)]

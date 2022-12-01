@@ -116,3 +116,7 @@ class CategoricalBandit(Bandit):
         return [
             self.belief[i][self.coi] / np.sum(self.belief[i]) for i in range(self.env.k)
         ]
+
+    @property
+    def most_freq_hired_lobbyist(self):
+        return max(set(self.hires), key=self.hires.count)
