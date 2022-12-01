@@ -3,9 +3,11 @@ import matplotlib  # noqa
 # matplotlib.use("Agg")  # noqa
 
 import matplotlib.pyplot as plt
+import pandas as pd
 import numpy as np
 
 from bandits import CategoricalBandit
+from lobbyists import CategoricalLobbyist
 from env import CategoricalBanditEnv
 
 
@@ -22,8 +24,8 @@ def plot_results(bandit: CategoricalBandit, env: CategoricalBanditEnv, show=Fals
     ax3 = fig.add_subplot(233)
 
     ax4 = fig.add_subplot(234)
-    # ax5 = fig.add_subplot(235)
-    # ax6 = fig.add_subplot(236)
+    ax5 = fig.add_subplot(235)
+    ax6 = fig.add_subplot(236)
 
     # Sub.fig 1: Regrets in time.
     ax1.plot(range(len(bandit.regrets)), bandit.regrets, label="regret")
@@ -50,7 +52,7 @@ def plot_results(bandit: CategoricalBandit, env: CategoricalBanditEnv, show=Fals
             (bandit.regrets[i] / ((bandit.best_proba - bandit.worst_proba) * i))
             for i in range(len(bandit.regrets))
         ],
-        label="Regrets in time normalized into [0, 1]"
+        label="Regrets in time normalized into [0, 1]",
     )
     pass
 
@@ -74,7 +76,7 @@ def plot_results(bandit: CategoricalBandit, env: CategoricalBanditEnv, show=Fals
         [bandit.estimated_probas[i] for i in range(env.k)],
         "x",
         markeredgewidth=2,
-        label="estimated prob"
+        label="estimated prob",
     )
     ax2.set_xlabel("Actions")
     ax2.set_ylabel("(Estimated) Probabilities")
@@ -85,9 +87,11 @@ def plot_results(bandit: CategoricalBandit, env: CategoricalBanditEnv, show=Fals
     print("Best arm is: ", bandit.best_arm)
     print("Most frequently used arm: {}".format(np.argmax(bandit.counts)))
     if np.argmax(bandit.counts) == bandit.best_arm:
-        print("Best arm found.")
+        best_arm_found_text = "Best arm found."
+        print(best_arm_found_text)
     else:
-        print("Best arm not found.")
+        best_arm_found_text = "Best arm not found."
+        print(best_arm_found_text)
 
     ax3.plot(
         range(env.k),
@@ -95,16 +99,35 @@ def plot_results(bandit: CategoricalBandit, env: CategoricalBanditEnv, show=Fals
         ls="--",
         lw=2,
     )
+
     ax3.set_xlabel("Actions")
     ax3.set_ylabel("# of trials (in ratio)")
+    ax3.annotate(best_arm_found_text, xy=(0.5, 0.5), xycoords="axes fraction")
     ax3.grid("k", ls="--", alpha=0.3)
-    figname = "results_K{}_C{}_N{}.png".format(env.k, env.c, env.n)
+    figname = "results_K{}_C{}_N{}_B_{}_L{}.png".format(
+        env.k, env.c, env.n, len(env.bandits), env.l
+    )
+
+    # Sub.fig. 5: Ratio between using the self belief and lobbyists' belief.
+    df = pd.DataFrame({"freq": bandit.hires})
+    df["freq"].value_counts().plot(
+        ax=ax5, kind="bar", xlabel="lobbyist", ylabel="frequency"
+    )
+
+    # Sub.fig 6: Cumulative reward.
+    ax6.plot(range(len(bandit.regrets)), bandit.cum_rewards, label="cumulative reward")
+    ax6.set_xlabel("Time step")
+    ax6.set_ylabel("Cumulative reward")
+    ax6.grid("k", ls="--", alpha=0.3)
+    ax6.legend()
+
+    # Save & Show plot
     plt.savefig(figname)
     if show:
         plt.show()
 
 
-def experiment(B, K, C, N, show=False):
+def experiment(B, K, C, N, L=1, show=False, bandit_index_to_plot=0):
     """
     Run a small experiment on solving a Categorical bandit with K slot machines,
     each with a randomly initialized reward probability.
@@ -114,15 +137,29 @@ def experiment(B, K, C, N, show=False):
         K (int): number of slot machiens.
         C (int): number of categories.
         N (int): number of time steps to try.
+        show (bool): whether to show the plot or not.
     """
 
-    env = CategoricalBanditEnv(B, N, K, C)
-    env.bandits = [CategoricalBandit(env) for _ in range(B)] 
+    env = CategoricalBanditEnv(B, N, K, C, L)
+    env.bandits = [
+        CategoricalBandit(env) for _ in range(B)
+    ]  # since we need env to initialize bandits, we need to do this after env is initialized
+    env.lobbyists = [CategoricalLobbyist(env) for _ in range(L)]  # same as above
 
     env.run()
 
-    plot_results(env.bandits[0], env, show=show)
+    plot_results(env.bandits[bandit_index_to_plot], env, show=show)
 
 
 if __name__ == "__main__":
-    experiment(B=2, K=10, C=4, N=5000, show=True)
+    # experiment(B=2, K=256, C=8, L=1, N=5000, show=True)
+    # experiment(B=1, K=256, C=8, L=0, N=2500, show=False, bandit_index_to_plot=0)
+    K = 256
+    C = 32
+    B = [1, 2, 4, 8, 16, 32, 64]
+    L = [0, 1, 2, 4, 8]
+    N = [2500, 5000, 7500]
+    for b in B:
+        for l in L:
+            for n in N:
+                experiment(B=b, K=K, C=C, L=l, N=n, show=False, bandit_index_to_plot=0)
