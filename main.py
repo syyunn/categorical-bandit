@@ -106,8 +106,13 @@ def plot_results(bandit: CategoricalBandit, env: CategoricalBanditEnv, show=Fals
     ax3.set_ylabel("# of trials (in ratio)")
     ax3.annotate(best_arm_found_text, xy=(0.5, 0.5), xycoords="axes fraction")
     ax3.grid("k", ls="--", alpha=0.3)
-    figname = "results_K{}_C{}_N{}_B_{}_L{}.png".format(
-        env.k, env.c, env.n, len(env.bandits), env.l
+    figname = "results_K{}_C{}_N{}_B_{}_L{}_cois{}.png".format(
+        env.k,
+        env.c,
+        env.n,
+        len(env.bandits),
+        env.l,
+        "".join([str(i) for i in env.cois]),
     )
 
     # Sub.fig. 5: Ratio between using the self belief and lobbyists' belief.
@@ -164,7 +169,7 @@ def experiment(B, K, C, N, L, cois, show=False, bandit_index_to_plot=0):
         show (bool): whether to show the plot or not.
     """
 
-    env = CategoricalBanditEnv(B, N, K, C, L)
+    env = CategoricalBanditEnv(B, N, K, C, L, cois)
     env.bandits = [
         CategoricalBandit(env, coi=coi) for _, coi in zip(range(B), cois)
     ]  # since we need env to initialize bandits, we need to do this after env is initialized
@@ -192,7 +197,7 @@ if __name__ == "__main__":
         K=256,
         C=32,
         L=1,
-        N=2500,
+        N=5000,
         cois=[0, 0, 1, 1],
         show=True,
         bandit_index_to_plot=0,
