@@ -38,6 +38,7 @@ class CategoricalBanditEnv(object):
 
         # Define environment level reward
         self.sum_rewards_of_bandits = []
+        self.mean_rewards_of_bandits = []
 
     def get_action(self, bandit: CategoricalBandit):
         """
@@ -100,7 +101,7 @@ class CategoricalBanditEnv(object):
         """
         Compute the environment level reward at time t.
         """
-        self.sum_rewards_of_bandits.append(np.sum(self.rewards[:, t]))
+        self.mean_rewards_of_bandits.append(np.sum(self.rewards[:, t]) / self.b)
 
     def generate_rewards(self, t: int):
         """

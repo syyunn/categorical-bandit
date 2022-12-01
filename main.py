@@ -148,11 +148,11 @@ def plot_results(bandit_index: int, env: CategoricalBanditEnv, show=False):
     ax6.legend()
 
     # Sub.fig. 11: Mean Rewards of Entire Bandits.
-    ax11.set_title(f"Sum rewards of entire bandits for each time step")
-    ax11.scatter(
-        range(len(env.sum_rewards_of_bandits)),
-        env.sum_rewards_of_bandits,
-        label="Sum of rewards of entire bandits",
+    ax11.set_title(f"Mean rewards of entire bandits for each time step")
+    ax11.plot(
+        range(len(env.mean_rewards_of_bandits)),
+        env.mean_rewards_of_bandits,
+        label="Mean of rewards of entire bandits",
     )
     ax11.set_xlabel("Time step")
     ax11.set_ylabel("Sum rewards")
@@ -160,7 +160,7 @@ def plot_results(bandit_index: int, env: CategoricalBanditEnv, show=False):
     ax11.legend()
 
     # Sub.fig 7: Estimated Proba & Real Proba of Most Frequently Selected Lobbyist w/ bandit's coi.
-    if bandit.most_freq_hired_lobbyist != -1:
+    if env.l > 0:
         true_probs = [env.probas[i][bandit.coi] for i in range(env.k)]
         estimated_probs_lobbyist = env.lobbyists[
             bandit.most_freq_hired_lobbyist
@@ -296,8 +296,6 @@ def experiment(B, K, C, N, L, cois, show=False, bandit_index_to_plot=0):
     env.bandits = [
         CategoricalBandit(env, id=id, coi=coi) for id, coi in zip(range(B), cois)
     ]  # since we need env to initialize bandits, we need to do this after env is initialized
-    for bandit in env.bandits:
-        print("bandit id enum", bandit.id)
     env.lobbyists = [CategoricalLobbyist(env) for _ in range(L)]  # same as above
 
     env.run()
