@@ -74,7 +74,7 @@ class CategoricalBandit(Bandit):
         )  # select the best action among all candidates where the candidates = [bandit's own belief, lobbyists' belief]
         # c refer to candidate
 
-        i = candidates[c][0]  # i should be among k arms
+        i = candidates[c][0]  # i should be one of among k arms
         l = (
             c - 1
         )  # l should be among l lobbyists; if l=-1, then it means bandit's using own belief and not that of a lobbyist.

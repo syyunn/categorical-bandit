@@ -155,9 +155,9 @@ if __name__ == "__main__":
     # experiment(B=2, K=256, C=8, L=1, N=5000, show=True)
     # experiment(B=1, K=256, C=8, L=0, N=2500, show=False, bandit_index_to_plot=0)
     K = 256
-    C = 16
-    B = [1, 2, 3]
-    L = [0]
+    C = 32
+    B = [1, 2, 4, 8, 16, 32, 64]
+    L = [0, 1, 2, 4, 8]
     N = [2500, 5000, 7500]
     for b in B:
         for l in L:
