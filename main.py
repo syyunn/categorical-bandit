@@ -11,25 +11,39 @@ from lobbyists import CategoricalLobbyist
 from env import CategoricalBanditEnv
 
 
-def plot_results(bandit: CategoricalBandit, env: CategoricalBanditEnv, show=False):
+def plot_results(bandit_index: int, env: CategoricalBanditEnv, show=False):
     """
     Plot the results after playing in the env.
     """
 
-    fig = plt.figure(figsize=(14, 8))
+    bandit = env.bandits[bandit_index]
+
+    fig = plt.figure(figsize=(14, 10))
     fig.subplots_adjust(bottom=0.3, wspace=0.3)
 
-    ax1 = fig.add_subplot(331)
-    ax2 = fig.add_subplot(332)
-    ax3 = fig.add_subplot(333)
+    ax1 = fig.add_subplot(431)
+    ax2 = fig.add_subplot(432)
+    ax3 = fig.add_subplot(433)
 
-    ax4 = fig.add_subplot(334)
-    ax5 = fig.add_subplot(335)
-    ax6 = fig.add_subplot(336)
+    ax4 = fig.add_subplot(434)
+    ax5 = fig.add_subplot(435)
+    ax6 = fig.add_subplot(436)
 
-    ax7 = fig.add_subplot(337)
+    ax7 = fig.add_subplot(437)
+    ax8 = fig.add_subplot(438)
+
+    ax9 = fig.add_subplot(439)
+    ax10 = fig.add_subplot(4, 3, 10)
+
+    ax11 = fig.add_subplot(4, 3, 11)
+
+    fig.suptitle(
+        f"Bandit{bandit_index}, B={env.b} w/ coi{bandit.coi}, L={env.l}, N={env.n}, C={env.c}",
+        fontsize=16,
+    )
 
     # Sub.fig 1: Regrets in time.
+    ax1.set_title(f"Bandit{bandit_index}'s regret in time, coi={bandit.coi}")
     ax1.plot(range(len(bandit.regrets)), bandit.regrets, label="regret")
     ax1.plot(
         range(len(bandit.regrets)),
@@ -48,6 +62,7 @@ def plot_results(bandit: CategoricalBandit, env: CategoricalBanditEnv, show=Fals
     ax1.legend()
 
     # Sub.fig. 4: Regrets in time in ratio.
+    ax4.set_title("Normalized regrets in time")
     ax4.plot(
         range(len(bandit.regrets)),
         [
@@ -59,7 +74,7 @@ def plot_results(bandit: CategoricalBandit, env: CategoricalBanditEnv, show=Fals
     pass
 
     ax4.set_xlabel("Time step")
-    ax4.set_ylabel("Normalized regret")
+    ax4.set_ylabel("cum_regret / lb of regret")
     # ax1.legend(loc=9, bbox_to_anchor=(1.82, -0.25), ncol=5)
     ax4.grid("k", ls="--", alpha=0.3)
     ax4.set_yticks(np.arange(0, 1.1, 0.1))
@@ -73,6 +88,7 @@ def plot_results(bandit: CategoricalBandit, env: CategoricalBanditEnv, show=Fals
         markeredgewidth=2,
         label="real prob",
     )
+    ax2.set_title(f"Underlying reward distribution of each arm for coi {bandit.coi}")
     ax2.plot(
         range(env.k),
         [bandit.estimated_probas[i] for i in range(env.k)],
@@ -80,12 +96,13 @@ def plot_results(bandit: CategoricalBandit, env: CategoricalBanditEnv, show=Fals
         markeredgewidth=2,
         label="estimated prob",
     )
-    ax2.set_xlabel("Actions")
+    ax2.set_xlabel("Arms (Legislators)")
     ax2.set_ylabel("(Estimated) Probabilities")
     ax2.grid("k", ls="--", alpha=0.3)
     ax2.legend()
 
     # Sub.fig. 3: Action counts
+    ax3.set_title("Proprotion of actions taken by bandit")
     print("Best arm is: ", bandit.best_arm)
     print("Most frequently used arm: {}".format(np.argmax(bandit.counts)))
     if np.argmax(bandit.counts) == bandit.best_arm:
@@ -102,8 +119,8 @@ def plot_results(bandit: CategoricalBandit, env: CategoricalBanditEnv, show=Fals
         lw=2,
     )
 
-    ax3.set_xlabel("Actions")
-    ax3.set_ylabel("# of trials (in ratio)")
+    ax3.set_xlabel("Arms (Legislators)")
+    ax3.set_ylabel("Proportion of actions taken")
     ax3.annotate(best_arm_found_text, xy=(0.5, 0.5), xycoords="axes fraction")
     ax3.grid("k", ls="--", alpha=0.3)
     figname = "results_K{}_C{}_N{}_B_{}_L{}_cois{}.png".format(
@@ -116,38 +133,143 @@ def plot_results(bandit: CategoricalBandit, env: CategoricalBanditEnv, show=Fals
     )
 
     # Sub.fig. 5: Ratio between using the self belief and lobbyists' belief.
+    ax5.set_title("Frequency of using lobbyists")
     df = pd.DataFrame({"freq": bandit.hires})
-    df["freq"].value_counts().plot(
+    df["freq"].value_counts().sort_index().plot(
         ax=ax5, kind="bar", xlabel="lobbyist", ylabel="frequency"
     )
 
     # Sub.fig 6: Cumulative reward.
+    ax6.set_title(f"Cumulative reward of bandit{bandit_index} in time")
     ax6.plot(range(len(bandit.regrets)), bandit.cum_rewards, label="cumulative reward")
     ax6.set_xlabel("Time step")
     ax6.set_ylabel("Cumulative reward")
     ax6.grid("k", ls="--", alpha=0.3)
     ax6.legend()
 
-    # Sub.fig 7: Estimated Proba & Real Proba of Most Frequently Selected Lobbyist
-    # Sub.fig. 2: Probabilities estimated by solvers.
-    ax7.plot(
-        range(env.k),
-        [env.probas[i][bandit.coi] for i in range(env.k)],
-        "k--",
-        markeredgewidth=2,
-        label="real prob",
+    # Sub.fig. 11: Mean Rewards of Entire Bandits.
+    ax11.set_title(f"Sum rewards of entire bandits for each time step")
+    ax11.scatter(
+        range(len(env.sum_rewards_of_bandits)),
+        env.sum_rewards_of_bandits,
+        label="Sum of rewards of entire bandits",
     )
-    ax7.plot(
-        range(env.k),
-        env.lobbyists[bandit.most_freq_hired_lobbyist].estimated_probas(bandit.coi),
-        "x",
-        markeredgewidth=2,
-        label="estimated prob",
-    )
-    ax7.set_xlabel("Actions")
-    ax7.set_ylabel("(Estimated) Probabilities")
-    ax7.grid("k", ls="--", alpha=0.3)
-    ax7.legend()
+    ax11.set_xlabel("Time step")
+    ax11.set_ylabel("Sum rewards")
+    ax11.grid("k", ls="--", alpha=0.3)
+    ax11.legend()
+
+    # Sub.fig 7: Estimated Proba & Real Proba of Most Frequently Selected Lobbyist w/ bandit's coi.
+    if bandit.most_freq_hired_lobbyist != -1:
+        true_probs = [env.probas[i][bandit.coi] for i in range(env.k)]
+        estimated_probs_lobbyist = env.lobbyists[
+            bandit.most_freq_hired_lobbyist
+        ].estimated_probas(bandit.coi)
+        ax7.set_title(
+            f"Lobbyist{bandit.most_freq_hired_lobbyist}coi{bandit.coi}mse{np.square(np.subtract(true_probs, estimated_probs_lobbyist)).mean()}"
+        )
+        ax7.plot(
+            range(env.k),
+            true_probs,
+            "k--",
+            markeredgewidth=2,
+            label="real prob",
+        )
+        ax7.plot(
+            range(env.k),
+            estimated_probs_lobbyist,
+            "x",
+            markeredgewidth=2,
+            label="estimated prob",
+        )
+        ax7.set_xlabel("Actions")
+        ax7.set_ylabel("(Estimated) Probabilities")
+        ax7.grid("k", ls="--", alpha=0.3)
+        ax7.legend()
+
+        # Sub.fig 8: Estimated Proba & Real Proba of Most Frequently Selected Lobbyist w/ opposite of bandit's coi.
+        coi = int(abs(bandit.coi - 1))
+        true_probs = [env.probas[i][coi] for i in range(env.k)]
+        estimated_probs_lobbyist = env.lobbyists[
+            bandit.most_freq_hired_lobbyist
+        ].estimated_probas(coi)
+        ax8.set_title(
+            f"Lobbyist{bandit.most_freq_hired_lobbyist}coi{coi}mse{np.square(np.subtract(true_probs, estimated_probs_lobbyist)).mean()}"
+        )
+        ax8.plot(
+            range(env.k),
+            true_probs,
+            "k--",
+            markeredgewidth=2,
+            label="real prob",
+        )
+        ax8.plot(
+            range(env.k),
+            estimated_probs_lobbyist,
+            "x",
+            markeredgewidth=2,
+            label="estimated prob",
+        )
+        ax8.set_xlabel("Actions")
+        ax8.set_ylabel("(Estimated) Probabilities")
+        ax8.grid("k", ls="--", alpha=0.3)
+        ax8.legend()
+
+        # Sub.fig 9: Estimated Proba & Real Proba of Least Frequently Selected Lobbyist
+        true_probs = [env.probas[i][bandit.coi] for i in range(env.k)]
+        estimated_probs_lobbyist = env.lobbyists[
+            bandit.least_freq_hired_lobbyist
+        ].estimated_probas(bandit.coi)
+        ax9.set_title(
+            f"Lobbyist{bandit.least_freq_hired_lobbyist}coi{bandit.coi}mse{np.square(np.subtract(true_probs, estimated_probs_lobbyist)).mean()}"
+        )
+        ax9.plot(
+            range(env.k),
+            true_probs,
+            "k--",
+            markeredgewidth=2,
+            label="real prob",
+        )
+        ax9.plot(
+            range(env.k),
+            estimated_probs_lobbyist,
+            "x",
+            markeredgewidth=2,
+            label="estimated prob",
+        )
+        ax9.set_xlabel("Actions")
+        ax9.set_ylabel("(Estimated) Probabilities")
+        ax9.grid("k", ls="--", alpha=0.3)
+        ax9.legend()
+
+        # Sub.fig 10: Estimated Proba & Real Proba of Least Frequently Selected Lobbyist
+        coi = int(abs(bandit.coi - 1))
+        true_probs = [env.probas[i][coi] for i in range(env.k)]
+        estimated_probs_lobbyist = env.lobbyists[
+            bandit.least_freq_hired_lobbyist
+        ].estimated_probas(coi)
+
+        ax10.set_title(
+            f"Lobbyist{bandit.least_freq_hired_lobbyist}coi{coi}mse{np.square(np.subtract(true_probs, estimated_probs_lobbyist)).mean()}"
+        )
+        ax10.plot(
+            range(env.k),
+            true_probs,
+            "k--",
+            markeredgewidth=2,
+            label="real prob",
+        )
+        ax10.plot(
+            range(env.k),
+            estimated_probs_lobbyist,
+            "x",
+            markeredgewidth=2,
+            label="estimated prob",
+        )
+        ax10.set_xlabel("Actions")
+        ax10.set_ylabel("(Estimated) Probabilities")
+        ax10.grid("k", ls="--", alpha=0.3)
+        ax10.legend()
 
     # Save & Show plot
     plt.tight_layout()  # too add margins btw subplots
@@ -168,16 +290,19 @@ def experiment(B, K, C, N, L, cois, show=False, bandit_index_to_plot=0):
         N (int): number of time steps to try.
         show (bool): whether to show the plot or not.
     """
+    assert B == len(cois)
 
     env = CategoricalBanditEnv(B, N, K, C, L, cois)
     env.bandits = [
-        CategoricalBandit(env, coi=coi) for _, coi in zip(range(B), cois)
+        CategoricalBandit(env, id=id, coi=coi) for id, coi in zip(range(B), cois)
     ]  # since we need env to initialize bandits, we need to do this after env is initialized
+    for bandit in env.bandits:
+        print("bandit id enum", bandit.id)
     env.lobbyists = [CategoricalLobbyist(env) for _ in range(L)]  # same as above
 
     env.run()
 
-    plot_results(env.bandits[bandit_index_to_plot], env, show=show)
+    plot_results(bandit_index_to_plot, env, show=show)
 
 
 if __name__ == "__main__":
@@ -192,13 +317,25 @@ if __name__ == "__main__":
     #     for l in L:
     #         for n in N:
     #             experiment(B=b, K=K, C=C, L=l, N=n, show=False, bandit_index_to_plot=0)
+    # B = 64
+    # experiment(
+    #     B=B,
+    #     K=128,
+    #     C=16,
+    #     L=0,
+    #     N=200,
+    #     cois=[0] * int(B / 2) + [1] * int(B / 2),
+    #     show=True,
+    #     bandit_index_to_plot=B - 1,
+    # )
+
     experiment(
-        B=4,
-        K=256,
-        C=32,
-        L=1,
-        N=5000,
-        cois=[0, 0, 1, 1],
+        B=6,
+        K=64,
+        C=8,
+        L=2,
+        N=1000,
+        cois=[0, 0, 0, 1, 1, 1],
         show=True,
         bandit_index_to_plot=0,
     )

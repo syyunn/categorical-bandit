@@ -36,6 +36,9 @@ class CategoricalBanditEnv(object):
         self.lobbyists = None  # All lobbyists participating in this political casino is stored in this variable.
         self.counts_lobbyists = [0] * self.l
 
+        # Define environment level reward
+        self.sum_rewards_of_bandits = []
+
     def get_action(self, bandit: CategoricalBandit):
         """
         Run the `make_choice` method in given bandit instance from Categorical Bandit
@@ -93,6 +96,12 @@ class CategoricalBanditEnv(object):
             i, sampled
         )  # This process includes the update of internal belief of the lobbyists.
 
+    def compute_environment_level_reward(self, t):
+        """
+        Compute the environment level reward at time t.
+        """
+        self.sum_rewards_of_bandits.append(np.sum(self.rewards[:, t]))
+
     def generate_rewards(self, t: int):
         """
         1. Generate rewards for all bandits based on their action choices at time t.
@@ -101,32 +110,29 @@ class CategoricalBanditEnv(object):
         3. Update lobbyists' internal belief based on the rewards.
         """
 
-        que = queue.Queue()
+        threads = []
+        que = queue.Queue(
+            maxsize=len(self.bandits)
+        )  # limit concurrent threads to number of bandits
+
+        def _worker(bandit, action, queue):
+            result = self.generate_reward(bandit, action)
+            queue.put(result)
+
         for b in range(len(self.bandits)):  # type: ignore
-            thr = Thread(
-                target=lambda q, arg1, arg2: q.put(self.generate_reward(arg1, arg2)),
+            bandit = self.bandits[b]
+            thread = Thread(
+                target=_worker,
                 args=(
-                    que,
-                    self.bandits[b],
+                    bandit,
                     self.actions[b, :, t],
+                    que,
                 ),  # arg2 is (i, l) tuple
             )
-            thr.start()
+            threads.append(thread)
+            thread.start()
 
-        self.rewards[:, t] = np.array([que.get() for i in range(len(self.bandits))])
-
-    def update_lobbyists(self, t: int):
-        """
-        update belief parameters of all lobbyists based on their action choices at time t.
-        """
-
-        que = queue.Queue()
-        for i in range(len(self.lobbyists)):  # type: ignore
-            thr = Thread(
-                target=lambda q, arg1, arg2: q.put(self.generate_reward(arg1, arg2)),
-                args=(que, self.bandits[i], int(self.actions[i, :, t])),
-            )
-            thr.start()
+        [thread.join() for thread in threads]  # wait for all threads to finish
 
         self.rewards[:, t] = np.array([que.get() for i in range(len(self.bandits))])
 
@@ -134,3 +140,4 @@ class CategoricalBanditEnv(object):
         for t in range(self.n):
             self.get_actions(t)
             self.generate_rewards(t)
+            self.compute_environment_level_reward(t)

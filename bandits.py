@@ -15,7 +15,8 @@ class CategoricalBandit(Bandit):
     seed: random seed to generate underlying probabilities for all arms
     """
 
-    def __init__(self, env, coi=1):
+    def __init__(self, env, id, coi=1):
+        self.id = id  # bandit's id
 
         self.env = env
         self.seed = self.env.seed
@@ -120,3 +121,7 @@ class CategoricalBandit(Bandit):
     @property
     def most_freq_hired_lobbyist(self):
         return max(set(self.hires), key=self.hires.count)
+
+    @property
+    def least_freq_hired_lobbyist(self):
+        return min(set(self.hires), key=self.hires.count)
