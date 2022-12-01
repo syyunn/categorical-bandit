@@ -9,12 +9,13 @@ from lobbyists import CategoricalLobbyist
 
 
 class CategoricalBanditEnv(object):
-    def __init__(self, b, n, k, c, l, probas=None, seed=2139):
+    def __init__(self, b, n, k, c, l, cois, probas=None, seed=2139):
         self.b = b  # number of bandits
         self.n = n  # number of trials
         self.k = k  # number of arms
         self.c = c  # number of categories for each arm
         self.l = l  # number of lobbyists
+        self.cois = cois  # category of interest for each bandit in order
         self.seed = seed
         if probas is None:
             np.random.seed(
