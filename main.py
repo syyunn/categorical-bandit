@@ -1,4 +1,7 @@
-import matplotlib  # noqa
+import os
+import shutil
+from pathlib import Path
+
 from tqdm import tqdm
 
 # matplotlib.use("Agg")  # noqa
@@ -12,7 +15,7 @@ from lobbyists import CategoricalLobbyist
 from env import CategoricalBanditEnv
 
 
-def plot_results(bandit_index: int, env: CategoricalBanditEnv, show=False):
+def plot_results(bandit_index: int, env: CategoricalBanditEnv, save_dir, show=False):
     """
     Plot the results after playing in the env.
     """
@@ -124,12 +127,13 @@ def plot_results(bandit_index: int, env: CategoricalBanditEnv, show=False):
     ax3.set_ylabel("Proportion of actions taken")
     ax3.annotate(best_arm_found_text, xy=(0.5, 0.5), xycoords="axes fraction")
     ax3.grid("k", ls="--", alpha=0.3)
-    figname = "results_K{}_C{}_N{}_B_{}_L{}_cois{}.png".format(
+    figname = "results_K{}_C{}_N{}_B_{}_L{}_b_{}_cois{}.png".format(
         env.k,
         env.c,
         env.n,
         len(env.bandits),
         env.l,
+        bandit_index,
         "".join([str(i) for i in env.cois]),
     )
 
@@ -164,12 +168,13 @@ def plot_results(bandit_index: int, env: CategoricalBanditEnv, show=False):
 
     # Sub.fig 7: Estimated Proba & Real Proba of Most Frequently Selected Lobbyist w/ bandit's coi.
     if env.l > 0:
-        true_probs = [env.probas[i][bandit.coi] for i in range(env.k)]
-        estimated_probs_lobbyist = env.lobbyists[
-            bandit.most_freq_hired_lobbyist
-        ].estimated_probas(bandit.coi)
+        true_probs = np.array([env.probas[i][bandit.coi] for i in range(env.k)])
+        estimated_probs_lobbyist = np.array(
+            env.lobbyists[bandit.most_freq_hired_lobbyist].estimated_probas(bandit.coi)
+        )
         ax7.set_title(
-            f"Lobbyist{bandit.most_freq_hired_lobbyist}coi{bandit.coi}mse{np.square(np.subtract(true_probs, estimated_probs_lobbyist)).mean()}"
+            # f"Lobbyist{bandit.most_freq_hired_lobbyist}coi{bandit.coi}mse{np.square(np.subtract(true_probs, estimated_probs_lobbyist)).mean()}"
+            f"Lobbyist{bandit.most_freq_hired_lobbyist}coi{bandit.coi}l1{np.linalg.norm((true_probs - estimated_probs_lobbyist), ord=1)}"
         )
         ax7.plot(
             range(env.k),
@@ -192,12 +197,13 @@ def plot_results(bandit_index: int, env: CategoricalBanditEnv, show=False):
 
         # Sub.fig 8: Estimated Proba & Real Proba of Most Frequently Selected Lobbyist w/ opposite of bandit's coi.
         coi = int(abs(bandit.coi - 1))
-        true_probs = [env.probas[i][coi] for i in range(env.k)]
-        estimated_probs_lobbyist = env.lobbyists[
-            bandit.most_freq_hired_lobbyist
-        ].estimated_probas(coi)
+        true_probs = np.array([env.probas[i][coi] for i in range(env.k)])
+        estimated_probs_lobbyist = np.array(
+            env.lobbyists[bandit.most_freq_hired_lobbyist].estimated_probas(coi)
+        )
         ax8.set_title(
-            f"Lobbyist{bandit.most_freq_hired_lobbyist}coi{coi}mse{np.square(np.subtract(true_probs, estimated_probs_lobbyist)).mean()}"
+            # f"Lobbyist{bandit.most_freq_hired_lobbyist}coi{coi}mse{np.square(np.subtract(true_probs, estimated_probs_lobbyist)).mean()}"
+            f"Lobbyist{bandit.most_freq_hired_lobbyist}coi{coi}l1{np.linalg.norm((true_probs - estimated_probs_lobbyist), ord=1)}"
         )
         ax8.plot(
             range(env.k),
@@ -219,12 +225,13 @@ def plot_results(bandit_index: int, env: CategoricalBanditEnv, show=False):
         ax8.legend()
 
         # Sub.fig 9: Estimated Proba & Real Proba of Least Frequently Selected Lobbyist
-        true_probs = [env.probas[i][bandit.coi] for i in range(env.k)]
-        estimated_probs_lobbyist = env.lobbyists[
-            bandit.least_freq_hired_lobbyist
-        ].estimated_probas(bandit.coi)
+        true_probs = np.array([env.probas[i][bandit.coi] for i in range(env.k)])
+        estimated_probs_lobbyist = np.array(
+            env.lobbyists[bandit.least_freq_hired_lobbyist].estimated_probas(bandit.coi)
+        )
         ax9.set_title(
-            f"Lobbyist{bandit.least_freq_hired_lobbyist}coi{bandit.coi}mse{np.square(np.subtract(true_probs, estimated_probs_lobbyist)).mean()}"
+            # f"Lobbyist{bandit.least_freq_hired_lobbyist}coi{bandit.coi}mse{np.square(np.subtract(true_probs, estimated_probs_lobbyist)).mean()}"
+            f"Lobbyist{bandit.least_freq_hired_lobbyist}coi{bandit.coi}l1{np.linalg.norm((true_probs - estimated_probs_lobbyist), ord=1)}"
         )
         ax9.plot(
             range(env.k),
@@ -247,13 +254,14 @@ def plot_results(bandit_index: int, env: CategoricalBanditEnv, show=False):
 
         # Sub.fig 10: Estimated Proba & Real Proba of Least Frequently Selected Lobbyist
         coi = int(abs(bandit.coi - 1))
-        true_probs = [env.probas[i][coi] for i in range(env.k)]
-        estimated_probs_lobbyist = env.lobbyists[
-            bandit.least_freq_hired_lobbyist
-        ].estimated_probas(coi)
+        true_probs = np.array([env.probas[i][coi] for i in range(env.k)])
+        estimated_probs_lobbyist = np.array(
+            env.lobbyists[bandit.least_freq_hired_lobbyist].estimated_probas(coi)
+        )
 
         ax10.set_title(
-            f"Lobbyist{bandit.least_freq_hired_lobbyist}coi{coi}mse{np.square(np.subtract(true_probs, estimated_probs_lobbyist)).mean()}"
+            # f"Lobbyist{bandit.least_freq_hired_lobbyist}coi{coi}mse{np.square(np.subtract(true_probs, estimated_probs_lobbyist)).mean()}"
+            f"Lobbyist{bandit.least_freq_hired_lobbyist}coi{coi}l1{np.linalg.norm((true_probs - estimated_probs_lobbyist), ord=1)})"
         )
         ax10.plot(
             range(env.k),
@@ -276,7 +284,7 @@ def plot_results(bandit_index: int, env: CategoricalBanditEnv, show=False):
 
     # Save & Show plot
     plt.tight_layout()  # too add margins btw subplots
-    plt.savefig(figname)
+    plt.savefig(os.path.join(save_dir, figname))
     if show:
         plt.show()
 
@@ -308,7 +316,22 @@ def experiment(B, K, C, N, L, cois, show=False, bandit_index_to_plot=0):
 
     env.run()
 
-    plot_results(bandit_index_to_plot, env, show=show)
+    # plot_results(bandit_index_to_plot, env, show=show)
+    # plot_results(bandit_index_to_plot, env, show=show)
+    experiment_dir = "./experiment"
+    dir_name = "results_K{}_C{}_N{}_B_{}_L{}_cois{}".format(
+        env.k,
+        env.c,
+        env.n,
+        len(env.bandits),
+        env.l,
+        "".join([str(i) for i in env.cois]),
+    )
+    dir = os.path.join(experiment_dir, dir_name)
+    Path(dir).mkdir(parents=True, exist_ok=True)
+
+    for i in range(B):
+        plot_results(i, env, dir, show=False)
 
 
 if __name__ == "__main__":
@@ -336,12 +359,12 @@ if __name__ == "__main__":
     # )
 
     experiment(
-        B=6,
+        B=2,
         K=64,
         C=8,
         L=2,
-        N=1000,
-        cois=[0, 0, 0, 1, 1, 1],
+        N=200,
+        cois=[0, 1],
         show=True,
-        bandit_index_to_plot=0,
+        bandit_index_to_plot=1,
     )
