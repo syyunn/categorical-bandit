@@ -322,19 +322,20 @@ def experiment(B, K, C, N, L, cois, show=False, prior=True, bandit_index_to_plot
     # plot_results(bandit_index_to_plot, env, show=show)
     # plot_results(bandit_index_to_plot, env, show=show)
     experiment_dir = "./experiment"
-    dir_name = "results_K{}_C{}_N{}_B_{}_L{}_cois{}".format(
+    dir_name = "results_K{}_C{}_N{}_B_{}_L{}_prior{}_cois{}".format(
         env.k,
         env.c,
         env.n,
         len(env.bandits),
         env.l,
+        str(prior),
         "".join([str(i) for i in env.cois]),
     )
     dir = os.path.join(experiment_dir, dir_name)
     Path(dir).mkdir(parents=True, exist_ok=True)
 
     for i in range(B):
-        plot_results(i, env, dir, show=False)
+        plot_results(i, env, dir, show=show)
 
 
 if __name__ == "__main__":
@@ -369,6 +370,6 @@ if __name__ == "__main__":
         N=200,
         cois=[0] * int(B / 2) + [1] * int(B / 2),
         show=True,
-        prior=False,
+        prior=True,
         bandit_index_to_plot=1,
     )
