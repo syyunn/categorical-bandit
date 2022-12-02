@@ -289,7 +289,9 @@ def plot_results(bandit_index: int, env: CategoricalBanditEnv, save_dir, show=Fa
         plt.show()
 
 
-def experiment(B, K, C, N, L, cois, show=False, prior=True, bandit_index_to_plot=0):
+def experiment(
+    B, K, C, N, L, cois, show=False, prior=True, prior_temp=10, bandit_index_to_plot=0
+):
     """
     Run a small experiment on solving a Categorical bandit with K slot machines,
     each with a randomly initialized reward probability.
@@ -314,7 +316,8 @@ def experiment(B, K, C, N, L, cois, show=False, prior=True, bandit_index_to_plot
         CategoricalBandit(env, id=id, coi=coi) for id, coi in zip(range(B), cois)
     ]  # since we need env to initialize bandits, we need to do this after env is initialized
     env.lobbyists = [
-        CategoricalLobbyist(env=env, coe=coe) for _, coe in zip(range(L), uniq_cois)
+        CategoricalLobbyist(env=env, coe=coe, prior_temp=prior_temp)
+        for _, coe in zip(range(L), uniq_cois)
     ]  # same as above
 
     env.run()
@@ -322,13 +325,14 @@ def experiment(B, K, C, N, L, cois, show=False, prior=True, bandit_index_to_plot
     # plot_results(bandit_index_to_plot, env, show=show)
     # plot_results(bandit_index_to_plot, env, show=show)
     experiment_dir = "./experiment"
-    dir_name = "results_K{}_C{}_N{}_B_{}_L{}_prior{}_cois{}".format(
+    dir_name = "results_K{}_C{}_N{}_B_{}_L{}_prior{}_priorTemp_{}_cois{}".format(
         env.k,
         env.c,
         env.n,
         len(env.bandits),
         env.l,
         str(prior),
+        prior_temp,
         "".join([str(i) for i in env.cois]),
     )
     dir = os.path.join(experiment_dir, dir_name)
@@ -369,7 +373,8 @@ if __name__ == "__main__":
         L=2,
         N=200,
         cois=[0] * int(B / 2) + [1] * int(B / 2),
-        show=True,
+        show=False,
         prior=True,
+        prior_temp=5,  # default is 10
         bandit_index_to_plot=1,
     )

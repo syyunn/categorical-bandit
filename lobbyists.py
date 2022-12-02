@@ -1,4 +1,5 @@
 import numpy as np
+import sys
 
 
 class Lobbyist(object):
@@ -15,7 +16,7 @@ class CategoricalLobbyist(Lobbyist):
     seed: random seed to generate underlying probabilities for all arms
     """
 
-    def __init__(self, env, coe):
+    def __init__(self, env, coe, prior_temp):
         print("coe", coe)
         """
         coe: category of expertise
@@ -32,7 +33,7 @@ class CategoricalLobbyist(Lobbyist):
         if coe != -1:
             topicwise_true_probas = env.probas[:, coe]
             topicwise_expertise_bias = [
-                int(round(e, 1) * 10 + 1)
+                round(e, 1) * prior_temp + sys.float_info.epsilon
                 for e in topicwise_true_probas  # +1 to prevent 0
             ]  # it represents incomplete prior knowledge of the agent.
 
