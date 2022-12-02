@@ -1,0 +1,40 @@
+Rationale of the paper: 
+	Birth of the lobbyists: 
+		In terms of the 
+			
+- We select this as our toy-approach: to simulate the birth of the lobbyists in the MAMA - multi agents, multi-armed settings.
+- Market structure that gave birth of the lobbyists 
+    - Key underlying intuition:
+        - “After a dense interaction with congressmen and women”, they become lobbyists
+        - We will show this with simulations.
+        - With some proper market structure where the agents can trade their revealed observations, they can trade their so-far knowledge with others. The algorithm how to design this trade process with be explained in MarketMakings in detail:
+- Market makings in details:
+    - We believe lobbyists gets to emerge w/ their superior quality of information over a few of congressman they’ve made a dense connection;
+        - IOW, lobbyists may be the ones that didn’t explore much but exploited a lot a small set of congressman (maybe w/ a specific issue area they are specialized in) 
+        - So in lobbying market, lobbyists acquire information on behalf of their clients.
+        - The key is how to “infer” a market structure that will induce this result from the vanilla MAMA.
+            - There’re a few conditions we can come up with:
+                - First, lobbying is a delegation. Therefore, agents must be able to delegate their choice to the other agents - IOW, delegation will give more chances to search more w/ congressman. 
+                    - Then to design this “incentive” of delegation is what we need to do in this design process of market making.
+                    - We can easily implement the agents to trade and shove-in other agent’s belief into their estimates (knowledge)
+                    - After training of normal MAB process, we can let agents to buy some belief from expert.
+                            - Among k authorities,
+                                - There must exist some agents that found the best at issue area k.
+                                - Letting their knowledge to be introduced to the other agents who has interest in issue area k. (This is where I work like a god - but in reality, this is done by the “reputation”)
+                                - Then make a market price p_k by softmax in p.5 of the MAMA_predmkt
+                                - Then just let the other agents buy this p_k 
+                                - With this incomes, let agents who sold them to be able to explore more, as much as they sold, letting them to pull more levers of congressman and update. 
+                                - We believe this will increase the entire welfare larger and larger as the congress size gets bigger.
+                                - So our main strategy of proof of birth of lobbyists is to compare total welfare between existence and non-existence of this market structure.
+                                - If the latter one finds the well-fare increase of everyone - this will justify the theory of reverse information with simulation.
+                                - [Key words]
+                                    - (RIT believes) Separation of work btw exploration and exploitation is the key feature of lobbying industry
+                                        - Delegation of exploration under the name of issue-level specialty
+Future directions:
+	1. Dynamic bandits - varying authorities = varying categorical distributions
+    2. Underlying rationale on this simulative approach
+	- back and forth between the model and real-world
+		- where the back and forth (feed-back process) is communicated by parameters
+		- For example, K can be modeled by issue-level that is found in the lobbying reports, TRD, TAX, ENV, EDU etc.
+		- Also, for the preferences of agents, it can be modeled by the NAICS code, e.g., if the company is making jet planes, there issue preference will order the AER (Aerospace) over other issues.
+	2-1. Incorporate more empirical data into hyper-parameters

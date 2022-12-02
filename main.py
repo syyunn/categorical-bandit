@@ -289,7 +289,7 @@ def plot_results(bandit_index: int, env: CategoricalBanditEnv, save_dir, show=Fa
         plt.show()
 
 
-def experiment(B, K, C, N, L, cois, show=False, bandit_index_to_plot=0):
+def experiment(B, K, C, N, L, cois, show=False, prior=True, bandit_index_to_plot=0):
     """
     Run a small experiment on solving a Categorical bandit with K slot machines,
     each with a randomly initialized reward probability.
@@ -303,8 +303,11 @@ def experiment(B, K, C, N, L, cois, show=False, bandit_index_to_plot=0):
     """
     assert B == len(cois)
 
-    uniq_cois = np.unique(cois)
-    print("uniq_cois", uniq_cois)
+    if prior == True:
+        uniq_cois = np.unique(cois)
+        print("uniq_cois", uniq_cois)
+    else:
+        uniq_cois = [-1] * L
 
     env = CategoricalBanditEnv(B, N, K, C, L, cois)
     env.bandits = [
@@ -357,14 +360,15 @@ if __name__ == "__main__":
     #     show=True,
     #     bandit_index_to_plot=B - 1,
     # )
-
+    B = 64
     experiment(
-        B=2,
-        K=64,
-        C=8,
+        B=B,
+        K=512,
+        C=2,
         L=2,
         N=200,
-        cois=[0, 1],
+        cois=[0] * int(B / 2) + [1] * int(B / 2),
         show=True,
+        prior=False,
         bandit_index_to_plot=1,
     )
