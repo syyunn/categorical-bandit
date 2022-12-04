@@ -10,6 +10,10 @@
 \beamertemplatenavigationsymbolsempty
 \setbeamertemplate{blocks}[default]
 \setbeamercolor{item projected}{bg=MITGray}
+
+\usepackage{bbm}
+\usepackage{amsmath} % for the equation* environment
+
 % \AtBeginSection[]
 % {
 % 	\begin{frame}
@@ -26,7 +30,7 @@
 % }
 
 \begin{document}
-	\title[]{Finding the Sufficient Condition for the Existence of Lobbying Industry}
+	\title[]{Finding the Sufficient Condition for the Formulation of Lobbying Industry}
 	\subtitle{Simulative Experiment Using Multi-Agent Multi-Armed Bandit Model}
 	\author[Suyeol Yun]{Suyeol Yun}
 	\institute[MIT]{Massachusetts Institute of Technology}
@@ -108,12 +112,16 @@
 		\end{itemize}
 	\end{frame}
 
-	\begin{frame}{How to Solve MAB problem?}
+	\begin{frame}{Formulation of MAB Problem of Interest Groups} 
 		\begin{itemize}
-			\item Which algorithm should we use to solve the MAB problem?
+			\item There exists $C \in \mathbb{N}$ number of categories of interest.
+			\item Assume there are $j \in J$ number of interest groups with $\phi(j): J \rightarrow C$ which represents unique category of interest for each interest group.
+			\item There are $K$ number of legislators with $P_k$ reward distribution.
+			\item $P_k$ is modeled as a \textbf{Categorical distribution} with $C$ number of categories. $P_k$ is parameterized by $\mathbf{p_k} = [p_k^{(1)}, p_k^{(2)}, \hdots, p_k^{(C)}]$ where $p_k^{(i)} \in [0,1], \sum{p_k^{(i)}}=1$ with the support of $x \in \{1,2,\hdots,C\}$.  
+			\item Whenever an interest group $j$ interact with a legislator $k$, they receive $c \in \{1, 2, \hdots, C\}$ sampled from $P_k$.
+			\item  Each interst group $j$ gets reward of $r_j^{kn} = \mathbbm{1}(x_j^{kn} = \phi(j))$ when $j$ choose legislator $k$ at time $n$ and sampled $x_j^{kn}$ from $P_k$. 
 			\begin{itemize}
-				\item There are many algorithms to solve the MAB problem.
-				\item One of the most popular algorithms is \textbf{Thompson Sampling} algorithm.
+				\item In other words, interest group $j$ with $\phi(j) = c$ gets reward of $1$ when they sample $c$ from interaction with legislator $k$.
 			\end{itemize}
 		\end{itemize}
 	\end{frame}
