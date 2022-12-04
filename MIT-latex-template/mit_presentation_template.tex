@@ -1,0 +1,163 @@
+\documentclass{beamer}
+%Information to be included in the title page:
+\usetheme{Boadilla}
+\definecolor{MITRed}{RGB}{163,31,52}
+\definecolor{MITGray}{RGB}{138,139,140}
+\usecolortheme[named=MITRed]{structure}
+
+\setbeamertemplate{navigationsymbols}{}
+\setbeamertemplate{headline}{\hfill\includegraphics[width=1.5cm]{./MIT-logo-red-gray.png}\hspace{0.4cm}\vspace{-1.2cm}}
+\beamertemplatenavigationsymbolsempty
+\setbeamertemplate{blocks}[default]
+\setbeamercolor{item projected}{bg=MITGray}
+% \AtBeginSection[]
+% {
+% 	\begin{frame}
+% 		\frametitle{Outline}
+% 		\tableofcontents[currentsection]
+% 	\end{frame}
+% }
+% \AtBeginSubsection[]
+% {
+% 	\begin{frame}
+% 		\frametitle{Outline}
+% 		\tableofcontents[currentsection,currentsubsection]
+% 	\end{frame}
+% }
+
+\begin{document}
+	\title[]{Finding the Sufficient Condition for the Existence of Lobbying Industry}
+	\subtitle{Simulative Experiment Using Multi-Agent Multi-Armed Bandit Model}
+	\author[Suyeol Yun]{Suyeol Yun}
+	\institute[MIT]{Massachusetts Institute of Technology}
+	\date{Dec 8, 2022}
+	\frame{\titlepage}
+	\section{Background}
+
+	\begin{frame}{Motivations}
+		\begin{itemize}
+			\item What is lobbying?
+			\begin{itemize}
+				\item What do lobbyists do?
+				\item Buying vote? 
+				\item Infleunce policy or legislators?
+			\end{itemize}
+		\end{itemize}
+		\begin{itemize}
+			\item Answer this question by
+			\begin{itemize}
+				\item Finding the sufficient condition that makes lobbying industry. 
+				\item Search for the cause that makes the clients to hire lobbyists.
+				\item By simulation experiment.				
+			\end{itemize}
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{What is lobbying?}
+		\begin{itemize}
+			\item Yun and Preston (2022) define lobbying as \textbf{delegated information acquisition} process.
+			\begin{itemize}
+				\item Interest groups in lobbying industry hires lobbyists to acquire information about the policy and legislators.
+				\item Lobbyists are the agents that acquire information about the policy and legislators on behalf of their clients.		
+			\end{itemize}
+			\item What kind of information are they acquiring?
+			\begin{itemize}
+				\item Information that can be used to maximize the political economic goal of the interest groups.
+			\end{itemize}
+		\end{itemize}
+		% \centering	\includegraphics[scale=0.7]{./images/balancing.png}
+	\end{frame}
+
+
+	\begin{frame}{How to Acquire Information?}
+		\begin{itemize}{
+			\item By \textbf{interaction} with legislators.
+				\begin{itemize}
+					\item Campaign contribution
+					\item Meeting with congressional staffers, etc.
+				\end{itemize}
+			\item How to model this interaction?
+				 \begin{itemize}
+					\item By using Multi-Armed Bandit (MAB) problem.
+				\end{itemize}}
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{What is Multi-Armed Bandit\footnote{Bandit is pejorative name for slot machine because it empties players' pocket} (MAB) problem?}
+		\begin{itemize}
+			\item Formulate the exploration-exploitation dilemma problem.
+			\begin{itemize}
+				\item Formulate the \textbf{exploration-exploitation} dilemma problem.
+				\item Assume that there are $K$ possible choices (called ``arms'') for the agent to make. 
+				\item Each arm has a reward probability $P_k$ that is unknown to the agent.
+				\item Whenever the agent chooses an arm, it receives a reward $r_k$ with probability $P_k$.
+				\item The agent choose one of the arms for $N$ times and tries to maximize the total reward.
+				\item As the agent sequentially choose the arms, the agent builds his own estimate of the reward probability $P_k$ of each arm.
+				\item In this scenario, the agent keep facing the \textbf{exploration-exploitation} dilemma whether to choose the best rewarding arm based on his current estimates (so called ``exploitation'') or to try another arm to improve the current estimates because the current estimates can be biased (so called ``exploration'').
+			\end{itemize}
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{MAB Problem of Interest Groups}
+		\begin{itemize}
+			\item Interest groups face the Multi-Armed Bandit problem when they participate information acquisition process in legislative space.
+			\item There are $K$ number of legislators that interest groups can interact with. 
+			\item Each legislator has a reward probability $P_k$ that is unknown to interest groups.
+			\item Interest groups has a limited budget and time constraint to interact with legislators. (Model it as $N$ times of interaction)
+			\item How to balance between exploration and exploitation to find the best fit legislator within this limited chances of interactions? (MAB problem)
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{How to Solve MAB problem?}
+		\begin{itemize}
+			\item Which algorithm should we use to solve the MAB problem?
+			\begin{itemize}
+				\item There are many algorithms to solve the MAB problem.
+				\item One of the most popular algorithms is \textbf{Thompson Sampling} algorithm.
+			\end{itemize}
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Design of simulative experiment}
+		\begin{itemize}
+			\item Pattern of specialization
+			\item In which condition does the client hire the lobbyist?
+			\item 
+		\end{itemize}
+		% \centering	\includegraphics[scale=0.7]{./images/balancing.png}
+	\end{frame}
+	
+	
+
+	\begin{frame}{Limitation}
+		\begin{itemize}
+			\item Different from real world
+			\item 
+		\end{itemize}
+
+		% \begin{block}{}
+		% 	{\large ``In an election campaign with many competing candidates, a candidate can try to appeal broadly to all voters equally or concentrate more narrowly on winning the support of minorities or special interest groups...
+		% 		\vskip5mm
+		% 		\textit{Which strategy is better for winning an election?}'' (pg. 856)}
+		% \end{block}
+	\end{frame}
+
+	\begin{frame}{Benifit of this theory}
+		\begin{itemize}
+			\item Encompasses influence theory as well because to influence, you first need to know influence whom.
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Implications}
+		\begin{itemize}
+			\item provides criticism over Expertise vs. Connections (Is It Whom You Know or What You Know?
+			An Empirical Assessment of the Lobbying Process)
+		\end{itemize}
+	\end{frame}
+
+
+
+\end{document}
+
