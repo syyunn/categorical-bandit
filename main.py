@@ -42,12 +42,12 @@ def plot_results(bandit_index: int, env: CategoricalBanditEnv, save_dir, show=Fa
     ax11 = fig.add_subplot(4, 3, 11)
 
     fig.suptitle(
-        f"Bandit{bandit_index}, B={env.b} w/ coi{bandit.coi}, L={env.l}, N={env.n}, C={env.c}",
+        f"Agent {bandit_index}, #Agent={env.b} w/ coi{bandit.coi}, #Lobbyist={env.l}, N={env.n}, C={env.c}",
         fontsize=16,
     )
 
     # Sub.fig 1: Regrets in time.
-    ax1.set_title(f"Bandit{bandit_index}'s regret in time, coi={bandit.coi}")
+    ax1.set_title(f"Agent {bandit_index}'s regret in time, coi={bandit.coi}")
     ax1.plot(range(len(bandit.regrets)), bandit.regrets, label="regret")
     ax1.plot(
         range(len(bandit.regrets)),
@@ -78,7 +78,7 @@ def plot_results(bandit_index: int, env: CategoricalBanditEnv, save_dir, show=Fa
     pass
 
     ax4.set_xlabel("Time step")
-    ax4.set_ylabel("cum_regret / lb of regret")
+    ax4.set_ylabel("cum_regret / ub of regret")
     # ax1.legend(loc=9, bbox_to_anchor=(1.82, -0.25), ncol=5)
     ax4.grid("k", ls="--", alpha=0.3)
     ax4.set_yticks(np.arange(0, 1.1, 0.1))
@@ -106,7 +106,7 @@ def plot_results(bandit_index: int, env: CategoricalBanditEnv, save_dir, show=Fa
     ax2.legend()
 
     # Sub.fig. 3: Action counts
-    ax3.set_title("Proprotion of actions taken by bandit")
+    ax3.set_title("Proprotion of actions taken by agent")
     print("Best arm is: ", bandit.best_arm)
     print("Most frequently used arm: {}".format(np.argmax(bandit.counts)))
     if np.argmax(bandit.counts) == bandit.best_arm:
@@ -338,9 +338,13 @@ def experiment(
     dir = os.path.join(experiment_dir, dir_name)
     Path(dir).mkdir(parents=True, exist_ok=True)
 
+    cum_regrets_of_agents = []
     for i in range(B):
         plot_results(i, env, dir, show=show)
 
+        cum_regrets_of_agents.append([((env.bandits[i].regrets[t]) / ((env.bandits[i].best_proba - env.bandits[i].worst_proba) * t))
+        for t in range(len(env.bandits[i].regrets))][-1])
+    return np.mean(cum_regrets_of_agents)
 
 if __name__ == "__main__":
     # experiment(B=2, K=256, C=8, L=1, N=5000, show=True)
@@ -365,16 +369,74 @@ if __name__ == "__main__":
     #     show=True,
     #     bandit_index_to_plot=B - 1,
     # )
-    B = 64
+    # B = 64
+    # experiment(
+    #     B=B,
+    #     K=128,
+    #     C=8,
+    #     L=2,
+    #     N=200,
+    #     cois=[0] * int(B / 2) + [1] * int(B / 2),
+    #     show=False,
+    #     prior=True,
+    #     prior_temp=5,  # default is 10
+    #     bandit_index_to_plot=1,
+    # )
+    # real
+    # B = 1
+    # experiment(
+    #     B=1,
+    #     K=112,
+    #     C=26,
+    #     L=0,
+    #     N=2000,
+    #     cois=[0],
+    #     show=True,
+    #     prior=True,
+    #     prior_temp=0,  # default is 10
+    #     bandit_index_to_plot=0,
+    # )
+    # experiment(
+    #     B=1,
+    #     K=112,
+    #     C=26,
+    #     L=0,
+    #     N=2000,
+    #     cois=[0],
+    #     show=True,
+    #     prior=False,
+    #     prior_temp=0,  # default is 10
+    #     bandit_index_to_plot=0,
+    # )
+    # res = []
+    # for temp in range(0, 20, 1):
+    #     print("temp", temp)
+    #     B = 5
+    #     mean_norm_cum = experiment(
+    #         B=B,
+    #         K=112,
+    #         C=26,
+    #         L=1,
+    #         N=2000,
+    #         cois=[0,0,0,0,0],
+    #         show=False,
+    #         prior=True,
+    #         prior_temp=temp,  # default is 10
+    #         bandit_index_to_plot=0,
+    #     )
+    #     res.append(mean_norm_cum)
+    #     print(temp, mean_norm_cum)
+    # print(res)
+    B=5
     experiment(
-        B=B,
-        K=512,
-        C=2,
-        L=2,
-        N=200,
-        cois=[0] * int(B / 2) + [1] * int(B / 2),
-        show=False,
-        prior=True,
-        prior_temp=5,  # default is 10
-        bandit_index_to_plot=1,
-    )
+            B=B,
+            K=112,
+            C=26,
+            L=1,
+            N=2000,
+            cois=[0,0,0,0,0],
+            show=True,
+            prior=False,
+            prior_temp=0,  # default is 10
+            bandit_index_to_plot=0,
+        )

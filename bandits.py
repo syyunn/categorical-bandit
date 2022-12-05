@@ -120,6 +120,7 @@ class CategoricalBandit(Bandit):
 
     @property
     def most_freq_hired_lobbyist(self):
+        # print(set(self.hires))
         return max(set(self.hires), key=self.hires.count)
 
     @property
