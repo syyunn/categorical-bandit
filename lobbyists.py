@@ -23,6 +23,7 @@ class CategoricalLobbyist(Lobbyist):
         env: CategoricalEnv instance
         """
         self.env = env
+        self.prior_temp = prior_temp
         self.belief = np.ones(  # create concentration parameters for Dirichlet distribution for each arm.
             [
                 self.env.k,
@@ -32,8 +33,12 @@ class CategoricalLobbyist(Lobbyist):
 
         if coe != -1:
             topicwise_true_probas = env.probas[:, coe]
+            # topicwise_expertise_bias = [
+            #     round(e, 1) * prior_temp + sys.float_info.epsilon
+            #     for e in topicwise_true_probas  # +1 to prevent 0
+            # ]  # it represents incomplete prior knowledge of the agent.
             topicwise_expertise_bias = [
-                round(e, 1) * prior_temp + sys.float_info.epsilon
+                e * env.c * prior_temp + sys.float_info.epsilon
                 for e in topicwise_true_probas  # +1 to prevent 0
             ]  # it represents incomplete prior knowledge of the agent.
 

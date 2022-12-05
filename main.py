@@ -1,6 +1,7 @@
 import os
 import shutil
 from pathlib import Path
+from collections import Counter
 
 from tqdm import tqdm
 
@@ -40,6 +41,7 @@ def plot_results(bandit_index: int, env: CategoricalBanditEnv, save_dir, show=Fa
     ax10 = fig.add_subplot(4, 3, 10)
 
     ax11 = fig.add_subplot(4, 3, 11)
+    ax12 = fig.add_subplot(4, 3, 12)
 
     fig.suptitle(
         f"Agent {bandit_index}, #Agent={env.b} w/ coi{bandit.coi}, #Lobbyist={env.l}, N={env.n}, C={env.c}",
@@ -282,6 +284,10 @@ def plot_results(bandit_index: int, env: CategoricalBanditEnv, save_dir, show=Fa
         ax10.grid("k", ls="--", alpha=0.3)
         ax10.legend()
 
+        ax12.set_title("Ratio of Hiring Lobbyist")
+        counts = Counter(bandit.hires)
+        ax12.scatter([0], (env.n - counts[-1])/env.n)
+
     # Save & Show plot
     plt.tight_layout()  # too add margins btw subplots
     plt.savefig(os.path.join(save_dir, figname))
@@ -339,12 +345,15 @@ def experiment(
     Path(dir).mkdir(parents=True, exist_ok=True)
 
     cum_regrets_of_agents = []
+    lb_ratio = []
     for i in range(B):
         plot_results(i, env, dir, show=show)
 
         cum_regrets_of_agents.append([((env.bandits[i].regrets[t]) / ((env.bandits[i].best_proba - env.bandits[i].worst_proba) * t))
         for t in range(len(env.bandits[i].regrets))][-1])
-    return np.mean(cum_regrets_of_agents)
+        lb_ratio.append((env.n - Counter(env.bandits[i].hires)[-1]) /env.n)
+
+    return np.mean(cum_regrets_of_agents), np.mean(lb_ratio)
 
 if __name__ == "__main__":
     # experiment(B=2, K=256, C=8, L=1, N=5000, show=True)
@@ -427,16 +436,22 @@ if __name__ == "__main__":
     #     res.append(mean_norm_cum)
     #     print(temp, mean_norm_cum)
     # print(res)
-    B=5
-    experiment(
-            B=B,
-            K=112,
-            C=26,
-            L=1,
-            N=2000,
-            cois=[0,0,0,0,0],
-            show=True,
-            prior=False,
-            prior_temp=0,  # default is 10
-            bandit_index_to_plot=0,
-        )
+    print("test")
+    res = []
+    for ptmp in np.arange(0, 1, 0.1):
+        B=5
+        _, lb_ratio = experiment(
+                B=B,
+                K=112,
+                C=26,
+                L=1,
+                N=2000,
+                cois=[0,0,0,0,0],
+                show=False,
+                prior=False,
+                prior_temp=ptmp,  # default is 10
+                bandit_index_to_plot=0,
+            )
+        res.append(lb_ratio)
+        print(ptmp, lb_ratio)
+    print(res)
