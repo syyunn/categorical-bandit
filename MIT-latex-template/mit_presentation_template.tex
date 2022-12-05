@@ -136,7 +136,7 @@
 				\item Keep updating this prior belief over $\mathbf{p_k}$ using the sampled observations from the interaction with legislators.
 				\item The Dirichlet distribution is the conjugate prior of the categorical distribution.
 				\begin{itemize}
-					\item $f(\mathbf{p_k} | \mathcal{O}) \propto \mathcal{L(\mathcal{O | \mathbf{p_k}})} f(\mathbf{p_k})$ where $\mathbf{p_k} \sim \operatorname{Dirichlet(\mathbf{D})}$ with $\mathbf{D} = [d_1, d_2, \hdots, d_C] \in \mathbb{R}^C $ and $\mathcal{O}$ represents sampled observations from the interaction with legislators, i.e. $\mathcal{O} = [x_{j, t=1}^{k_1}, x_{j, t=2}^{k_2}, x_{j, t=3}^{k_3}, \hdots]$ where $x_{j, t}^{kt}$ is an observation sampled from the interaction with the legislator $k$ at time $t$. 
+					\item $f(\mathbf{p_k} | \mathcal{O}) \propto \mathcal{L(\mathcal{O | \mathbf{p_k}})} f(\mathbf{p_k})$ where $\mathbf{p_k} \sim \operatorname{Dirichlet(\mathbf{D_k})}$ with $\mathbf{D_k} = [d_k^{(1)}, d_k^{(2)}, \hdots, d_k^{(C)}] \in \mathbb{R}^C $ and $\mathcal{O}$ represents sampled observations from the interaction with legislators, i.e. $\mathcal{O} = [x_{j, t=1}^{k_1}, x_{j, t=2}^{k_2}, x_{j, t=3}^{k_3}, \hdots]$ where $x_{j, t}^{kt}$ is an observation sampled from the interaction with the legislator $k$ at time $t$. 
 					\item This is a $C$ dimensional generalization of the Beta conjugate with Bernoulli likelihood.
 					\item As we did in Beta conjugate, we can update the prior belief by simply adding $1$ to $d_c$ when observe $x_j = c \in C$ at each step $t \in T$.
 					\item In this way of Bayesian update, interest groups can systematically update their prior belief over $\mathbf{p_k}$ based on obsevations from interactions with legislators.
@@ -147,29 +147,109 @@
 		\end{itemize}
 	\end{frame}
 
-
-	\begin{frame}{Design of simulative experiment}
+	\begin{frame}{Validate Thompson Sampling Algorithm}
 		\begin{itemize}
-			\item Pattern of specialization
-			\item In which condition does the client hire the lobbyist?
-			\item 
+			\item Let's check whether the Thompson Sampling algorithm can actually find the best rewarding legislator within the limited number of interactions.
+			% \item 32 legislators with 4 categories of interest. T=2000. (Total $32 \times 4 = 128$ number of parameters to search)
+			\item We use the metric called \textbf{Regret} to measure the performance of the algorithm for MAB problem. 
+			\item $\operatorname{Regret}_t^j \triangleq p_c^*-p_{a_t}^j$ where $c = \phi(j)$ and $p_c^* = \operatorname{argmax}_{k \in K}\{p_1^{(c)}, p_2^{(c)}, \hdots, p_K^{(c)}\} $ and $p_{a_t}^j$ is the $c$th parameter of $P_k$ when the agent choose the legislator $k$ at time $t$. $a_t$ represent the action (choice of legislator) taken by the agent at time $t$.
+			\item \item Regret represents how much the agent could have been done better in terms of the reward if it had chosen the best action.
+			\item Similarly, $\operatorname{Cumulative \text{ } Regret}_t^c \triangleq \sum_t^T p_c^*-p_{a_t}^j$.
+			\item Agent tries to minimize the cumulative regret for the entire time horizon $T$.
 		\end{itemize}
-		% \centering	\includegraphics[scale=0.7]{./images/balancing.png}
 	\end{frame}
 	
-	
-
-	\begin{frame}{Limitation}
+	\begin{frame}{Simulation Results I: Small Search Space}
 		\begin{itemize}
-			\item Different from real world
-			\item 
+			\item  $|K|=32, |C|=4, |T|=2000$.
 		\end{itemize}
+		\centering	\includegraphics[scale=0.7]{./images/small_search_space/norm_cum_regret.png}
+		\begin{itemize}
+			\item  Total $32 \times 4 = 128$ number of parameters to explore - which is relatively small compared to real world.
+		\end{itemize}
+	\end{frame}
 
-		% \begin{block}{}
-		% 	{\large ``In an election campaign with many competing candidates, a candidate can try to appeal broadly to all voters equally or concentrate more narrowly on winning the support of minorities or special interest groups...
-		% 		\vskip5mm
-		% 		\textit{Which strategy is better for winning an election?}'' (pg. 856)}
-		% \end{block}
+	\begin{frame}{Simulation Results I: Small Search Space}
+		\centering \includegraphics[scale=0.7]{./images/small_search_space/estimated_proba.png}
+		\begin{itemize}
+			\item Each x-tick corresponds to $p_{k=1}^c, p_{k=2}^c, p_{k=3}^c, \hdots p_{k=32}^c$ where the agent has a category of interest $c$
+			\item $K=11$ is the best rewarding legislator for category $c$.
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{Simulation Results I: Small Search Space}
+		\centering \includegraphics[scale=0.7]{./images/small_search_space/propo_action_taken.png}
+		\begin{itemize}
+			\item The agent successfully finds the best rewarding legislator $K=11$ and exploited it.
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{Simulation Results II: Large Search Space}
+		\begin{itemize}
+			\item  $|K|=112 \footnote{Average number of legislators to whome top $10$ lobbying firms campaign contribute in 2020.}, |C|=26\footnote{Average number of issue codes appearing in each lobbying report in 2020.}, |T|=2000$.
+		\end{itemize}
+		\centering	\includegraphics[scale=0.5]{./images/large_search_space/cum_regret.png}
+		\begin{itemize}
+			\item  Total $112 \times 26 = 2912$ number of parameters to explore - which is relatively large compared to the previous case. Hard to explore all the parameters with the same time horizon of $T=2000$.
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{Simulation Results II: Large Search Space}
+		\centering \includegraphics[scale=0.7]{./images/large_search_space/estimated_proba.png}
+		\begin{itemize}
+			\item Each x-tick corresponds to $p_{k=1}^c, p_{k=2}^c, p_{k=3}^c, \hdots p_{k=112}^c$ where the agent has a category of interest $c$
+			\item $K=68$ is the best rewarding legislator for category $c$.
+			\item Most of the legislators are not explored properly.
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{Simulation Results II: Large Search Space}
+		\centering \includegraphics[scale=0.7]{./images/large_search_space/propo_action_taken.png}
+		\begin{itemize}
+			\item The agent failed to find the best rewarding legislator $K=68$ and exploited the worse rewarding legislator $K=90$ mostly.
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{How to Explore a Large Search Space?}
+		\begin{itemize}
+			\item From the previous two simulations, we've seen that interest groups fail to find the best rewarding legislator in a large search space.
+			\item If we accept the setting that the MAB with large search space plausibly model the exploration-exploitation dillema that the real world interest groups face, how do they solve this large search space problem?
+			\item \textbf{Conejcture: }
+				\begin{itemize}
+				\item Interest groups use lobbyists to successfully explore the large search space. 
+				\item A lobbyist has multiple interest groups as their clients so they can explore more legislators than a single interest group since the resources are concentrated from multiple clients.
+				% \item For this concentration to happen, the lobbyists need to have better understanding of the legislators' reward distribution for the common categories of interest of their clients.
+				\end{itemize}
+	\end{itemize}
+	\end{frame}
+
+	\begin{frame}{How to Introduce Lobbyist into MAB formulation?}
+		\begin{itemize}
+			\item Introduce new $l \in L$ arms which represent lobbyists.
+			\item Each lobbyist arm $l$ has a set of parameters of Dirichlet distribution for each legislator $\{D_k^l | k \in 1, 2, \hdots, K \}$ as same as any other interset groups.
+			\item Allow any interest groups to choose any lobbyists at each step. 
+			\item If an interset group choose to use a lobbyist, the interest group determine with which legislator to interact based on the current posterior distributions of the lobbyist.
+			\item After getting observation from the chosen legislator, the interest group update the parameter of the lobbyist's parameter of Dirichlet distribution, not its own.
+				\begin{itemize}
+					\item \textbf{Pros:} Interest group can take advantage of the lobbyist's knowledge of the legislators' reward distribution. This distribution could be less biased because many interest groups can collectively update the lobbyist's parameters.
+					\item \textbf{Cons:} Interest group can not update its own distribution. This means that the interest group can not learn from its own experience.
+				\end{itemize}  
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{Knowledge Finding Strategy in this Project}
+		\begin{itemize}
+			\item 1. Model a simulative enviroment by mimicking the real world.
+			\item 2. Assume that the simulative enviroment closely approximate the real world enviroment and statistically verify hypothesis of interst using simulations.
+		\end{itemize}
+	\end{frame}
+
+
+	\begin{frame}{Knowledge Finding Strategy in this Project}
+		\begin{itemize}
+			\item 1. Model a simulative enviroment by mimicking the real world.
+			\item 2. Assume that the simulative enviroment closely approximate the real world enviroment and statistically verify hypothesis of interst using simulations.
+		\end{itemize}
 	\end{frame}
 
 	\begin{frame}{Benifit of this theory}
