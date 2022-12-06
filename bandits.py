@@ -46,7 +46,7 @@ class CategoricalBandit(Bandit):
             0
         ] * self.env.l  # how many times each lobbyist is pulled
 
-    def get_action(self):
+    def get_action(self):       
         def _exploit(belief, coi=self.coi):
             """
             Return best arm based on the sampled proba from the given parameter set of belief.
@@ -58,28 +58,53 @@ class CategoricalBandit(Bandit):
             i = max(
                 range(self.env.k), key=lambda k: samples[k][coi]
             )  # i is the best rewarding arm for category of interest based on samples
+            return i
+
+        def _get_maxmean(belief, coi=self.coi):
+            """
+            Return best arm based on the sampled proba from the given parameter set of belief.
+            """
+            means = [   
+                belief[i][self.coi] / np.sum(belief[i]) for i in range(self.env.k)
+            ]  # exploit what agent believes about each arms' probas - sample from the belief posterior which is reprsented by Dirichlet distribution.
+            # sample is a list of k arrays, each array is a sample from the Dirichlet distribution of the k-th arm. So the shape is k*c.
+            i = max(
+                range(self.env.k), key=lambda k: means[k]
+            )  # i is the best rewarding arm for category of interest based on samples
             return (
                 i,  # which is the best arm
-                samples[i][coi],  # with which probablity of category of interest.
+                means[i],  # with which probablity of category of interest.
             )  # tuple of selection of arm among k arms and its proba
 
         candidates = []
-        candidates.append(_exploit(self.belief))  # choice from bandit's own belief
+        candidates.append(_get_maxmean(self.belief))  # choice from bandit's own belief
         for l in range(
             self.env.l
         ):  # choice from lobbyists' belief # assume that each bandit can access to every lobbyist's belief.
-            candidates.append(_exploit(self.env.lobbyists[l].belief, coi=self.coi))
+            candidates.append(_get_maxmean(self.env.lobbyists[l].belief, coi=self.coi))
+        
+        besties = [candidates[c][1] for c in range(len(candidates))]
+        winner = np.argwhere(besties == np.amax(besties)).flatten().tolist()
+        if len(winner) > 1:
+            print("tie")
+            c = np.random.choice(winner)
+        else:
+            c = winner[0]
 
-        c = max(
-            range(len(candidates)), key=lambda c: candidates[c][1]
-        )  # select the best action among all candidates where the candidates = [bandit's own belief, lobbyists' belief]
-        # c refer to candidate
+        # c = max(
+        #     range(len(candidates)), key=lambda c: candidates[c][1]
+        # )  # select the best action among all candidates where the candidates = [bandit's own belief, lobbyists' belief]
+        # # c refer to candidate
 
-        i = candidates[c][0]  # i should be one of among k arms
         l = (
             c - 1
         )  # l should be among l lobbyists; if l=-1, then it means bandit's using own belief and not that of a lobbyist.
 
+        if l == -1:
+            i = _exploit(self.belief, coi=self.coi)
+        else:
+            i = _exploit(self.env.lobbyists[l].belief, coi=self.coi)
+            
         self.counts[i] += 1
         self.actions.append(i)
 
@@ -90,11 +115,12 @@ class CategoricalBandit(Bandit):
         if l != -1:
             self.counts_lobbyists[l] += 1
             self.env.counts_lobbyists[l] += 1  # update global counter as well
+
         return i, l  # return tuple as (action, lobbyist)
 
     def generate_reward(self, i, l, sampled):
         if l == -1:
-            # update belief
+            # update internal belief
             self.belief[i][sampled] += 1
 
         # recognize the reward

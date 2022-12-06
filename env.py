@@ -8,6 +8,7 @@ import numpy as np
 from bandits import CategoricalBandit
 from lobbyists import CategoricalLobbyist
 
+from collections import Counter
 
 class CategoricalBanditEnv(object):
     def __init__(self, b, n, k, c, l, cois, probas=None, seed=2139):
@@ -40,6 +41,8 @@ class CategoricalBanditEnv(object):
         # Define environment level reward
         self.sum_rewards_of_bandits = []
         self.mean_rewards_of_bandits = []
+
+        # count entire usage of lobbyists
 
     def get_action(self, bandit: CategoricalBandit):
         """
@@ -112,29 +115,22 @@ class CategoricalBanditEnv(object):
         3. Update lobbyists' internal belief based on the rewards.
         """
 
-        threads = []
         que = queue.Queue(
             maxsize=len(self.bandits)
         )  # limit concurrent threads to number of bandits
 
-        def _worker(bandit, action, queue):
-            result = self.generate_reward(bandit, action)
-            queue.put(result)
-
         for b in range(len(self.bandits)):  # type: ignore
-            bandit = self.bandits[b]
             thread = Thread(
-                target=_worker,
+                target=lambda q, arg1, arg2: q.put(
+                    self.generate_reward(arg1, arg2)
+                ),
                 args=(
-                    bandit,
-                    self.actions[b, :, t],
                     que,
+                    self.bandits[b],
+                    self.actions[b, :, t],
                 ),  # arg2 is (i, l) tuple
             )
-            threads.append(thread)
             thread.start()
-
-        [thread.join() for thread in threads]  # wait for all threads to finish
 
         self.rewards[:, t] = np.array(
             [que.get(block=True) for i in range(len(self.bandits))]
@@ -145,3 +141,7 @@ class CategoricalBanditEnv(object):
             self.get_actions(t)
             self.generate_rewards(t)
             self.compute_environment_level_reward(t)
+        print("number of time using lobbyist", self.counts_lobbyists[0])
+        for b in self.bandits:
+           print(Counter(b.hires)[0])
+        

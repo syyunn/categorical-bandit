@@ -15,6 +15,12 @@ from bandits import CategoricalBandit
 from lobbyists import CategoricalLobbyist
 from env import CategoricalBanditEnv
 
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--ptemp', type=float, default=0)
+parser.add_argument('--expid', type=int, default=0)
+args = parser.parse_args()
 
 def plot_results(bandit_index: int, env: CategoricalBanditEnv, save_dir, show=False):
     """
@@ -176,8 +182,11 @@ def plot_results(bandit_index: int, env: CategoricalBanditEnv, save_dir, show=Fa
         )
         ax7.set_title(
             # f"Lobbyist{bandit.most_freq_hired_lobbyist}coi{bandit.coi}mse{np.square(np.subtract(true_probs, estimated_probs_lobbyist)).mean()}"
-            f"Lobbyist{bandit.most_freq_hired_lobbyist}coi{bandit.coi}l1{np.linalg.norm((true_probs - estimated_probs_lobbyist), ord=1)}"
+        #     f"Lobbyist{bandit.most_freq_hired_lobbyist}coi{bandit.coi}l1{np.linalg.norm((true_probs - estimated_probs_lobbyist), ord=1)}"
+        # )
+                    f"Lobbyist{bandit.most_freq_hired_lobbyist}coi{bandit.coi}"
         )
+
         ax7.plot(
             range(env.k),
             true_probs,
@@ -205,7 +214,7 @@ def plot_results(bandit_index: int, env: CategoricalBanditEnv, save_dir, show=Fa
         )
         ax8.set_title(
             # f"Lobbyist{bandit.most_freq_hired_lobbyist}coi{coi}mse{np.square(np.subtract(true_probs, estimated_probs_lobbyist)).mean()}"
-            f"Lobbyist{bandit.most_freq_hired_lobbyist}coi{coi}l1{np.linalg.norm((true_probs - estimated_probs_lobbyist), ord=1)}"
+            f"Lobbyist{bandit.most_freq_hired_lobbyist}coi{coi}"
         )
         ax8.plot(
             range(env.k),
@@ -296,7 +305,7 @@ def plot_results(bandit_index: int, env: CategoricalBanditEnv, save_dir, show=Fa
 
 
 def experiment(
-    B, K, C, N, L, cois, show=False, prior=True, prior_temp=10, bandit_index_to_plot=0
+    B, K, C, N, L, cois, show=False, prior=True, prior_temp=10, expid=0
 ):
     """
     Run a small experiment on solving a Categorical bandit with K slot machines,
@@ -315,7 +324,7 @@ def experiment(
         uniq_cois = np.unique(cois)
         print("uniq_cois", uniq_cois)
     else:
-        uniq_cois = [-1] * L
+        uniq_cois = [-1] * L # this diables prior knowledge of lobbyists later on.
 
     env = CategoricalBanditEnv(B, N, K, C, L, cois)
     env.bandits = [
@@ -331,7 +340,7 @@ def experiment(
     # plot_results(bandit_index_to_plot, env, show=show)
     # plot_results(bandit_index_to_plot, env, show=show)
     experiment_dir = "./experiment"
-    dir_name = "results_K{}_C{}_N{}_B_{}_L{}_prior{}_priorTemp_{}_cois{}".format(
+    dir_name = "results_K{}_C{}_N{}_B_{}_L{}_prior{}_priorTemp_{}_expid{}".format(
         env.k,
         env.c,
         env.n,
@@ -339,7 +348,8 @@ def experiment(
         env.l,
         str(prior),
         prior_temp,
-        "".join([str(i) for i in env.cois]),
+        # "".join([str(i) for i in env.cois]),
+        expid
     )
     dir = os.path.join(experiment_dir, dir_name)
     Path(dir).mkdir(parents=True, exist_ok=True)
@@ -352,6 +362,11 @@ def experiment(
         cum_regrets_of_agents.append([((env.bandits[i].regrets[t]) / ((env.bandits[i].best_proba - env.bandits[i].worst_proba) * t))
         for t in range(len(env.bandits[i].regrets))][-1])
         lb_ratio.append((env.n - Counter(env.bandits[i].hires)[-1]) /env.n)
+
+    # pickle the result
+    import pickle
+    with open(os.path.join(dir, "env.pickle"), "wb") as f:
+        pickle.dump(env, f)    
 
     return np.mean(cum_regrets_of_agents), np.mean(lb_ratio)
 
@@ -436,22 +451,46 @@ if __name__ == "__main__":
     #     res.append(mean_norm_cum)
     #     print(temp, mean_norm_cum)
     # print(res)
-    print("test")
-    res = []
-    for ptmp in np.arange(0, 1, 0.1):
-        B=5
-        _, lb_ratio = experiment(
-                B=B,
-                K=112,
-                C=26,
-                L=1,
-                N=2000,
-                cois=[0,0,0,0,0],
-                show=False,
-                prior=False,
-                prior_temp=ptmp,  # default is 10
-                bandit_index_to_plot=0,
-            )
-        res.append(lb_ratio)
-        print(ptmp, lb_ratio)
-    print(res)
+    # res = []
+    # for ptmp in np.arange(0, 1, 0.1):
+    #     B=5
+    #     _, lb_ratio = experiment(
+    #             B=B,
+    #             K=112,
+    #             C=26,
+    #             L=1,
+    #             N=2000,
+    #             cois=[0,0,0,0,0],
+    #             show=False,
+    #             prior=True,
+    #             prior_temp=ptmp,  # default is 10
+    #             bandit_index_to_plot=0,
+    #         )
+    #     res.append(lb_ratio)
+    #     print(ptmp, lb_ratio)
+    # print(res)
+    # experiment(
+    #             B=22,
+    #             K=112,
+    #             C=26,
+    #             L=1,
+    #             N=2000,
+    #             cois=[0] * 22,
+    #             show=False,
+    #             prior=False,
+    #             prior_temp=1,  # default is 10
+    #             bandit_index_to_plot=0,
+    #         )
+
+    experiment(
+            B=5,
+            K=112,
+            C=26,
+            L=1,
+            N=2000,
+            cois=[0]*5,
+            show=False,
+            prior=True,
+            prior_temp= args.ptemp, # ptemp \in [0,1]
+            expid = args.expid
+        )
