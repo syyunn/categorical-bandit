@@ -7,8 +7,7 @@ for ptemp in ptemps:
     for expid in expids:
         with open(f'./bashes/submit_ptemp{ptemp}_expid{expid}.sh', 'w') as f:
             f.write(
-f"""
-#!/bin/bash
+f"""#!/bin/bash
 ptemp=$1
 expid=$2
  

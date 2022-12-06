@@ -1,4 +1,3 @@
-
 #!/bin/bash
 ptemp=$1
 expid=$2
