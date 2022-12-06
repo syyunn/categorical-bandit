@@ -315,7 +315,7 @@ def experiment(
         uniq_cois = np.unique(cois)
         print("uniq_cois", uniq_cois)
     else:
-        uniq_cois = [-1] * L
+        uniq_cois = [-1] * L # this diables prior knowledge of lobbyists later on.
 
     env = CategoricalBanditEnv(B, N, K, C, L, cois)
     env.bandits = [
@@ -436,22 +436,46 @@ if __name__ == "__main__":
     #     res.append(mean_norm_cum)
     #     print(temp, mean_norm_cum)
     # print(res)
-    print("test")
-    res = []
-    for ptmp in np.arange(0, 1, 0.1):
-        B=5
-        _, lb_ratio = experiment(
-                B=B,
-                K=112,
-                C=26,
-                L=1,
-                N=2000,
-                cois=[0,0,0,0,0],
-                show=False,
-                prior=False,
-                prior_temp=ptmp,  # default is 10
-                bandit_index_to_plot=0,
-            )
-        res.append(lb_ratio)
-        print(ptmp, lb_ratio)
-    print(res)
+    # res = []
+    # for ptmp in np.arange(0, 1, 0.1):
+    #     B=5
+    #     _, lb_ratio = experiment(
+    #             B=B,
+    #             K=112,
+    #             C=26,
+    #             L=1,
+    #             N=2000,
+    #             cois=[0,0,0,0,0],
+    #             show=False,
+    #             prior=True,
+    #             prior_temp=ptmp,  # default is 10
+    #             bandit_index_to_plot=0,
+    #         )
+    #     res.append(lb_ratio)
+    #     print(ptmp, lb_ratio)
+    # print(res)
+    # experiment(
+    #             B=22,
+    #             K=112,
+    #             C=26,
+    #             L=1,
+    #             N=2000,
+    #             cois=[0] * 22,
+    #             show=False,
+    #             prior=False,
+    #             prior_temp=1,  # default is 10
+    #             bandit_index_to_plot=0,
+    #         )
+
+    experiment(
+            B=5,
+            K=112,
+            C=26,
+            L=1,
+            N=2000,
+            cois=[0]*5,
+            show=True,
+            prior=False,
+            prior_temp=0.5, # default is 10
+            bandit_index_to_plot=0,
+        )
