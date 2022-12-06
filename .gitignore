@@ -131,3 +131,5 @@ dmypy.json
 # IDE settings
 .vscode
 *.png
+
+.DS_Store
