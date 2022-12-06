@@ -1,3 +1,4 @@
+
 #!/bin/bash
 ptemp=$1
 expid=$2
@@ -10,4 +11,4 @@ expid=$2
 # module load anaconda/2020a
 
 # Run the script
-python main.py --ptemp $1 --expid $2
+python main.py --ptemp 0.4 --expid 3
