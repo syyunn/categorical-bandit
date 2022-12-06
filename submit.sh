@@ -14,5 +14,4 @@
  
 
 # Run the script
-python main.py --ptemp 0 --expid 0
-python main.py --ptemp 0 --expid 1
+python main.py --ptemp $1 --expid $2
