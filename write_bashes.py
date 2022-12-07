@@ -1,7 +1,7 @@
 import numpy as np
 
-ptemps = np.linspace(0.21,0.29,9)
-expids = range(0, 10)
+ptemps = np.linspace(0,1,51)
+expids = range(0, 100)
 
 for ptemp in ptemps:
     for expid in expids:
