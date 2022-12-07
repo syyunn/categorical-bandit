@@ -18,7 +18,7 @@ from env import CategoricalBanditEnv
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--ptemp', type=float, default=0.2)
+parser.add_argument('--ptemp', type=float, default=1)
 parser.add_argument('--expid', type=int, default=0)
 args = parser.parse_args()
 
@@ -356,12 +356,14 @@ def experiment(
 
     cum_regrets_of_agents = []
     lb_ratio = []
-    # for i in range(B):
-    #     plot_results(i, env, dir, show=show)
 
-    #     cum_regrets_of_agents.append([((env.bandits[i].regrets[t]) / ((env.bandits[i].best_proba - env.bandits[i].worst_proba) * t))
-    #     for t in range(len(env.bandits[i].regrets))][-1])
-    #     lb_ratio.append((env.n - Counter(env.bandits[i].hires)[-1]) /env.n)
+    for i in range(B):
+        plot_results(i, env, dir, show=show)
+
+        cum_regrets_of_agents.append([((env.bandits[i].regrets[t]) / ((env.bandits[i].best_proba - env.bandits[i].worst_proba) * t))
+        for t in range(len(env.bandits[i].regrets))][-1])
+        lb_ratio.append((env.n - Counter(env.bandits[i].hires)[-1]) /env.n)
+        break
 
     # pickle the result
     import pickle
@@ -489,8 +491,10 @@ if __name__ == "__main__":
             L=1,
             N=2000,
             cois=[0]*5,
-            show=False,
+            show=True,
             prior=True,
             prior_temp= args.ptemp, # ptemp \in [0,1]
             expid = args.expid
         )
+
+# prior False 랑 prior_Temp 0 은 같은거임?

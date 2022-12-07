@@ -31,6 +31,14 @@ class CategoricalLobbyist(Lobbyist):
             ]  # k is number of arms, c is number of categories. So k is legislators and c is categories of topcis.
         )  # Initialize Dirichlet distribution's param \alpha to 1s. This is internal belief of the agent over slot-machines.
 
+        # #random prior
+        # np.random.seed(
+        #         1
+        #     )
+        # self.belief = np.random.dirichlet(
+        #         np.ones(self.env.c), size=self.env.k
+        #     )
+
         if coe != -1:
             topicwise_true_probas = env.probas[:, coe]
             # topicwise_expertise_bias = [
@@ -38,7 +46,7 @@ class CategoricalLobbyist(Lobbyist):
             #     for e in topicwise_true_probas  # +1 to prevent 0
             # ]  # it represents incomplete prior knowledge of the agent.
             topicwise_expertise_bias = [
-                e * env.c * prior_temp + sys.float_info.epsilon
+                e * env.c * prior_temp # + sys.float_info.epsilon
                 for e in topicwise_true_probas  # +1 to prevent 0
             ]  # it represents incomplete prior knowledge of the agent.
 
