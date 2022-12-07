@@ -367,7 +367,7 @@ def experiment(
     #     cum_regrets_of_agents.append([((env.bandits[i].regrets[t]) / ((env.bandits[i].best_proba - env.bandits[i].worst_proba) * t))
     #     for t in range(len(env.bandits[i].regrets))][-1])
     #     lb_ratio.append((env.n - Counter(env.bandits[i].hires)[-1]) /env.n)
-    #     # break
+    #     break
 
     # pickle the result
     import pickle
@@ -507,14 +507,14 @@ if __name__ == "__main__":
         B=10,
         K=112,
         C=26,
-        L=1,
+        L=2,
         N=2000,
         cois=[0]*5 + [1]*5,
         show=False,
-        prior=False,
+        prior=True,
         prior_temp= args.ptemp, # ptemp \in [0,1]
         expid = args.expid,
         seed = 10000,
-        legiswise = True,
+        legiswise = False,
         seed_lobbyist = 100
     )

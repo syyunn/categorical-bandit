@@ -43,7 +43,7 @@ class CategoricalLobbyist(Lobbyist):
             print("prior_temp", prior_temp)
             for row in range(env.k):
                 self.belief[row, :] = (env.c - env.probas[row, coe] * env.c * prior_temp)/ (env.c-1) 
-                self.belief[row, coe] = env.probas[row, coe] * env.c * prior_temp
+                self.belief[row, coe] = env.probas[row, coe] * env.c * prior_temp + sys.float_info.epsilon
 
             # for sanity check
             print(self.belief[50, coe])
@@ -65,7 +65,7 @@ class CategoricalLobbyist(Lobbyist):
                 ]  # k is number of arms, c is number of categories. So k is legislators and c is categories of topcis.
             ) # reset  
             best_arm = np.argmax(self.env.probas[:, coe])
-            self.belief[best_arm, coe] = env.probas[best_arm, coe] * env.c * prior_temp
+            self.belief[best_arm, coe] = env.probas[best_arm, coe] * env.c * prior_temp + sys.float_info.epsilon
             for col in range(env.c):
                 if col == coe:
                     continue
