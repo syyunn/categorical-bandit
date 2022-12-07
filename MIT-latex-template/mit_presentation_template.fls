@@ -1268,6 +1268,8 @@ INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/sansmathaccent/ot1mathkerncms
 INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/sansmathaccent/ot1mathkerncmss.fd
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/sansmathaccent/mathkerncmssi8.tfm
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/sansmathaccent/mathkerncmssi8.tfm
+INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/cm/cmss9.tfm
+INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/cm/cmssbx10.tfm
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
@@ -1281,7 +1283,6 @@ INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-lo
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
-INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/cm/cmssbx10.tfm
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/cm/cmss8.tfm
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm
@@ -1296,7 +1297,6 @@ INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/cm/cmex10.tfm
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/sansmathaccent/mathkerncmssi12.tfm
-INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/cm/cmss9.tfm
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/cm/cmmi9.tfm
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/cm/cmsy9.tfm
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex9.tfm
@@ -1347,6 +1347,15 @@ INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-lo
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./images/pos.png
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./images/pos.png
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./images/pos.png
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./images/pos.png
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./images/pos.png
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
@@ -1448,14 +1457,6 @@ INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-lo
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
-INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./images/large_search_lobbyist/freq.png
-INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./images/large_search_lobbyist/freq.png
-INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./images/large_search_lobbyist/freq.png
-INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./images/large_search_lobbyist/freq.png
-INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
-INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
-INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
-INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./images/large_search_lobbyist/random_seeds_lobbyist/random_lobbyist.png
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./images/large_search_lobbyist/random_seeds_lobbyist/random_lobbyist.png
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./images/large_search_lobbyist/random_seeds_lobbyist/random_lobbyist.png
@@ -1473,6 +1474,7 @@ INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-lo
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
+INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/cm/cmssi10.tfm
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
@@ -1481,11 +1483,23 @@ INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./images
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./images/pos.png
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./images/pos.png
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./images/pos.png
-INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./images/pos.png
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./images/sp.png
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./images/sp.png
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./images/sp.png
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./images/sp.png
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./images/sp.png
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./images/sp.png
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./images/sp.png
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./images/sp.png
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./images/sp.png
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
