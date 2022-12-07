@@ -26,6 +26,7 @@ class CategoricalBandit(Bandit):
         )  # bandit doesn't interest in any categories in self.ncoi
 
         self.best_arm = np.argmax(self.env.probas[:, self.coi])
+        print("best arm for", self.coi, self.best_arm)
         self.best_proba = max(self.env.probas[:, self.coi])
         self.worst_proba = min(self.env.probas[:, self.coi])
 

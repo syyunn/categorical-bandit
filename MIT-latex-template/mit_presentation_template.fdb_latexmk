@@ -1,22 +1,13 @@
 # Fdb version 3
-<<<<<<< Updated upstream
-["pdflatex"] 1670210762 "/Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.tex" "/Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.pdf" "mit_presentation_template" 1670211714
-=======
-["pdflatex"] 1670364809 "/Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.tex" "/Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.pdf" "mit_presentation_template" 1670364814
->>>>>>> Stashed changes
+["pdflatex"] 1670403220 "/Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.tex" "/Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.pdf" "mit_presentation_template" 1670403225
   "./images/large_search_space/cum_regret.png" 1670194590 221402 3ce7001ad2b20b3037e483d7d268e7f6 ""
   "./images/large_search_space/estimated_proba.png" 1670195462 289013 33b9b86db627060d5d0832cfb661ab61 ""
   "./images/large_search_space/propo_action_taken.png" 1670195483 217310 a54d0d71d852c959840d63f5ba1f6b4b ""
   "./images/small_search_space/estimated_proba.png" 1670194816 260756 d191807471e0b078eb6bf982b2c4103f ""
   "./images/small_search_space/norm_cum_regret.png" 1670194407 218030 821447930c09b4f8b9588ca3df983295 ""
   "./images/small_search_space/propo_action_taken.png" 1670194828 199933 48b88e55fb0e2da9b3bf514f5be2e48b ""
-<<<<<<< Updated upstream
-  "/Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.aux" 1670210766 3934 5485b29928b906c39257624c8e7c3e24 ""
-  "/Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.tex" 1670211714 15321 790f079a8338ed7632063846b9a767cd ""
-=======
-  "/Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.aux" 1670364813 3934 5485b29928b906c39257624c8e7c3e24 ""
-  "/Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.tex" 1670364811 15367 74764cb0e7f468c4b7217f44f0ae084b ""
->>>>>>> Stashed changes
+  "/Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.aux" 1670403224 3934 5485b29928b906c39257624c8e7c3e24 ""
+  "/Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.tex" 1670403220 15696 b85b8cdddc688ec68e243d8c487b10c5 ""
   "/Users/suyeol/Library/texlive/2021/texmf-var/fonts/pk/ljfour/public/bbm/bbm10.657pk" 1670174788 7808 18fbfc86c4da4f772c580ffd61058fa8 ""
   "/usr/local/texlive/2021/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2021/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
@@ -249,34 +240,17 @@
   "images/small_search_space/estimated_proba.png" 1670194816 260756 d191807471e0b078eb6bf982b2c4103f ""
   "images/small_search_space/norm_cum_regret.png" 1670194407 218030 821447930c09b4f8b9588ca3df983295 ""
   "images/small_search_space/propo_action_taken.png" 1670194828 199933 48b88e55fb0e2da9b3bf514f5be2e48b ""
-<<<<<<< Updated upstream
-  "mit_presentation_template.aux" 1670210766 3934 5485b29928b906c39257624c8e7c3e24 "pdflatex"
-  "mit_presentation_template.nav" 1670210766 2283 9a0c833f12e2af5081a1406ecd196285 "pdflatex"
-  "mit_presentation_template.out" 1670210766 93 535270e7cc3ad4e6703c024ae60adc93 "pdflatex"
-  "mit_presentation_template.tex" 1670211714 15321 790f079a8338ed7632063846b9a767cd ""
+  "mit_presentation_template.aux" 1670403224 3934 5485b29928b906c39257624c8e7c3e24 "pdflatex"
+  "mit_presentation_template.nav" 1670403224 2283 9a0c833f12e2af5081a1406ecd196285 "pdflatex"
+  "mit_presentation_template.out" 1670403224 93 535270e7cc3ad4e6703c024ae60adc93 "pdflatex"
+  "mit_presentation_template.tex" 1670403220 15696 b85b8cdddc688ec68e243d8c487b10c5 ""
   (generated)
-  "mit_presentation_template.out"
-  "mit_presentation_template.toc"
   "mit_presentation_template.snm"
-  "mit_presentation_template.pdf"
-  "mit_presentation_template.aux"
+  "mit_presentation_template.toc"
   "/Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.log"
   "mit_presentation_template.nav"
   "/Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.pdf"
-  "mit_presentation_template.log"
-=======
-  "mit_presentation_template.aux" 1670364813 3934 5485b29928b906c39257624c8e7c3e24 "pdflatex"
-  "mit_presentation_template.nav" 1670364813 2283 9a0c833f12e2af5081a1406ecd196285 "pdflatex"
-  "mit_presentation_template.out" 1670364813 93 535270e7cc3ad4e6703c024ae60adc93 "pdflatex"
-  "mit_presentation_template.tex" 1670364811 15367 74764cb0e7f468c4b7217f44f0ae084b ""
-  (generated)
-  "mit_presentation_template.log"
-  "mit_presentation_template.snm"
-  "mit_presentation_template.aux"
-  "mit_presentation_template.toc"
   "mit_presentation_template.out"
-  "mit_presentation_template.nav"
-  "/Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.log"
-  "/Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.pdf"
+  "mit_presentation_template.log"
+  "mit_presentation_template.aux"
   "mit_presentation_template.pdf"
->>>>>>> Stashed changes

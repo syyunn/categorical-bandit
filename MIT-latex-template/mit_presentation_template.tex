@@ -242,10 +242,13 @@
 		\end{itemize}
 	\end{frame}
 
-	\begin{frame}{Knowledge Finding Strategy in this Project}
+	\begin{frame}{Simulation III: Large Search Space with Lobbyist}
 		\begin{itemize}
-			\item 1. Model a simulative enviroment by mimicking the real world.
-			\item 2. Assume that the simulative enviroment closely approximate the real world enviroment and statistically verify hypothesis of interst using simulations.
+			\item  $|K|=112 \footnote{Average number of legislators to whome top $10$ lobbying firms campaign contribute in 2020.}, |C|=26\footnote{Average number of issue codes appearing in each lobbying report in 2020.}, |T|=2000, |L|=1$.
+		\end{itemize}
+		\centering	\includegraphics[scale=0.5]{./images/large_search_space/cum_regret.png}
+		\begin{itemize}
+			\item  Total $112 \times 26 = 2912$ number of parameters to explore - which is relatively large compared to the previous case. Hard to explore all the parameters with the same time horizon of $T=2000$.
 		\end{itemize}
 	\end{frame}
 
