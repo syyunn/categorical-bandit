@@ -504,14 +504,14 @@ if __name__ == "__main__":
     #     )
 
     experiment(
-        B=5,
+        B=10,
         K=112,
         C=26,
         L=1,
         N=2000,
-        cois=[0]*5,
+        cois=[0]*5 + [1]*5,
         show=False,
-        prior=False,
+        prior=True,
         prior_temp= args.ptemp, # ptemp \in [0,1]
         expid = args.expid,
         seed = 10000,
