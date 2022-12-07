@@ -511,10 +511,10 @@ if __name__ == "__main__":
         N=2000,
         cois=[0]*5 + [1]*5,
         show=False,
-        prior=True,
+        prior=False,
         prior_temp= args.ptemp, # ptemp \in [0,1]
         expid = args.expid,
         seed = 10000,
-        legiswise = False,
+        legiswise = True,
         seed_lobbyist = 100
     )
