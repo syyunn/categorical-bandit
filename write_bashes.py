@@ -1,6 +1,6 @@
 import numpy as np
 
-ptemps = np.linspace(0,1,11)
+ptemps = np.linspace(0.21,0.29,9)
 expids = range(0, 10)
 
 for ptemp in ptemps:
