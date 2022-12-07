@@ -16,7 +16,7 @@ class CategoricalLobbyist(Lobbyist):
     seed: random seed to generate underlying probabilities for all arms
     """
 
-    def __init__(self, env, coe, prior_temp, legiswise):
+    def __init__(self, env, coe, prior_temp, legiswise, seed_lobbyist):
         print("coe", coe)
         """
         coe: category of expertise
@@ -73,6 +73,16 @@ class CategoricalLobbyist(Lobbyist):
                     self.belief[best_arm, col] = env.probas[best_arm, col] * env.c + env.probas[best_arm, coe] * env.c * (1-prior_temp) * (1/(env.c-1))
             
             print("legiswise sanity check", sum(self.belief[best_arm, :]), "should be close to", env.c)
+
+        # # random prior
+        # if seed_lobbyist is not None:
+        #     np.random.seed(
+        #             seed_lobbyist
+        #         )
+        #     self.belief = np.random.dirichlet(
+        #             np.ones(self.env.c), size=self.env.k
+        #         )
+
 
     def update_belief(self, i, sampled):
         self.belief[i][sampled] += 1

@@ -1,11 +1,11 @@
 import numpy as np
 
-ptemps = np.linspace(0,1,51)
+ptemps = np.linspace(0,1,11)
 expids = range(0, 100)
 
 for ptemp in ptemps:
     for expid in expids:
-        with open(f'./bashes/submit_ptemp{ptemp}_expid{expid}.sh', 'w') as f:
+        with open(f'./submit_ptemp{ptemp}.sh', 'w') as f:
             f.write(
 f"""#!/bin/bash
 ptemp=$1
@@ -19,5 +19,5 @@ expid=$2
 # module load anaconda/2020a
 
 # Run the script
-python main.py --ptemp {ptemp} --expid {expid}
+python main.py --ptemp {ptemp}
 """)

@@ -305,7 +305,7 @@ def plot_results(bandit_index: int, env: CategoricalBanditEnv, save_dir, show=Fa
 
 
 def experiment(
-    B, K, C, N, L, cois, show=False, prior=True, prior_temp=10, expid=0, seed=2150, legiswise=False
+    B, K, C, N, L, cois, show=False, prior=True, prior_temp=10, expid=0, seed=2150, legiswise=False, seed_lobbyist=0
 ):
     """
     Run a small experiment on solving a Categorical bandit with K slot machines,
@@ -332,7 +332,7 @@ def experiment(
         CategoricalBandit(env, id=id, coi=coi) for id, coi in zip(range(B), cois)
     ]  # since we need env to initialize bandits, we need to do this after env is initialized
     env.lobbyists = [
-        CategoricalLobbyist(env=env, coe=coe, prior_temp=prior_temp, legiswise=legiswise)
+        CategoricalLobbyist(env=env, coe=coe, prior_temp=prior_temp, legiswise=legiswise, seed_lobbyist=seed_lobbyist)
         for _, coe in zip(range(L), uniq_cois)
     ]  # same as above
 
@@ -341,7 +341,7 @@ def experiment(
     # plot_results(bandit_index_to_plot, env, show=show)
     # plot_results(bandit_index_to_plot, env, show=show)
     experiment_dir = "./experiment"
-    dir_name = "results_K{}_C{}_N{}_B_{}_L{}_prior{}_priorTemp_{}_expid{}_seed{}_legiswise{}".format(
+    dir_name = "results_K{}_C{}_N{}_B_{}_L{}_prior{}_priorTemp_{}_expid{}_seed{}_legiswise{}_seed_lobbyist{}".format(
         env.k,
         env.c,
         env.n,
@@ -353,6 +353,7 @@ def experiment(
         expid,
         seed,
         legiswise,
+        seed_lobbyist
     )
     dir = os.path.join(experiment_dir, dir_name)
     Path(dir).mkdir(parents=True, exist_ok=True)
@@ -360,13 +361,13 @@ def experiment(
     cum_regrets_of_agents = []
     lb_ratio = []
 
-    for i in range(B):
-        plot_results(i, env, dir, show=show)
+    # for i in range(B):
+    #     plot_results(i, env, dir, show=show)
 
-        cum_regrets_of_agents.append([((env.bandits[i].regrets[t]) / ((env.bandits[i].best_proba - env.bandits[i].worst_proba) * t))
-        for t in range(len(env.bandits[i].regrets))][-1])
-        lb_ratio.append((env.n - Counter(env.bandits[i].hires)[-1]) /env.n)
-        # break
+    #     cum_regrets_of_agents.append([((env.bandits[i].regrets[t]) / ((env.bandits[i].best_proba - env.bandits[i].worst_proba) * t))
+    #     for t in range(len(env.bandits[i].regrets))][-1])
+    #     lb_ratio.append((env.n - Counter(env.bandits[i].hires)[-1]) /env.n)
+    #     # break
 
     # pickle the result
     import pickle
@@ -487,19 +488,33 @@ if __name__ == "__main__":
     #             bandit_index_to_plot=0,
     #         )
 
-    experiment(
-            B=10,
-            K=112,
-            C=26,
-            L=2,
-            N=2000,
-            cois=[0]*5 + [1]*5,
-            show=True,
-            prior=True,
-            prior_temp= args.ptemp, # ptemp \in [0,1]
-            expid = args.expid,
-            seed = 10000,
-            legiswise = False
-        )
+    # experiment(
+    #         B=10,
+    #         K=112,
+    #         C=26,
+    #         L=2,
+    #         N=2000,
+    #         cois=[0]*5 + [1]*5,
+    #         show=True,
+    #         prior=True,
+    #         prior_temp= args.ptemp, # ptemp \in [0,1]
+    #         expid = args.expid,
+    #         seed = 2139, #10000
+    #         legiswise = False
+    #     )
 
-# prior False 랑 prior_Temp 0 은 같은거임?
+    experiment(
+        B=5,
+        K=112,
+        C=26,
+        L=1,
+        N=2000,
+        cois=[0]*5,
+        show=False,
+        prior=False,
+        prior_temp= args.ptemp, # ptemp \in [0,1]
+        expid = args.expid,
+        seed = 10000,
+        legiswise = False,
+        seed_lobbyist = 100
+    )

@@ -64,10 +64,10 @@
 				\item Interest groups in lobbying industry hires lobbyists to acquire information about the policy and legislators.
 				\item Lobbyists are the agents that acquire information about the policy and legislators on behalf of their clients.		
 			\end{itemize}
-			\item What kind of information are they acquiring?
-			\begin{itemize}
-				\item Information that can be used to maximize the political economic goal of the interest groups.
-			\end{itemize}
+			% \item What kind of information are they acquiring?
+			% \begin{itemize}
+			% 	\item Information that can be used to maximize the political economic goal of the interest groups.
+			% \end{itemize}
 		\end{itemize}
 		% \centering	\includegraphics[scale=0.7]{./images/balancing.png}
 	\end{frame}
@@ -80,7 +80,7 @@
 					\item Campaign contribution
 					\item Meeting with congressional staffers, etc.
 				\end{itemize}
-			\item How to model this interaction?
+			\item How to simulate this interaction?
 				 \begin{itemize}
 					\item By using Multi-Armed Bandit (MAB) problem.
 				\end{itemize}}
@@ -206,7 +206,7 @@
 	\begin{frame}{Simulation Results II: Large Search Space}
 		\centering \includegraphics[scale=0.7]{./images/large_search_space/propo_action_taken.png}
 		\begin{itemize}
-			\item The agent failed to find the best rewarding legislator $K=68$ and exploited the worse rewarding legislator $K=90$ mostly.
+			\item The agent failed to find the best rewarding legislator $K=70$ and exploited the worse rewarding legislator $K=90$ mostly.
 		\end{itemize}
 	\end{frame}
 
@@ -244,30 +244,101 @@
 
 	\begin{frame}{Simulation III: Large Search Space with Lobbyist}
 		\begin{itemize}
-			\item  $|K|=112 \footnote{Average number of legislators to whome top $10$ lobbying firms campaign contribute in 2020.}, |C|=26\footnote{Average number of issue codes appearing in each lobbying report in 2020.}, |T|=2000, |L|=1$.
+			\item  $|K|=112 \footnote{Average number of legislators to whome top $10$ lobbying firms campaign contribute in 2020.}, |C|=26\footnote{Average number of issue codes appearing in each lobbying report in 2020.}, |T|=2000,  |IG|=5\footnote{Average number of clients that top 10 lobbying firms has for one issue area in 2020}, |L|=1$.
 		\end{itemize}
-		\centering	\includegraphics[scale=0.5]{./images/large_search_space/cum_regret.png}
+		\centering	\includegraphics[scale=0.5]{./images/large_search_lobbyist/cum_regret.png}
 		\begin{itemize}
-			\item  Total $112 \times 26 = 2912$ number of parameters to explore - which is relatively large compared to the previous case. Hard to explore all the parameters with the same time horizon of $T=2000$.
+			\item  Lowest normalized regret achieved without lobbyist was $0.55$. 
+			\item  With lobbyist, it achieves $0.2$ of the lowest normalized regret.
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{Simulation III: Large Search Space with Lobbyist}
+		\begin{itemize}
+			\item  $|K|=112 \footnote{Average number of legislators to whome top $10$ lobbying firms campaign contribute in 2020.}, |C|=26\footnote{Average number of issue codes appearing in each lobbying report in 2020.}, |T|=2000,  |IG|=5\footnote{Average number of clients that top 10 lobbying firms has for one issue area in 2020}, |L|=1$.
+		\end{itemize}
+		\centering	\includegraphics[scale=0.5]{./images/large_search_lobbyist/cum_regret.png}
+		\begin{itemize}
+			\item  Lowest normalized regret achieved without lobbyist was $0.55$. 
+			\item  With lobbyist, it achieves $0.2$ of the lowest normalized regret.
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{Simulation III: Large Search Space with Lobbyist}
+		\centering	\includegraphics[scale=0.7]{./images/large_search_lobbyist/best_arm.png}
+		\begin{itemize}
+			\item  The agent successfully find the best rewarding legislator $K=70$ and exploit it.
+			\item  This is possible because $5$ number of agents (IGs) collaboratively update the lobbyist's parameters.
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{Simulation III: Large Search Space with Lobbyist}
+		\centering	\includegraphics[scale=0.5]{./images/large_search_lobbyist/freq.png}
+		\begin{itemize}
+			\item  For this simulatio, we used \textbf{flat prior (all $1$s)} for the lobbyist's parameters.
+			\item  This means that they have no \textbf{expertise} over the legislators' reward distribution.
+			\item  Even in this situation, agents (IGs) quickly choose to use lobbyist and collaborate using lobbyist.
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{Simulation III: Large Search Space with Lobbyist}
+		\centering	\includegraphics[scale=0.5]{./images/large_search_lobbyist/freq.png}
+		\begin{itemize}
+			\item  For this simulatio, we used \textbf{flat prior (all $1$s)} for the lobbyist's parameters.
+			\item  This means that they have no \textbf{expertise} over the legislators' reward distribution.
+			\item  Even in this situation, agents (IGs) quickly choose to use lobbyist and collaborate using lobbyist.
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{Simulation III: Large Search Space with Lobbyist}
+		\begin{itemize}
+			\item Regret plot of the simulation with lobbyist with \textbf{flat prior} and \textbf{random prior}.
+			\item Regardless of the expertise of the lobbyist, the agents (IGs) use lobbyist for collaboration and overcome the large search space problem.
+		\end{itemize}
+		\centering	\includegraphics[scale=0.5]{./images/large_search_lobbyist/random_seeds_lobbyist/random_lobbyist.png}
+	\end{frame}
+
+	\begin{frame}{Simulation III: Large Search Space with Lobbyist}
+		\begin{itemize}
+			\item This implies that what forms the lobbying industry is not the expert knowledge of the lobbyist, but the ability to concentrate the resource of exploration from multiple clients (IGs) with shared topic of interest.
+		\end{itemize}
+		\centering	\includegraphics[scale=0.5]{./images/large_search_lobbyist/random_seeds_lobbyist/random_lobbyist.png}
+	\end{frame}
+
+	\begin{frame}{Expert Knowledge of Lobbyist and Specialization}
+		\begin{itemize}
+			\item Although the lobbyist's expertise is not the main reason for the lobbying industry to be formed, it is still important in terms of specialization.
+			\item In reality, IGs sharing the same topic of interest tend to hire same lobbyist. (\textbf{specialization})
+			\item There are two different types of expertise of lobbyist:
+			\begin{itemize}
+				\item \textbf{Expertise in a Legislator}: Knowing the reward distribution of a specific legislator.
+				\item \textbf{Expertise in an Issue Area}: Knowing the reward distribution of a specific issue area across legislators.
+			\end{itemize}
+			\item Which type of expert knowledge is important for the lobbying industry to be specialized?
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{Two Different Types of Expert Knowledge}
+			\begin{itemize}
+				\item \textbf{Expertise in a Legislator}: Knowing the reward distribution of a specific legislator. (Red)
+				\item \textbf{Expertise in an Issue Area}: Knowing the reward distribution of a specific issue area across legislators. (Blue)
+			\end{itemize}
+			\centering	\includegraphics[scale=0.5]{./images/pos.png}
+	\end{frame}
+
+	\begin{frame}{Simulation IV: Specialization in a Legislator}	
+		% This  dispute  concerns  the  Continued  Dumping 
+
+		\begin{itemize}
+			\item provides criticism over Expertise vs. Connections (Is It Whom You Know or What You Know?
+			An Empirical Assessment of the Lobbying Process)
 		\end{itemize}
 	\end{frame}
 
 
-	\begin{frame}{Knowledge Finding Strategy in this Project}
-		\begin{itemize}
-			\item 1. Model a simulative enviroment by mimicking the real world.
-			\item 2. Assume that the simulative enviroment closely approximate the real world enviroment and statistically verify hypothesis of interst using simulations.
-		\end{itemize}
-	\end{frame}
+	\begin{frame}{Implications}		
+		% This  dispute  concerns  the  Continued  Dumping 
 
-	\begin{frame}{Benifit of this theory}
-		\begin{itemize}
-			\item Encompasses influence theory as well because to influence, you first need to know influence whom.
-		\end{itemize}
-	\end{frame}
-
-
-	\begin{frame}{Implications}
 		\begin{itemize}
 			\item provides criticism over Expertise vs. Connections (Is It Whom You Know or What You Know?
 			An Empirical Assessment of the Lobbying Process)
