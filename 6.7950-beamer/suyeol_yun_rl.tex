@@ -1,0 +1,435 @@
+\documentclass{beamer}
+%Information to be included in the title page:
+\usetheme{Boadilla}
+\definecolor{MITRed}{RGB}{163,31,52}
+\definecolor{MITGray}{RGB}{138,139,140}
+\usecolortheme[named=MITRed]{structure}
+
+\setbeamertemplate{navigationsymbols}{}
+\setbeamertemplate{headline}{\hfill\includegraphics[width=1.5cm]{./MIT-logo-red-gray.png}\hspace{0.4cm}\vspace{-1.2cm}}
+\beamertemplatenavigationsymbolsempty
+\setbeamertemplate{blocks}[default]
+\setbeamercolor{item projected}{bg=MITGray}
+
+\usepackage{bbm}
+\usepackage{amsmath} % for the equation* environment
+
+% \AtBeginSection[]
+% {
+% 	\begin{frame}
+% 		\frametitle{Outline}
+% 		\tableofcontents[currentsection]
+% 	\end{frame}
+% }
+% \AtBeginSubsection[]
+% {
+% 	\begin{frame}
+% 		\frametitle{Outline}
+% 		\tableofcontents[currentsection,currentsubsection]
+% 	\end{frame}
+% }
+
+\begin{document}
+	\title[]{Modeling U.S. Lobbying Industry with Multi-Agent Multi-Armed Bandit Problem}
+	% \subtitle{via Simulative Experiment Using Multi-Agent Multi-Armed Bandit Problem}
+	\author[Suyeol Yun]{Suyeol Yun}
+	\institute[MIT]{Political Science Dept. \\ Massachusetts Institute of Technology}
+	\date{Dec 13, 2022}
+	\frame{\titlepage}
+	\section{Background}
+
+	\begin{frame}{Motivations}
+		\fontsize{13pt}{12pt}
+		\begin{itemize}
+			\item What is lobbying?
+			\begin{itemize}
+				\item This question is simple but answered not clearly in the literature.
+				% \begin{itemize}
+				% 	\item Vote buying theory
+				% 	\item Informational theory (provide information to legislators)
+				% 	\item Counteractive lobbying (prevent legislators from being influenced by opposing lobbyists)
+				% \end{itemize}
+			\end{itemize}
+		\end{itemize}
+		\begin{itemize}
+			\item Unexplained phenomenon in lobbying industry. 
+			\begin{itemize}
+				\item Lobbyists usually lobby to both sides of legislators. (Why?)
+				\begin{itemize}
+					% \item (e.g.) Lobbyists \textit{campaign contribution} to both sides of legislators 
+					\item in terms of their clients' interest.
+				\end{itemize}
+				\item Existing theories don't explain this phenomenon satisfactorily.
+				\begin{itemize}
+					\item If the lobbying is simply a process of buying vote, 
+					then lobbyists should lobby to only one side of legislators.
+				\end{itemize}
+				\end{itemize}
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{New Theory of lobbying}
+		\fontsize{13pt}{12pt}
+
+		\begin{itemize}
+			\item (Q. Why lobbyists lobby to both sides of legislators?)
+			\item Lobbying is \textbf{delegated information acquisition} process.
+			\begin{itemize}
+				\item Interest groups hiring lobbyist to acquire information about legislators' position on specific issue.
+				\item Model this situation as a Multi-Agent Multi-Armed Bandit problem.
+			\end{itemize}
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{Setting}
+		\begin{itemize}
+			\item $|C| \in \mathbb{N}$ number of issue categories.
+			\item $|J|$ number of interest groups
+			\item Each interest groups $j \in J$ has their own unique category of interest $\phi(j)$
+			% $\phi(j): J \rightarrow C$ which represents unique category of interest $\phi(j)$ for each interest group.
+			\item $|K|$ number of legislators with $P_k$ reward distribution.
+			\item Reward distribution $P_k$ is modeled as a \textbf{Categorical distribution} 
+			with $|C|$ number of categories. 
+			% $P_k$ is parameterized by $\mathbf{p_k} = [p_k^{(1)}, p_k^{(2)}, \hdots, p_k^{(C)}]$ where $p_k^{(i)} \in [0,1], \sum{p_k^{(i)}}=1$ with the support of $x_k \in \{1,2,\hdots,C\}$.  
+			% (In other words, $X_k \sim \operatorname{Categorical}(\mathbf{p_k})$ where $X_k$ represents the category of authority of the $k$th legislator.)
+			% (In other words, )
+			\item Whenever an interest group $j$ interact with a legislator $k$, they receive $c \in \{1, 2, \hdots, C\}$ sampled from $P_k$.
+			\item Each interst group $j$ gets reward of $r_j = \mathbbm{1}(x_k = \phi(j))$ when $j$ 
+			choose legislator $k$ and sampled $x_k \in \{1, 2, \hdots, C\} $ from $P_k$. 
+			\item To maximize the toal reward, interest groups need to find the 
+			legislator who are most likely to sample their category of interest. 
+			% \begin{itemize}
+			% 	\item In other words, interest group $j$ with $\phi(j) = c$ gets reward of $1$ when they sample $c$ from interaction with legislator $k$.
+			% \end{itemize}
+		\end{itemize}
+	\end{frame}
+
+
+
+
+	% \begin{frame}{Goal of this Project}
+	% 	\begin{itemize}
+	% 		\item Model U.S. lobbying industry using Multi-Agent Multi-Armed Bandit problem.
+	% 		\item 1. Show that agents can successfully learn about legislative space by hiring lobbyists.
+	% 		\item 2. Show that lobbyists can survive in the market in case they specialize in specific topic across different legislators.
+	% 	\end{itemize}
+	% \end{frame}
+
+	% \begin{frame}{What is Multi-Armed Bandit\footnote{Bandit is pejorative name for slot machine because it empties players' pocket} (MAB) problem?}
+	% 	\begin{itemize}
+	% 		\item Formulate the exploration-exploitation dilemma problem.
+	% 		\begin{itemize}
+	% 			\item Formulate the \textbf{exploration-exploitation} dilemma problem.
+	% 			\item Assume that there are $K$ possible choices (called ``arms'') for the agent to make. 
+	% 			\item Each arm has a reward probability $P_k$ that is unknown to the agent.
+	% 			\item Whenever the agent chooses an arm, it receives a reward $r_k$ with probability $P_k$.
+	% 			\item The agent choose one of the arms for $T$ times and tries to maximize the total reward.
+	% 			\item As the agent sequentially choose the arms, the agent builds his own estimate of the reward probability $P_k$ of each arm.
+	% 			\item In this scenario, the agent keep facing the \textbf{exploration-exploitation} dilemma whether to choose the best rewarding arm based on his current estimates (so called ``exploitation'') or to try another arm to improve the current estimates because the current estimates can be biased (so called ``exploration'').
+	% 		\end{itemize}
+	% 	\end{itemize}
+	% \end{frame}
+
+	% \begin{frame}{MAB Problem of Interest Groups}
+	% 	\begin{itemize}
+	% 		\item Interest groups face the Multi-Armed Bandit problem when they participate information acquisition process in legislative space.
+	% 		\item There are $K$ number of legislators that interest groups can interact with. 
+	% 		\item Each legislator has a reward probability $P_k$ that is unknown to interest groups.
+	% 		\item Interest groups has a limited budget and time to interact with legislators. (Model it as $T$ times of interaction)
+	% 		\item How to balance between exploration and exploitation to find the best fit legislator within this limited chances of interactions? (MAB problem)
+	% 	\end{itemize}
+	% \end{frame}
+
+	% \begin{frame}{Formulation of MAB Problem of Interest Groups} 
+	% 	\begin{itemize}
+	% 		\item There exists $C \in \mathbb{N}$ number of categories of interest.
+	% 		\item Assume there are $j \in J$ number of interest groups with $\phi(j): J \rightarrow C$ which represents unique category of interest $\phi(j)$ for each interest group.
+	% 		\item There are $K$ number of legislators with $P_k$ reward distribution.
+	% 		\item $P_k$ is modeled as a \textbf{Categorical distribution} with $C$ number of categories. $P_k$ is parameterized by $\mathbf{p_k} = [p_k^{(1)}, p_k^{(2)}, \hdots, p_k^{(C)}]$ where $p_k^{(i)} \in [0,1], \sum{p_k^{(i)}}=1$ with the support of $x_k \in \{1,2,\hdots,C\}$.  
+	% 		% (In other words, $X_k \sim \operatorname{Categorical}(\mathbf{p_k})$ where $X_k$ represents the category of authority of the $k$th legislator.)
+	% 		(In other words, )
+	% 		\item Whenever an interest group $j$ interact with a legislator $k$, they receive $c \in \{1, 2, \hdots, C\}$ sampled from $P_k$.
+	% 		\item  Each interst group $j$ gets reward of $r_j^{kn} = \mathbbm{1}(x_j^{kn} = \phi(j))$ when $j$ choose legislator $k$ at time $t$ and sampled $x_j^{kn}$ from $P_k$. 
+	% 		\begin{itemize}
+	% 			\item In other words, interest group $j$ with $\phi(j) = c$ gets reward of $1$ when they sample $c$ from interaction with legislator $k$.
+	% 		\end{itemize}
+	% 	\end{itemize}
+	% \end{frame}
+
+	\begin{frame}{Bandit Strategy}
+		\fontsize{13pt}{12pt}
+
+		\begin{itemize}
+			\item Used \textbf{Thompson Sampling} algorithm.
+				\item Each interest group $j$ has their own prior belief over $|K|$ number of categorical distributions.
+				\item Keep updating the prior belief using sampled observations from the interaction with legislators.
+				% \item Dirichlet distribution is the conjugate prior of the categorical distribution.
+				% \begin{itemize}
+				% 	\item $f(\mathbf{p_k} | \mathcal{O}) \propto \mathcal{L(\mathcal{O | \mathbf{p_k}})} f(\mathbf{p_k})$ where $\mathbf{p_k} \sim \operatorname{Dirichlet(\mathbf{D_k})}$ with $\mathbf{D_k} = [d_k^{(1)}, d_k^{(2)}, \hdots, d_k^{(C)}] \in \mathbb{R}^C $ and $\mathcal{O}$ represents sampled observations from the interaction with legislators, i.e. $\mathcal{O} = [x_{j, t=1}^{k_1}, x_{j, t=2}^{k_2}, x_{j, t=3}^{k_3}, \hdots]$ where $x_{j, t}^{kt}$ is an observation sampled from the interaction with the legislator $k$ at time $t$. 
+				% 	\item This is a $C$ dimensional generalization of the \textbf{Beta conjugate with Bernoulli likelihood}.
+				% 	\item As we did in Beta conjugate, we can update the prior belief by simply adding $1$ to $d_c$ when observe $x_j = c \in C$ at each step $t \in T$.
+				% 	% \item In this way of Bayesian update, interest groups can systematically update their prior belief over $\mathbf{p_k}$ based on obsevations from interactions with legislators.
+				% \end{itemize}
+				\item After update, choose the best rewarding legislator 
+				based on the samples from posterior distributions. %to choose the next legislator to interact with.
+				\item Use Dirichlet distribution for prior/posterior distribution because it is the conjugate prior of the categorical distribution.
+
+				%  Intuitively, the posterior distribution is the internal beleif of the interest group over the categorical distribution of legislator $k$
+	
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{Belief Parameter}
+		\centering	\includegraphics[scale=0.5]{./images/pos.png}
+		\begin{itemize}
+			\item $K \times C$ matrix. 
+			\item Starts from flat prior (all entries are $1$) 
+			\item Add $1$ whenever observe $c$ from the interaction with the legislator $k$.
+		\end{itemize}
+	\end{frame}
+
+
+
+	% \begin{frame}{Validate Thompson Sampling Algorithm}
+	% 	\begin{itemize}
+	% 		\item Let's check whether the Thompson Sampling algorithm can actually find the best rewarding legislator within the limited number of interactions.
+	% 		% \item 32 legislators with 4 categories of interest. T=2000. (Total $32 \times 4 = 128$ number of parameters to search)
+	% 		\item We use the metric called \textbf{Regret} to measure the performance of the algorithm for MAB problem. 
+	% 		\item $\operatorname{Regret}_t^j \triangleq p_c^*-p_{a_t}^j$ where $c = \phi(j)$ and $p_c^* = \operatorname{argmax}_{k \in K}\{p_1^{(c)}, p_2^{(c)}, \hdots, p_K^{(c)}\} $ and $p_{a_t}^j$ is the $c$th parameter of $P_k$ when the agent choose the legislator $k$ at time $t$. $a_t$ represent the action (choice of legislator) taken by the agent at time $t$.
+	% 		\item Regret represents how much the agent could have been done better in terms of the reward if it had chosen the best action.
+	% 		\item Similarly, $\operatorname{Cumulative \text{ } Regret}_t^c \triangleq \sum_t^T p_c^*-p_{a_t}^j$.
+	% 		\item Agent tries to minimize the cumulative regret for the entire time horizon $T$.
+	% 	\end{itemize}
+	% \end{frame}
+	
+	\begin{frame}{Simulation Results I: Small Search Space}
+		\begin{itemize}
+			\item  $|K|=32, |C|=4, |T|=2000$.
+		\end{itemize}
+		\centering	\includegraphics[scale=0.7]{./images/small_search_space/norm_cum_regret.png}
+		\begin{itemize}
+			\item  Total $32 \times 4 = 128$ number of parameters to explore - which is relatively small compared to real world.
+		\end{itemize}
+	\end{frame}
+
+	% \begin{frame}{Simulation Results I: Small Search Space}
+	% 	\centering \includegraphics[scale=0.7]{./images/small_search_space/estimated_proba.png}
+	% 	\begin{itemize}
+	% 		\item Each x-tick corresponds to $p_{k=1}^c, p_{k=2}^c, p_{k=3}^c, \hdots p_{k=32}^c$ where the agent has a category of interest $c$
+	% 		\item $K=11$ is the best rewarding legislator for category $c$.
+	% 	\end{itemize}
+	% \end{frame}
+
+	% \begin{frame}{Simulation Results I: Small Search Space}
+	% 	\centering \includegraphics[scale=0.7]{./images/small_search_space/propo_action_taken.png}
+	% 	\begin{itemize}
+	% 		\item The agent successfully finds the best rewarding legislator $K=11$ and exploited it.
+	% 	\end{itemize}
+	% \end{frame}
+
+	\begin{frame}{Simulation Results II: Large Search Space}
+		\begin{itemize}
+			\item  $|K|=112 \footnote{Average number of legislators that top $10$ lobbying firms campaign contribute in 2020. (From Lobbying Disclsoure Act dataset)}, |C|=26\footnote{Average number of issue codes for each client in 2020. (From Lobbying Disclsoure Act dataset)}, |T|=2000$.
+		\end{itemize}
+		\centering	\includegraphics[scale=0.5]{./images/large_search_space/cum_regret.png}
+		\begin{itemize}
+			\item  Total $112 \times 26 = 2912$ number of parameters to explore - which is relatively large compared to the previous case. Hard to explore all the parameters with the same time horizon of $T=2000$.
+		\end{itemize}
+	\end{frame}
+
+	% \begin{frame}{Simulation Results II: Large Search Space}
+	% 	\centering \includegraphics[scale=0.7]{./images/large_search_space/estimated_proba.png}
+	% 	\begin{itemize}
+	% 		\item Each x-tick corresponds to $p_{k=1}^c, p_{k=2}^c, p_{k=3}^c, \hdots p_{k=112}^c$ where $c$ is the agent's category of interest.
+	% 		\item $K=68$ is the best rewarding legislator for category $c$.
+	% 		\item Most of the legislators are not explored properly.
+	% 	\end{itemize}
+	% \end{frame}
+
+	% \begin{frame}{Simulation Results II: Large Search Space}
+	% 	\centering \includegraphics[scale=0.7]{./images/large_search_space/propo_action_taken.png}
+	% 	\begin{itemize}
+	% 		\item The agent failed to find the best rewarding legislator $K=70$ and exploited the worse rewarding legislator $K=90$.
+	% 	\end{itemize}
+	% \end{frame}
+
+	\begin{frame}{\large{Lobbyist as a Solution to Explore a Large Search Space}}
+		\begin{itemize}
+			\item Introduce new $l \in L$ arms which represent lobbyists.
+			\item Each lobbyist arm has its own belief parameter matrix.
+			\item Interest groups can choose to use a lobbyist or not.
+ 					\item \textbf{Pros:} Interest group can take advantage of the lobbyist's knowledge of the legislators' reward distribution. This distribution could be less biased because many interest groups can collectively update the lobbyist's parameters.
+			\item \textbf{Cons:} Interest group can not update its own distribution. This means that the interest group can not learn from its own experience.
+
+			% \item If an interset group choose to use a lobbyist, the interest group determine with which legislator to interact based on the current posterior distributions of the lobbyist.
+			% \item After getting observation from the chosen legislator, the interest group update the parameter of the lobbyist's parameter of Dirichlet distribution, not its own.
+				% \begin{itemize}
+				% 	\item \textbf{Pros:} Interest group can take advantage of the lobbyist's knowledge of the legislators' reward distribution. This distribution could be less biased because many interest groups can collectively update the lobbyist's parameters.
+				% 	\item \textbf{Cons:} Interest group can not update its own distribution. This means that the interest group can not learn from its own experience.
+				% \end{itemize}  
+		\end{itemize}
+	\end{frame}
+
+	% \begin{frame}{How to Introduce Lobbyist into MAB formulation?}
+	% 	\begin{itemize}
+	% 		\item Introduce new $l \in L$ arms which represent lobbyists.
+	% 		\item Each lobbyist arm $l$ has a set of parameters of Dirichlet distribution for each legislator $\{D_k^l | k \in 1, 2, \hdots, K \}$ as same as any other interset groups.
+	% 		\item Allow any interest groups to choose any lobbyists at each step. 
+	% 		\item If an interset group choose to use a lobbyist, the interest group determine with which legislator to interact based on the current posterior distributions of the lobbyist.
+	% 		\item After getting observation from the chosen legislator, the interest group update the parameter of the lobbyist's parameter of Dirichlet distribution, not its own.
+	% 			\begin{itemize}
+	% 				\item \textbf{Pros:} Interest group can take advantage of the lobbyist's knowledge of the legislators' reward distribution. This distribution could be less biased because many interest groups can collectively update the lobbyist's parameters.
+	% 				\item \textbf{Cons:} Interest group can not update its own distribution. This means that the interest group can not learn from its own experience.
+	% 			\end{itemize}  
+	% 	\end{itemize}
+	% \end{frame}
+
+	\begin{frame}{Simulation III: Large Search Space with Lobbyist}
+		\begin{itemize}
+			\item  $|K|=112, 
+			|C|=26, 
+			|T|=2000,  
+			|J|=5
+			\footnote{Average number of clients that top 10 lobbying
+			 firms has for one issue area in 2020}, |L|=1$.
+		\end{itemize}
+		\centering	\includegraphics[scale=0.5]{./images/large_search_lobbyist/cum_regret.png}
+		\begin{itemize}
+			\item  With a lobbyist and $5$ interest groups with a common category of interest, it achieves $0.2$ of the lowest normalized regret ($< 0.55$ w/o lobbyist).
+			\item  This suggests that lobbyist can help interest groups to explore the search space 
+			more efficiently.
+		\end{itemize}
+	\end{frame}
+
+	% \begin{frame}{Simulation III: Large Search Space with Lobbyist}
+	% 	\begin{itemize}
+	% 		\item  $|K|=112 \footnote{Average number of legislators that top $10$ lobbying firms campaign contribute in 2020.}, |C|=26\footnote{Average number of issue codes appearing in each lobbying report in 2020.}, |T|=2000,  |IG|=5\footnote{Average number of clients that top 10 lobbying firms has for one issue area in 2020}, |L|=1$.
+	% 	\end{itemize}
+	% 	\centering	\includegraphics[scale=0.5]{./images/large_search_lobbyist/cum_regret.png}
+	% 	\begin{itemize}
+	% 		\item  Lowest normalized regret achieved without lobbyist was $0.55$. 
+	% 		\item  With lobbyist, it achieves $0.2$ of the lowest normalized regret.
+	% 	\end{itemize}
+	% \end{frame}
+
+	% \begin{frame}{Simulation III: Large Search Space with Lobbyist}
+	% 	\centering	\includegraphics[scale=0.7]{./images/large_search_lobbyist/best_arm.png}
+	% 	\begin{itemize}
+	% 		\item  The agent successfully find the best rewarding legislator $K=70$ and exploit it.
+	% 		\item  This is possible because $5$ number of agents (IGs) collaboratively update the lobbyist's parameters.
+	% 	\end{itemize}
+	% \end{frame}
+
+	% \begin{frame}{Simulation III: Large Search Space with Lobbyist}
+	% 	\centering	\includegraphics[scale=0.5]{./images/large_search_lobbyist/freq.png}
+	% 	\begin{itemize}
+	% 		\item  For this simulation, we used \textbf{flat prior (all $1$s)} for the lobbyist's parameters.
+	% 		\item  This means that they have \textbf{no expertise} over the legislators' reward distribution at $t=1$.
+	% 		\item  Even in this situation, agents (IGs) quickly choose to use lobbyist and collaborate using lobbyist.
+	% 	\end{itemize}
+	% \end{frame}
+
+	\begin{frame}{Expertise of Lobbyist}
+		\begin{itemize}
+			\item Regret plot of the simulation with lobbyist with \textbf{flat prior} and \textbf{random prior}.
+			\item Regardless of the expertise of the lobbyist, the agents (IGs) use lobbyist for collaboration and successfully solve the large search space problem.
+		\end{itemize}
+		\centering	\includegraphics[scale=0.5]{./images/large_search_lobbyist/random_seeds_lobbyist/random_lobbyist.png}
+	\end{frame}
+
+	% \begin{frame}{Simulation III: Large Search Space with Lobbyist}
+	% 	\begin{itemize}
+	% 		\item This implies that what forms the lobbying industry is not the expert knowledge of the lobbyist, but the ability to concentrate the resource of exploration from multiple clients (IGs).
+	% 		\item In other words, \textbf{delegation of exploration} is the main reason for the lobbying industry to be formed.
+	% 	\end{itemize}
+	% 	\centering	\includegraphics[scale=0.5]{./images/large_search_lobbyist/random_seeds_lobbyist/random_lobbyist.png}
+	% \end{frame}
+
+	% \begin{frame}{Expert Knowledge of Lobbyist and Specialization}
+	% 	\begin{itemize}
+	% 		% \item Although the lobbyist's expertise is not the main reason for the lobbying industry to be formed, it is still important in terms of specialization.
+	% 		\item In reality, IGs who share the same topic of interest tend to hire the same lobbyist. (\textbf{specialization})
+	% 		\item There are two different types of expertise of lobbyist:
+	% 		\begin{itemize}
+	% 			\item \textbf{Expertise in a Legislator}: Knowing the reward distribution of a specific legislator.
+	% 			\item \textbf{Expertise in an Issue Area}: Knowing the reward distribution of a specific issue area across legislators.
+	% 		\end{itemize}
+	% 		\item Which type of expert knowledge is important for the lobbying industry to be \textit{specialized}?
+	% 	\end{itemize}
+	% \end{frame}
+
+	\begin{frame}{Two Different Types of Expert Knowledge}
+		
+			\begin{itemize}
+				\item In reality, IGs who share the same topic of interest tend to hire the same lobbyist. (\textbf{specialization})
+
+				\item \textbf{Expertise in a Legislator}: Knowing the reward distribution of a specific legislator. (Red)
+				\item \textbf{Expertise in an Issue Area}: Knowing the reward distribution of a specific issue area across legislators. (Blue)
+			\end{itemize}
+			\centering	\includegraphics[scale=0.4]{./images/pos.png}
+	\end{frame}
+
+	\begin{frame}{Simulation IV: Condition for Specialization}	
+		\begin{itemize}
+			\item  $|K|=112, |C|=26, |T|=2000,  |IG|=10, |L|=2$.
+		\end{itemize}
+
+		\centering	\includegraphics[scale=0.26]{./images/sp.png}
+
+		\begin{itemize}
+			\item Tested two different conditions for specialization.
+			\item The result shows that the lobbying industry is more specialized 
+			when the lobbyist has expertise in an issue area across all the legislators
+			rather than having expertise in a specific legislator across all issue areas.
+			\item This explains why lobbyist campaign contribution to legislators of both sides.
+				% \item X-axis: How lobbyist closely knows the reward distribution of a legislator or an issue area.
+				% \item Y-axis: How well specialization is achieved .
+				% \item Knowing the reward distribution of an issue area across legislators is more important for specialization than knowing the reward distribution of a legislator across issue areas.
+		\end{itemize}	
+	\end{frame}
+
+	\begin{frame}{Limitation}	
+		\begin{itemize}
+			\item Simulated with hypothetical reward distribution of legislators. 
+			\begin{itemize}
+				\item How to get good representation of legislators' reward distribution?
+			\end{itemize}
+			\item Modeled each interest group's category of interest as one dimension which is orthogonal to other categoires.
+			\begin{itemize}
+				\item In reality, it's multiple dimension with correlated categories.
+			\end{itemize}
+			\item Intentionally simplified the lobbying industry due to the computational limit.
+			\begin{itemize}
+				\item In reality, $70,000$ interest groups and $20,000$ lobbyists 
+				are registered in the US lobbying industry.  
+			\end{itemize}
+
+		\end{itemize}
+	\end{frame}
+
+	% \begin{frame}{Simulation IV: Condition for Specialization}	
+	% 	% This  dispute  concerns  the  Continued  Dumping 
+	% 	\centering	\includegraphics[scale=0.33]{./images/sp.png}
+
+	% 	\begin{itemize}
+	% 		\item This sheds light on the puzzle that 1) why lobbyist lobby the already like-minded legislators and 2) why lobbyist campaign contribution to legislators of both sides (for/against) of topic of interest.		
+	% 	\end{itemize}
+	% \end{frame}
+
+	% \begin{frame}{Contributions}		
+	% 	% This  dispute  concerns  the  Continued  Dumping 
+
+	% 	\begin{itemize}
+	% 		\item Explicitly and formally model the lobbying industry as a multi-agent system.
+	% 		\begin{itemize}
+	% 			\item Thanks to formal modeling, we can plug-in any representations learned from the real world data to approximate the real-world more closely. (e.g. Reward distribution of legislatros)
+	% 		\end{itemize}
+	% 		\item Simulatively shown that the lobbying industry is formed because of the large search space problem.
+	% 		\item Provided a simulative ground for a new theory to solve the puzzle why lobbyist tend to lobby both sides.
+	% 	\end{itemize}
+	% \end{frame}
+
+
+
+\end{document}
+

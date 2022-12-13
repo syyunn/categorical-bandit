@@ -2,8 +2,8 @@ PWD /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template
 INPUT /usr/local/texlive/2021/texmf.cnf
 INPUT /usr/local/texlive/2021/texmf-dist/web2c/texmf.cnf
 INPUT /usr/local/texlive/2021/texmf-var/web2c/pdftex/pdflatex.fmt
-INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.tex
-OUTPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.log
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/suyeol_yun_rl.tex
+OUTPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/suyeol_yun_rl.log
 INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/beamer/beamer.cls
 INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/beamer/beamer.cls
 INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/beamer/beamer.cls
@@ -1020,7 +1020,7 @@ INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/beamer/beamerinnerthemedefaul
 INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/beamer/beamerinnerthemedefault.sty
 INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/beamer/beamerinnerthemedefault.sty
 INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/beamer/beamericonbook.pdf
-OUTPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.pdf
+OUTPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/suyeol_yun_rl.pdf
 INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/beamer/beamericonbook.pdf
 INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/beamer/beamericonbook.20.pdf
 INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/beamer/beamericonbook.20.pdf
@@ -1132,10 +1132,10 @@ INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/l3backend/l3backend-pdftex.de
 INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
-INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.aux
-INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.aux
-INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.aux
-OUTPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.aux
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/suyeol_yun_rl.aux
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/suyeol_yun_rl.aux
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/suyeol_yun_rl.aux
+OUTPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/suyeol_yun_rl.aux
 INPUT /usr/local/texlive/2021/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 INPUT /usr/local/texlive/2021/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 INPUT /usr/local/texlive/2021/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
@@ -1192,17 +1192,17 @@ INPUT /usr/local/texlive/2021/texmf-dist/tex/generic/gettitlestring/gettitlestri
 INPUT /usr/local/texlive/2021/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
 INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/kvoptions/kvoptions.sty
 INPUT /usr/local/texlive/2021/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
-INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.out
-INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.out
-INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.out
-INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.out
-INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.out
-INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.out
-INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.out
-INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.out
-INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.out
-INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.out
-OUTPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.out
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/suyeol_yun_rl.out
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/suyeol_yun_rl.out
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/suyeol_yun_rl.out
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/suyeol_yun_rl.out
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/suyeol_yun_rl.out
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/suyeol_yun_rl.out
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/suyeol_yun_rl.out
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/suyeol_yun_rl.out
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/suyeol_yun_rl.out
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/suyeol_yun_rl.out
+OUTPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/suyeol_yun_rl.out
 INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/translator/translator-basic-dictionary-English.dict
 INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/translator/translator-basic-dictionary-English.dict
 INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/translator/translator-basic-dictionary-English.dict
@@ -1227,9 +1227,9 @@ INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/translator/translator-theorem
 INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/translator/translator-theorem-dictionary-English.dict
 INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/translator/translator-theorem-dictionary-English.dict
 INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/translator/translator-theorem-dictionary-English.dict
-INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.nav
-INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.nav
-INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.nav
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/suyeol_yun_rl.nav
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/suyeol_yun_rl.nav
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/suyeol_yun_rl.nav
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/cm/cmss8.tfm
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
@@ -1508,12 +1508,12 @@ INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-lo
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
 INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/./MIT-logo-red-gray.png
-OUTPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.nav
-OUTPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.toc
-OUTPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.snm
-INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.aux
-INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.out
-INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/mit_presentation_template.out
+OUTPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/suyeol_yun_rl.nav
+OUTPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/suyeol_yun_rl.toc
+OUTPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/suyeol_yun_rl.snm
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/suyeol_yun_rl.aux
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/suyeol_yun_rl.out
+INPUT /Users/suyeol/Dropbox (MIT)/categorical-bandit/MIT-latex-template/suyeol_yun_rl.out
 INPUT /Users/suyeol/Library/texlive/2021/texmf-var/fonts/pk/ljfour/public/bbm/bbm10.657pk
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb
