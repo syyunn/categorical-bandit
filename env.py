@@ -141,7 +141,7 @@ class CategoricalBanditEnv(object):
             self.get_actions(t)
             self.generate_rewards(t)
             self.compute_environment_level_reward(t)
-        print("number of time using lobbyist", self.counts_lobbyists[0])
+        # print("number of time using lobbyist", self.counts_lobbyists[0])
         for b in self.bandits:
            print(Counter(b.hires)[0])
         

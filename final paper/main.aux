@@ -2,10 +2,13 @@
 \providecommand\hyper@newdestlabel[2]{}
 \providecommand\HyperFirstAtBeginDocument{\AtBeginDocument}
 \HyperFirstAtBeginDocument{\ifx\hyper@anchor\@undefined
+\global\let\oldcontentsline\contentsline
+\gdef\contentsline#1#2#3#4{\oldcontentsline{#1}{#2}{#3}}
 \global\let\oldnewlabel\newlabel
 \gdef\newlabel#1#2{\newlabelxx{#1}#2}
 \gdef\newlabelxx#1#2#3#4#5#6{\oldnewlabel{#1}{{#2}{#3}}}
 \AtEndDocument{\ifx\hyper@anchor\@undefined
+\let\contentsline\oldcontentsline
 \let\newlabel\oldnewlabel
 \fi}
 \fi}
@@ -34,7 +37,7 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Simulation II: Large Search Space}{4}{subsection.3.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Introducing Lobbyists into the Multi-Armed Bandit Setting}{4}{subsection.3.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.1}Simulation III: Large Search Space with a Lobbyist}{4}{subsubsection.3.3.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Simulation III: Large Search Space with Lobbyist}{4}{subsection.3.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}Specialization of Lobbyists and Expert knowledge}{4}{section.4}\protected@file@percent }
 \bibstyle{apalike}
 \bibdata{biblio}
 \bibcite{Bauer2017}{{1}{2017}{{Bauer et~al.}}{{}}}
@@ -47,6 +50,13 @@
 \newlabel{sub@fig:lgpropo}{{d}{5}{The proportion of each legislator taken by the interest group across legislators for random seed $0$.\relax }{figure.caption.3}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces \textbf  {Simulation II} Large Search Space\relax }}{5}{figure.caption.3}\protected@file@percent }
 \bibcite{milbrath1984washington}{{3}{1984}{{Milbrath}}{{}}}
+\newlabel{fig:rs_lg}{{3b}{6}{Cumulative normalized regret of interest groups in small search space\relax }{figure.caption.4}{}}
+\newlabel{sub@fig:rs_lg}{{b}{6}{Cumulative normalized regret of interest groups in small search space\relax }{figure.caption.4}{}}
+\newlabel{fig:lgproba}{{3c}{6}{Real probabilities of category of interest $\phi (j)$ across legislators $p_1^{(\phi (j))}, p_2^{(\phi (j))} \hdots p_K^{(\phi (j))}$ and estimated probabilities of category of interest across legislators $\hat {p}_1^{(\phi (j))}, \hat {p}_2^{(\phi (j))} \hdots \hat {p}_K^{(\phi (j))}$ for random seed $0$.\relax }{figure.caption.4}{}}
+\newlabel{sub@fig:lgproba}{{c}{6}{Real probabilities of category of interest $\phi (j)$ across legislators $p_1^{(\phi (j))}, p_2^{(\phi (j))} \hdots p_K^{(\phi (j))}$ and estimated probabilities of category of interest across legislators $\hat {p}_1^{(\phi (j))}, \hat {p}_2^{(\phi (j))} \hdots \hat {p}_K^{(\phi (j))}$ for random seed $0$.\relax }{figure.caption.4}{}}
+\newlabel{fig:lgpropo}{{3d}{6}{The proportion of each legislator taken by the interest group across legislators for random seed $0$.\relax }{figure.caption.4}{}}
+\newlabel{sub@fig:lgpropo}{{d}{6}{The proportion of each legislator taken by the interest group across legislators for random seed $0$.\relax }{figure.caption.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces \textbf  {Simulation II} Large Search Space\relax }}{6}{figure.caption.4}\protected@file@percent }
 \bibcite{tom}{{4}{1933}{{Thompson}}{{}}}
 \bibcite{truman}{{5}{1951}{{Young and David}}{{}}}
-\gdef \@abspage@last{6}
+\gdef \@abspage@last{7}
