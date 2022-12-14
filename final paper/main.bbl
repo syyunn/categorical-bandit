@@ -1,0 +1,43 @@
+\begin{thebibliography}{}
+
+\bibitem[Bauer et~al., 2017]{Bauer2017}
+Bauer, R.~A., de~Sola~Pool, I., and Dexter, L.~A. (2017).
+\newblock {\em American Business and Public Policy}.
+\newblock Routledge.
+
+\bibitem[Grossman and Helpman, 1994]{grossman}
+Grossman, G.~M. and Helpman, E. (1994).
+\newblock {Protection for Sale}.
+\newblock {\em American Economic Review}, 84(4):833--850.
+
+\bibitem[Jedor et~al., 2019]{NEURIPS2019_83462e22}
+Jedor, M., Perchet, V., and Louedec, J. (2019).
+\newblock Categorized bandits.
+\newblock In Wallach, H., Larochelle, H., Beygelzimer, A., d\textquotesingle
+  Alch\'{e}-Buc, F., Fox, E., and Garnett, R., editors, {\em Advances in Neural
+  Information Processing Systems}, volume~32. Curran Associates, Inc.
+
+\bibitem[Kaufmann et~al., 2018]{catego}
+Kaufmann, E., Koolen, W., and Garivier, A. (2018).
+\newblock Sequential test for the lowest mean: From thompson to murphy
+  sampling.
+
+\bibitem[Milbrath, 1984]{milbrath1984washington}
+Milbrath, L. (1984).
+\newblock {\em Washington Lobbyists Survey, 1956-1957}.
+\newblock ICPSR (Collection : En ligne). Inter-university Consortium for
+  Political and Social Research.
+
+\bibitem[Thompson, 1933]{tom}
+Thompson, W.~R. (1933).
+\newblock On the likelihood that one unknown probability exceeds another in
+  view of the evidence of two samples.
+\newblock {\em Biometrika}, 25(3/4):285--294.
+
+\bibitem[Young and David, 1951]{truman}
+Young, R. and David, T. (1951).
+\newblock The governmental process: Political interests and public opinion.
+\newblock {\em The ANNALS of the American Academy of Political and Social
+  Science}, 278(1):200--201.
+
+\end{thebibliography}

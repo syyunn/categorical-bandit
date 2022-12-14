@@ -1,0 +1,600 @@
+\documentclass{article}
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2020
+% ready for submission
+% \usepackage{neurips_2020}
+% to compile a preprint version, e.g., for submission to arXiv, add add the
+% [preprint] option:
+%     \usepackage[preprint]{neurips_2020}
+% to compile a camera-ready version, add the [final] option, e.g.:
+%     \usepackage[final]{neurips_2020}
+% to avoid loading the natbib package, add option nonatbib:
+% \usepackage[nonatbib]{neurips_2020} % anonymous version
+\usepackage[preprint]{neurips_2020}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{physics}
+\usepackage{bbm}
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\title{Modeling 
+Lobbying Industry with Multi-Agent Multi-Armed Bandit}
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to break the
+% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
+% authors names on the first line, and the last on the second line, try using
+% \AND instead of \And before the third author name.
+\author{%
+Suyeol Yun
+% \thanks{
+%   Use footnote for providing further information
+%   about author (webpage, alternative address)---\emph{not} for acknowledging
+%   funding agencies.
+%   }
+\\
+Department of Political Science\\
+Massachusetts Institute of Technology\\
+Cambridge, MA 02139 \\
+\texttt{syyun@mit.edu} \\
+% examples of more authors
+% \And
+% Coauthor \\
+% Affiliation \\
+% Address \\
+% \texttt{email} \\
+% \AND
+% Coauthor \\
+% Affiliation \\
+% Address \\
+% \texttt{email} \\
+% \And
+% Coauthor \\
+% Affiliation \\
+% Address \\
+% \texttt{email} \\
+% \And
+% Coauthor \\
+% Affiliation \\
+% Address \\
+% \texttt{email} \\
+}
+\begin{document}
+\maketitle
+\begin{abstract}
+What is lobbying?
+In this work, 
+I model the lobbying industry 
+with a multi-agent multi-armed bandit problem.
+Under this setting,
+I provide supportive evidence 
+for the argument 
+that explains lobbying 
+as a delegated information acquisition process.
+First, I show that 
+interest groups can successfully explore 
+a large legislative space
+by delegating information acquisition process to lobbyists.
+Second, I show that 
+lobbyists become specialized
+when lobbyists have 
+expert knowledge on a specific issue area across 
+multiple legislators.
+Those resulsts  
+provide supportive evidence
+why interest groups 
+have incentives to delegate information acquisition process to lobbyists
+and why lobbyists in real world interact with both sides of the legislators in terms of interest of their clients.
+\end{abstract}
+
+\section{Introduction}
+What is lobbying? 
+This simple question has been asked in different literatures but there is no clear answer with agreement among scholars.
+For example, \textit{vote-buying} theory argues 
+that lobbying is to buy votes in legislation \citep{grossman}. 
+However, this theory doesn't explain 
+why the average price of vote is too cheap compared 
+to the expected return of lobbying.
+As another example, \textit{persuasion} 
+theory argue that lobbying is to persuade 
+legislators to change their positions on legislation close to 
+the position of the lobbyists
+\citep{truman, Bauer2017, milbrath1984washington}.
+However, this theory doesn't 
+explain why lobbyists lobby 
+already like-minded legislators 
+those who don't need any persuasions.
+
+Apart from these theories,
+this work 
+provides a supportive evidence
+why interest groups 
+have incentives to delegate information acquisition process to lobbyists.
+By modeling the lobbying industry 
+with a multi-agent multi-armed bandit problem,
+I simulatively show that
+interest groups can successfully explore 
+a large legislative space by delegating information acquisition process to lobbyists.
+
+In addition, 
+simulation results show that 
+lobbyists become specialized
+when lobbyists have
+expert knowledge on a specific issue area across
+multiple legislators.
+This result provides a supportive evidence
+why lobbyists in real world interact 
+with both sides of the legislators 
+with respect to the interest of their clients.
+
+
+
+%  , aims to simulatively prove \textit{Reverse Information Theory on Lobbying (RIF)} \citep{rif} which explains lobbying as a delegated information acquisition process.
+% According to RIF, every legislator has a different level of authority over different issue areas but clients lack of understanding which legislator has which authority over which issue areas.
+% Therefore, they hire lobbyists or lobbying firms to acquire information related to their business.
+% For example, Waymo LLC., an autonomous vehicle company reported they hired a lobbying firm, Holland \& Knight LLP., to acquire information on Build Back Better Act provisions on autonomous vehicles\footnote{\url{https://lda.senate.gov/filings/public/filing/0fe5096c-adc4-486a-93fe-7d8b99b823b5/print/}}. 
+% To Waymo, keep tracking the development of Build Back Better Act will be costly and lack an expertise on analyzing complex legal articles and complicated politics behind it. Therefore, they hire highly specialized lobbying firm who has its own expertise on policy development on the issue area of autonomous vehicle. The lobbying firm Holland \& Knight also has NAVYA Inc., a self-driving solutions company as its client along with General Motors (GM) and Toyota. Seeing this, we can infer that Holland \& Knight has a specialized knowledge on legislative space on automobile industry and companies hire them as their lobbying firm to delegate their information acquisition process.
+
+% % Acquisition of information on legislative space requires frequent interaction with legislators and this interaction is costly.
+% RIF \citep{rif} argues that a group of clients who share the similar interests has an incentive to delegate their information acquisition process to a certain lobbying firm which has expertise on their issue areas of interest.
+% To support this perspective, this paper models the lobbying industry as a multi-agent multi-armed (MAMA) bandit problem. 
+
+% To model the U.S. lobbying industry as MAMA bandit problem, I model legislators as arms and companies as agents. 
+% This is an abstraction of U.S. lobbying industry where the companies explore the best rewarding legislators related to their business. However, they don't know which legislators give the best reward to them \textit{a priori}.
+% Rather, they need to deterimine how strategically explore and interact with which legislator to maximize their rewards.
+
+% In addition, this paper models the rewards distribution of arms as categorical distribution to incorporate varying level of authorities of legislators over different issue areas.
+% For example, Sen. Gary Peters may have a higher level of authority on issues related self-driving cars compared to the issues related to aviation because he's a chair of Senate sub-committee on surface transportation.
+% Therefore, we can expect Waymo will acquire more reward from interacting with Gary Peters compared to interacting with Sen. Kyrsten Sinema who's a chair of Senate sub-committee on aviation.
+% To model this situation, this paper assumes each agent has its own predefined categorical distribution and gets the highest reward when it matches with the arm's categorical distribution. This agent-specific categorical distribution represents the agent's unique preference over different issue areas.
+
+% This paper conjectures incentive of hiring lobbying firm increases as the size of the exploration space increases.
+% For example, if there exists a large number of legislators, companies will be more incentivized to hire lobbying firms to delegate their exploration due to the large space to explore. 
+% Similarly, if there's a large number of categories for the reward distribution of legislators, companies will be more incentivized to hire lobbying firms to lower the cost of exploration. 
+% To prove this conjecture simulatively, this paper incorporates a special multi-agents setting which allows agents to delegate their exploration to other agents. In detail, after every round of playing with arms, 
+% agents can choose to delegate their exploration to other agents who have already explored the better reward to them. 
+% To enable this, 
+% % this paper adopts a contextual bandit where every agent gets the context of how much reward other agents get from interacting with which arms. Then by using this context, agents can decide whether to delegate their exploration to other agents for next round.
+% % If the agent decides to delegate its exploration, it will get the reward following the action of the agent to whom it delegates its exploration.
+% this paper provides a special arm to each agent on every round. Except the initial round, all agents get provided with the best rewarding arm to them from the pool of learned arms' distribution of all agents. 
+% This arm represents "delegation" and agents who chose that delegating arm will get the reward following the action of the agent who is the master of that arm. However, since this delegation always give the benefit to agents,
+% the reward from this special arm will be discounted with proper hyperparameter. Then total sum of discounted rewards will be conferred to the delegated agents. This resembles the situation where the lobbying firm is the master of the delegation arm and the client is the agent who delegates its exploration to the lobbying firm. Then the discount factor represents the cost of hiring the lobbying firm. 
+% % and the lobbying firm collects its fee from all clients respectively.
+
+% % This arm is a categorical distribution which is the same as the agent's own categorical distribution.
+
+
+% In summary, this paper models the U.S. lobbying industry with categorized bandit problem where agents can delegate their exploration to other agent. By doing so, 
+% this paper expects to simulatively prove that more number of agents tend to choose delegation as the number of legislators and the number of categories increase, which corresponds to the situation where agents have more large space to explore. 
+
+
+
+
+
+% Since Multi-armed bandit describes an \textit{exploitation} and \textit{exploration} trade-off in sequential decision making. Multi-armed bandit is a metaphor of a reward-seeking agent
+% who has multiple choices of actions (arms) and each action has a different payoff. This paper models the perspective in \cite{rif} as the multi-agents multi-armed (MAMA) bandit problem, where clients in the lobbying industry are agents who interact with legislators (arms) to acquire information about legislative space.
+% By allowing those agents to delegate their future exploration to other agents, this paper expects to observe the emergence of lobbyists where the system converges to the stable existence of delegation.
+
+
+\section{Multi-Agent Multi-Armed Bandit Problem}
+
+% According to \cite{rif}, interest groups hire lobbyisyt to delegate their information acquisition process.
+In lobbying industry, interest groups 
+need to specify which legislator
+have a highest potential power to influence the issue area of their interest.
+To do so, 
+they need to interact with different legislators 
+to explore the potential expected rewards from each legislator.
+However, total chances of exploration is limited 
+and interest groups 
+need to decide 
+whether to 
+keep exploring or 
+exploiting the best legislator they have already explored at each timestep.
+% groups need to maximize their expected rewards from the exploration process.
+This situation can be modeled by multi-armed bandit problem
+which formalizes the exploration–exploitation dilemma.
+
+
+\subsection{Categorical Multi-Armed Bandit Problem} \label{vanilla}
+Since legislators have varying level of authorities over different issue areas,
+I model this situation by categorical multi-armed bandit problem. There exists $|J|$ number of interest groups 
+$\{1, 2, \hdots, J\}$, $|K|$ number of legislators $\{1, 2, \hdots, K\}$ 
+, $|C|$ number of categories of interset $\{1,2, \hdots, C\}$ and
+$|T|$ number of timesteps $\{1,2, \hdots, T\}$.  
+Then each interst group $j \in J$ has its 
+own category of interest $\phi(j) \in C$ and
+each legislator $k \in K$ has a categorical distribution 
+$\operatorname{Cat(C, \mathbf{p_k})}$ where
+$C=\{1,2,\hdots, C\}$ and $\mathbf{p_k} = [p_k^{(1)}, p_k^{(2)}, \hdots, p_k^{(C)}]$.
+Whenever an intesrest group $j$ interact with the $k$-th legislator, they
+sample $X_k \in C$ from $\operatorname{Cat(C, \mathbf{p_k})}$.
+If the sampled category $X_k$ matches with the category of interest of the interest group, i.e. 
+$X_k = \phi(j)$,
+it gets the reward of $r_j^k = \mathbbm{1}(x_j^{k} = \phi(j))$.
+
+\subsection{Thompson Sampling as a Bandit Strategy}
+Let's assume that 
+each interest group
+hold a prior belief over the 
+categorical distribution of each legislator.
+Since Dirichlet distribution is conjugate prior of categorical distribution,
+I model the prior belief of each interest group $j$ over the categorical distribution of the $k$-th legislator as
+$\operatorname{Dir}(C, \boldmath{\alpha}_{jk})$ where 
+$\mathbf{\alpha_{jk}} = [\alpha_{jk}^{(1)}, \alpha_{jk}^{(2)}, \hdots, \alpha_{jk}^{(C)}]$.
+At each timestep $t\in T$, interest group $j$ choose the $k$-th legislator to 
+interact with and sample $X_k^t \in C$ from $\operatorname{Cat(C, \mathbf{p_k})}$.
+Then the interest group $j$ updates its prior belief over $\operatorname{Cat(C, \mathbf{p_k})}$ by adding $1$ to $\alpha_{jk}^{(X_k^t)}$.
+After update, the interest group $j$ chooses the next legislator $k_{t+1}$
+to interact with by sampling $\{\mathbf{\hat{p}_1}, \mathbf{\hat{p}_2}, \hdots \mathbf{\hat{p}_K}\}$ from $\operatorname{Dir}(C, \mathbf{\alpha_{j1}})$,  $\operatorname{Dir}(C, \mathbf{\alpha_{j2}}), \hdots, \operatorname{Dir}(C, \mathbf{\alpha_{jK}})$ and
+choose $k_{t+1} = \underset{K}{\operatorname{argmax}}\{\hat{p}^{(\phi(j))}_1, \hat{p}^{(\phi(j))}_2, \hdots, \hat{p}^{(\phi(j))}_K\}$.
+In this way the interest group $j$ can systematically update
+its prior belief and
+balance the exploration and exploitation trade-off by 
+randomness of sampling from Dirichlet distribution.
+This strategy is called \textit{Thompson sampling} \citep{tom}.
+
+
+% This means that 
+% an interest group 
+% gets the reward of $1$ if the sampled category 
+% matches with the category of interest of the interest group,
+% and gets the reward of $0$ otherwise.
+
+
+
+% $k$th arm $n$ times, sum of rewards $Y_k=\sum_{i=1}^{n} X_k \sim \mathrm{Binomial}(n, \theta_k)$ because the sum of Bernoulli random variables is Binomial.
+% Then our goal is to infer $p(\theta_k|y_k)$ which represents the posterior distribution of $\theta_k$ given the observed rewards $y_k$. Intuitively, this represents the learned experience of the agent about the payoff of $k$th arm.
+% Most widely used method to find the posterior distribution $p(\theta_k|y_k)$ is \textit{Thomposon sampling} \citep{tom}, that uses the $\mathrm{Beta}(\alpha, \beta)$ distribution as the prior which is conjugate for the Binomial likelihood $p(y|\theta_k)$. Formally speaking,
+% \begin{align*}
+% p(\theta_k \mid y_k) & \propto p(y \mid \theta) p(\theta) =\left(\begin{array}{l}
+% n \\
+% y
+% \end{array}\right) \theta^y(1-\theta)^{n-y} \frac{1}{B(\alpha, \beta)} \theta_k^{\alpha-1}(1-\theta_k)^{\beta-1} \\
+% & \propto \theta_k^{y_k+\alpha-1}(1-\theta_k)^{n-y_k+\beta-1} \\
+% & \propto \operatorname{Beta}(y_k+\alpha, n-y_k+\beta) \\
+% & \propto \operatorname{Beta}(\text{number of success}+\alpha, \text{number of failure}+\beta) && (1)\\
+% \end{align*}
+% $(1)$ implies that by adding $1$ to the $\alpha$ when we get a reward from $\mathrm{Bernoulli}(\theta_k)$ and otherwise by adding $1$ to $\beta$,
+% we can update the posterior distribution $p(\theta_k \mid y_k)$.
+\subsection{Adopting Categorized Bandit}
+\ref{vanilla} models the payoff of each arm as Bernoulli distribution. However, this paper models the payoff of each arm as categorical distribution.
+This is to represent each legislator's varying level of authority over different issue areas. 
+% For example, senator Joe Manchin has a high authority
+% over the issue area of energy and natural resources because he is the chair of the Senate Energy and Natural Resources Committee.
+% In comparison, senator Ron Wyden has a higher authority over the issue area of tax policy because he is the chair of the Senate Finance Committee.
+To model this varying level of authority over different issue areas, this paper models the payoff of each arm as categorical distribution. This scenario is recognized under the name of \textit{categorized bandit} and 
+\cite{catego} generalizes \textit{Thomposon sampling} \citep{tom} and introduces \textit{Murphy Sampling} to solve the categorical bandit problem. However, this solution doesn't consider the case of each agent having ordered preference over different categories.
+In the lobbying industry, it's common that clients have ordered preference over different issue areas. Therefore, the reward should be maximized when the ordered preference of each agent aligns with the categorical distribution of the legislator.
+% For example, \textit{Hyundai Motors, Co.}, a South Korea automobile manufacturer, was recently excluded from the U.S. government's environmental subsidy program for electric cars.
+% Since this exclusion is included in \textit{Inflation Reduction Act of 2022} and the bill was introduced by Rep. John Yarmuth, \textit{Hyundai Motors, Co.} has a huge incentive to interact with Rep. John Yarmuth to acquire information about the bill.
+In this context, \cite{NEURIPS2019_83462e22} introduces a new algorithm called \textit{CatSE}\label{cat} to solve the categorized bandit problem under the assumption of ordered preference of each agent. Therefore, this paper will use this algorithm to solve the categorized bandit problem.
+
+\subsection{Multi-Agent Multi-Armed (MAMA) Bandit Problem}
+% Since this paper aims to plausibly abstractize U.S. lobbying industry and observe the emergence of lobbyists by simulation, this paper allows the delegation of exploration to other agents. 
+% Now let's think about multiple bandit agents that can successfully update their posterior distribution by interacting with arms.
+
+Simply creating multiple agents doesn't make it a meaningful multi-agent problem because the agents are not interacting with each other.
+To plausibly abstractize the U.S. lobbying industry, this paper assumes a special institutional structure where agents can delegate their exploration to other agents.
+To implment this, this paper provides a special arm to each agent on every round. Except the initial round, all agents get provided with the best rewarding arm to them from the pool of learned arms' distribution of all agents. 
+This arm represents "delegation" and agents who chose that delegating arm will get the reward following the action of the agent who is the master of that arm. However, since this delegation always give the benefit to agents,
+the reward from this special arm will be discounted with proper hyperparameter. Then total sum of discounted rewards will be conferred to the delegated agents. This resembles the situation where the lobbying firm is the master of the delegation arm and the client is the agent who delegates its exploration to the lobbying firm. Then the discount factor represents the cost of hiring the lobbying firm.
+
+This paper expects that agents who have more biased preference over specific category will be eventually be the master of the delegation arm. This is because the agents who have more biased preference over specific category will be more likely to choose the arm that has the highest reward for them. 
+This represents the U.S. lobbying industry where the lobbyists are specialized in specific issue areas and the clients delegate their exploration to those specialized lobbyists.
+
+
+% Therefore, this paper expects that the agents who have more biased preference over specific category will be eventually be the master of the delegation arm. This is because the agents who have more biased preference over specific category will be more likely to choose the arm that has the highest reward for them. Therefore, this paper expects that the agents who have more biased preference over specific category will be eventually be the master of the delegation arm. This is because the agents who have more biased preference over specific category will be more likely to choose the arm that has the highest reward for them. Therefore, this paper expects that the agents who have more biased preference over specific category will be eventually be the master of the delegation arm. This is because the agents who have more biased preference over specific category will be more likely to choose the arm that has the highest reward for them. Therefore, this paper expects that the agents who have more biased preference over specific category will be eventually be the master of the delegation arm. This is because the agents who have more biased preference over specific category will be more likely to choose the arm that has the highest reward for them. Therefore, this paper expects that the agents who have more biased preference over specific category will be eventually be the master of the delegation arm. This is because the agents who have more biased preference over specific category will be more likely to choose the arm that has the highest reward for them. Therefore, this paper expects that the agents who have more biased preference over specific category will be eventually be the master of the delegation arm. This is because the agents who have more biased preference over specific category will be more likely to choose the arm that has the highest reward for them. Therefore, this paper expects that the agents who have more biased preference over specific category will be eventually be the master of the delegation arm. This is because the agents who have more biased preference over specific category will be more likely to choose the arm that has the highest reward for them. Therefore, this paper expects that the agents who have more biased preference over specific category will be eventually be the master of the delegation arm. This is because the agents who have more biased preference over specific category will be more likely to choose the arm that has the highest reward for them. 
+
+
+
+
+%and the lobbying firm.  collects its fee from all clients respectively.
+
+
+% The rationale behind the multi-agent scenario is to observe how the agents interact with each other and this results in changes in the system.
+% Since this paper aims to plausibly abstractize U.S. lobbying industry and observe the emergence of lobbyists by simulation, this paper allows the delegation of exploration to other agents. 
+% For example, every round we add a special arm that represents "delegation" where it is the other agent's estimates over the payoff of an arm that provided best reward 
+% To plausibly abstractize the U.S. lobbying industry and observe the emergence of lobbyists by simulation, this paper allows the delegation of exploration to other agents.
+
+
+% show the emergence of lobbyists in a purely theoretical and simulated environment where no empirical data is involved. In other words,
+% This paper designs the MAMA bandit scenario that is plausibly similar to the real world lobbying industry. In addition, this paper is motivated by \cite{rif} which argues that lobbying is
+% to delegate information acquisition processes to lobbyists.
+% I suspect the incentive of delegation emerges from the initial asymmetry of information between agents.
+% In detail, at the initial stage, let's suppose an agent $A$ who interacted with a legislator who doesn't have a proper authority over the issue area where the agent $A$ is interested.
+% However, at the same time, there could be another agent $B$ who interacts with a legislator who has a proper authority over the issue area where the agent $A$ is interested.
+% Therefore, if we allow the agents to \textit{trade} their information, the agent $A$ can acquire the information about the issue area that he's interested in.
+% For example, \cite{mama} simulatively shows that the agents acquire higher total rewards if they're allowed to trade their information in MAMA situations.
+% In addition, if we allow agents to \textit{delegate} exploration, all agents are expected to score higher total rewards (pareto improvement). This is because a group of agents who share the same issue area of interest can explore more efficiently without duplicated interactions with poorly rewarding legislators when exploration is delegated to specific agents.
+% Therefore, this paper aims to find the set of institutional features that can lead to the emergence of lobbyists in a simulative environment.
+% Initial hunch is if we allow agents to delegate exploration, the system will converge to the equilibriums where the agents are grouped
+% by their issue area of interest and the agents who are responsible for exploration will arise. However, it's important to incorporate some constraints for delegation of exploration between agents to make the system more realistic.
+% For example, in the real world, clients hire lobbyists because it's cheap and efficient to delegate information acquisition processes to lobbyists.
+% Therefore, this paper should include the set of parameters that controls the \textit{discount factor} for the cost of exploration when the agent delegates its exploration to other agents. In addition, this paper also should include
+% some rules for the agents to determine whether to keep delegating exploration to other agents or not. In the real world, it's quite common that clients terminate the contract with lobbyists when they think it's not worth it to keep hiring them.
+% This kind of decision will be possible to incorporate by including another $\mathrm{Bernoulli}$ arm that represents the decision of the agent to keep delegating exploration to other agents or not.
+% By doing so, this paper will be able to interpret the posterior distribution of those $\mathrm{Bernoulli}$ arms as the probability of the agent to keep delegating exploration to other agents. Therefore, this will prove or disprove the stable existence of lobbyists in the system.
+
+\subsection{Purely Simulative Environment and Claim of the Paper}
+In this paper, I focus on the varying equalibrium across the different hyperparmeters that deterimines the number of legislators, number of categories and discount factors for delegation.
+% ratios of the number of legilsators to the number of clients.
+If the number of legislstors are very small, the incentive of delegation is weak because the exchaustive exploration is possible.
+However, if the number of legislators are sufficiently large, the incentive of delegation is strong because the exchaustive exploration is impossible
+and benefits from the delegation become more significant. To explore the emergence of lobbyists within the framework of exploitation and exploration dillemma with regard to the size of the exploration space, this paper purely relies on the simulation without involving any empirical data. 
+However, by observing the change of the equalibrium of the system with varying number of legilsators and issue areas, this paper aims to prove that lobbyists emerge when the number of legislators and number of issue categories are sufficiently large.
+
+
+
+\section{Summary of the Proposal and Future Directions}
+ 
+This paper aims to reproduce the emergence of lobbyists in a simulated environment.
+To do so, it's required to implement $(1)$ categorized bandit \citep{NEURIPS2019_83462e22} and $(2)$ institutional feature that enables delegation.
+After implementation, this paper will simulate the system and observe $(1)$ stability of the practice of delegation among agents and $(2)$ distributional characteristics of agents who keep delegated by other agents.
+ 
+The biggest motivation to adopt this simulative approach is to prepare a computational environment that can model the different behavioral and institutional features that different theories of lobbying highlight.
+% For example, \textit{persuasion} theories of lobbying are attacked under the empirical findings that people also lobby already like-minded legislators who don't need to be further persuaded.
+% However, I suspect this is because of the dynamically changing authority of legislators over time.
+% For the simplicity, this paper doesn't plan to model this dynamically changing authority of legislators over time.
+Once this simulative environment is prepared, we can gradually build up and test the different theories of lobbying in this simulation environment.
+Moreover, although this paper doesn't plan to involve any empirical data, this simulative environment can be equipped with the empirical data to more closely approximate the U.S. lobbying industry.
+For example, we can use the actual bill sponsor information to model the varying authorities of legislators over different issue areas. Also, we can use the actual lobbying data to model the varying preferences of clients over different issue areas.
+In conclusion, by preparing this computational environment, researchers will be able to test different theories on lobbying in a simulative environment. By doing so, this paper expects to facilitates agreement among scholars on answer to the question - "What is lobbying?".
+% The style files for NeurIPS and other conference information are available on
+% the World Wide Web at
+% \begin{center}
+%   \url{http://www.neurips.cc/}
+% \end{center}
+% The file \verb+neurips_2020.pdf+ contains these instructions and illustrates the
+% various formatting requirements your NeurIPS paper must satisfy.
+% The only supported style file for NeurIPS 2020 is \verb+neurips_2020.sty+,
+% rewritten for \LaTeXe{}.  \textbf{Previous style files for \LaTeX{} 2.09,
+%   Microsoft Word, and RTF are no longer supported!}
+% The \LaTeX{} style file contains three optional arguments: \verb+final+, which
+% creates a camera-ready copy, \verb+preprint+, which creates a preprint for
+% submission to, e.g., arXiv, and \verb+nonatbib+, which will not load the
+% \verb+natbib+ package for you in case of package clash.
+% \paragraph{Preprint option}
+% If you wish to post a preprint of your work online, e.g., on arXiv, using the
+% NeurIPS style, please use the \verb+preprint+ option. This will create a
+% nonanonymized version of your work with the text ``Preprint. Work in progress.''
+% in the footer. This version may be distributed as you see fit. Please \textbf{do
+%   not} use the \verb+final+ option, which should \textbf{only} be used for
+% papers accepted to NeurIPS.
+% At submission time, please omit the \verb+final+ and \verb+preprint+
+% options. This will anonymize your submission and add line numbers to aid
+% review. Please do \emph{not} refer to these line numbers in your paper as they
+% will be removed during generation of camera-ready copies.
+% The file \verb+neurips_2020.tex+ may be used as a ``shell'' for writing your
+% paper. All you have to do is replace the author, title, abstract, and text of
+% the paper with your own.
+% The formatting instructions contained in these style files are summarized in
+% Sections \ref{gen_inst}, \ref{headings}, and \ref{others} below.
+% \section{General formatting instructions}
+% \label{gen_inst}
+% The text must be confined within a rectangle 5.5~inches (33~picas) wide and
+% 9~inches (54~picas) long. The left margin is 1.5~inch (9~picas).  Use 10~point
+% type with a vertical spacing (leading) of 11~points.  Times New Roman is the
+% preferred typeface throughout, and will be selected for you by default.
+% Paragraphs are separated by \nicefrac{1}{2}~line space (5.5 points), with no
+% indentation.
+% The paper title should be 17~point, initial caps/lower case, bold, centered
+% between two horizontal rules. The top rule should be 4~points thick and the
+% bottom rule should be 1~point thick. Allow \nicefrac{1}{4}~inch space above and
+% below the title to rules. All pages should start at 1~inch (6~picas) from the
+% top of the page.
+% For the final version, authors' names are set in boldface, and each name is
+% centered above the corresponding address. The lead author's name is to be listed
+% first (left-most), and the co-authors' names (if different address) are set to
+% follow. If there is only one co-author, list both author and co-author side by
+% side.
+% Please pay special attention to the instructions in Section \ref{others}
+% regarding figures, tables, acknowledgments, and references.
+% \section{Headings: first level}
+% \label{headings}
+% All headings should be lower case (except for first word and proper nouns),
+% flush left, and bold.
+% First-level headings should be in 12-point type.
+% \subsection{Headings: second level}
+% Second-level headings should be in 10-point type.
+% \subsubsection{Headings: third level}
+% Third-level headings should be in 10-point type.
+% \paragraph{Paragraphs}
+% There is also a \verb+\paragraph+ command available, which sets the heading in
+% bold, flush left, and inline with the text, with the heading followed by 1\,em
+% of space.
+% \section{Citations, figures, tables, references}
+% \label{others}
+% These instructions apply to everyone.
+% \subsection{Citations within the text}
+% The \verb+natbib+ package will be loaded for you by default.  Citations may be
+% author/year or numeric, as long as you maintain internal consistency.  As to the
+% format of the references themselves, any style is acceptable as long as it is
+% used consistently.
+% The documentation for \verb+natbib+ may be found at
+% \begin{center}
+%   \url{http://mirrors.ctan.org/macros/latex/contrib/natbib/natnotes.pdf}
+% \end{center}
+% Of note is the command \verb+\citet+, which produces citations appropriate for
+% use in inline text.  For example,
+% \begin{verbatim}
+%    \citet{hasselmo} investigated\dots
+% \end{verbatim}
+% produces
+% \begin{quote}
+%   Hasselmo, et al.\ (1995) investigated\dots
+% \end{quote}
+% If you wish to load the \verb+natbib+ package with options, you may add the
+% following before loading the \verb+neurips_2020+ package:
+% \begin{verbatim}
+%    \PassOptionsToPackage{options}{natbib}
+% \end{verbatim}
+% If \verb+natbib+ clashes with another package you load, you can add the optional
+% argument \verb+nonatbib+ when loading the style file:
+% \begin{verbatim}
+%    \usepackage[nonatbib]{neurips_2020}
+% \end{verbatim}
+% As submission is double blind, refer to your own published work in the third
+% person. That is, use ``In the previous work of Jones et al.\ [4],'' not ``In our
+% previous work [4].'' If you cite your other papers that are not widely available
+% (e.g., a journal paper under review), use anonymous author names in the
+% citation, e.g., an author of the form ``A.\ Anonymous.''
+% \subsection{Footnotes}
+% Footnotes should be used sparingly.  If you do require a footnote, indicate
+% footnotes with a number\footnote{Sample of the first footnote.} in the
+% text. Place the footnotes at the bottom of the page on which they appear.
+% Precede the footnote with a horizontal rule of 2~inches (12~picas).
+% Note that footnotes are properly typeset \emph{after} punctuation
+% marks.\footnote{As in this example.}
+% \subsection{Figures}
+% \begin{figure}
+%   \centering
+%   \fbox{\rule[-.5cm]{0cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
+%   \caption{Sample figure caption.}
+% \end{figure}
+% All artwork must be neat, clean, and legible. Lines should be dark enough for
+% purposes of reproduction. The figure number and caption always appear after the
+% figure. Place one line space before the figure caption and one line space after
+% the figure. The figure caption should be lower case (except for first word and
+% proper nouns); figures are numbered consecutively.
+% You may use color figures.  However, it is best for the figure captions and the
+% paper body to be legible if the paper is printed in either black/white or in
+% color.
+% \subsection{Tables}
+% All tables must be centered, neat, clean and legible.  The table number and
+% title always appear before the table.  See Table~\ref{sample-table}.
+% Place one line space before the table title, one line space after the
+% table title, and one line space after the table. The table title must
+% be lower case (except for first word and proper nouns); tables are
+% numbered consecutively.
+% Note that publication-quality tables \emph{do not contain vertical rules.} We
+% strongly suggest the use of the \verb+booktabs+ package, which allows for
+% typesetting high-quality, professional tables:
+% \begin{center}
+%   \url{https://www.ctan.org/pkg/booktabs}
+% \end{center}
+% This package was used to typeset Table~\ref{sample-table}.
+% \begin{table}
+%   \caption{Sample table title}
+%   \label{sample-table}
+%   \centering
+%   \begin{tabular}{lll}
+%     \toprule
+%     \multicolumn{2}{c}{Part}                   \\
+%     \cmidrule(r){1-2}
+%     Name     & Description     & Size ($\mu$m) \\
+%     \midrule
+%     Dendrite & Input terminal  & $\sim$100     \\
+%     Axon     & Output terminal & $\sim$10      \\
+%     Soma     & Cell body       & up to $10^6$  \\
+%     \bottomrule
+%   \end{tabular}
+% \end{table}
+% \section{Final instructions}
+% Do not change any aspects of the formatting parameters in the style files.  In
+% particular, do not modify the width or length of the rectangle the text should
+% fit into, and do not change font sizes (except perhaps in the
+% \textbf{References} section; see below). Please note that pages should be
+% numbered.
+% \section{Preparing PDF files}
+% Please prepare submission files with paper size ``US Letter,'' and not, for
+% example, ``A4.''
+% Fonts were the main cause of problems in the past years. Your PDF file must only
+% contain Type 1 or Embedded TrueType fonts. Here are a few instructions to
+% achieve this.
+% \begin{itemize}
+% \item You should directly generate PDF files using \verb+pdflatex+.
+% \item You can check which fonts a PDF files uses.  In Acrobat Reader, select the
+%   menu Files$>$Document Properties$>$Fonts and select Show All Fonts. You can
+%   also use the program \verb+pdffonts+ which comes with \verb+xpdf+ and is
+%   available out-of-the-box on most Linux machines.
+% \item The IEEE has recommendations for generating PDF files whose fonts are also
+%   acceptable for NeurIPS. Please see
+%   \url{http://www.emfield.org/icuwb2010/downloads/IEEE-PDF-SpecV32.pdf}
+% \item \verb+xfig+ "patterned" shapes are implemented with bitmap fonts.  Use
+%   "solid" shapes instead.
+% \item The \verb+\bbold+ package almost always uses bitmap fonts.  You should use
+%   the equivalent AMS Fonts:
+% \begin{verbatim}
+%    \usepackage{amsfonts}
+% \end{verbatim}
+% followed by, e.g., \verb+\mathbb{R}+, \verb+\mathbb{N}+, or \verb+\mathbb{C}+
+% for $\mathbb{R}$, $\mathbb{N}$ or $\mathbb{C}$.  You can also use the following
+% workaround for reals, natural and complex:
+% \begin{verbatim}
+%    \newcommand{\RR}{I\!\!R} %real numbers
+%    \newcommand{\Nat}{I\!\!N} %natural numbers
+%    \newcommand{\CC}{I\!\!\!\!C} %complex numbers
+% \end{verbatim}
+% Note that \verb+amsfonts+ is automatically loaded by the \verb+amssymb+ package.
+% \end{itemize}
+% If your file contains type 3 fonts or non embedded TrueType fonts, we will ask
+% you to fix it.
+% \subsection{Margins in \LaTeX{}}
+% Most of the margin problems come from figures positioned by hand using
+% \verb+\special+ or other commands. We suggest using the command
+% \verb+\includegraphics+ from the \verb+graphicx+ package. Always specify the
+% figure width as a multiple of the line width as in the example below:
+% \begin{verbatim}
+%    \usepackage[pdftex]{graphicx} ...
+%    \includegraphics[width=0.8\linewidth]{myfile.pdf}
+% \end{verbatim}
+% See Section 4.4 in the graphics bundle documentation
+% (\url{http://mirrors.ctan.org/macros/latex/required/graphics/grfguide.pdf})
+% A number of width problems arise when \LaTeX{} cannot properly hyphenate a
+% line. Please give LaTeX hyphenation hints using the \verb+\-+ command when
+% necessary.
+% \section*{Broader Impact}
+% Authors are required to include a statement of the broader impact of their work, including its ethical aspects and future societal consequences.
+% Authors should discuss both positive and negative outcomes, if any. For instance, authors should discuss a)
+% who may benefit from this research, b) who may be put at disadvantage from this research, c) what are the consequences of failure of the system, and d) whether the task/method leverages
+% biases in the data. If authors believe this is not applicable to them, authors can simply state this.
+% Use unnumbered first level headings for this section, which should go at the end of the paper. {\bf Note that this section does not count towards the eight pages of content that are allowed.}
+% \begin{ack}
+% Use unnumbered first level headings for the acknowledgments. All acknowledgments
+% go at the end of the paper before the list of references. Moreover, you are required to declare
+% funding (financial activities supporting the submitted work) and competing interests (related financial activities outside the submitted work).
+% More information about this disclosure can be found at: \url{https://neurips.cc/Conferences/2020/PaperInformation/FundingDisclosure}.
+% Do {\bf not} include this section in the anonymized submission, only in the final paper. You can use the \texttt{ack} environment provided in the style file to autmoatically hide this section in the anonymized submission.
+% \end{ack}
+\bibliographystyle{apalike}
+\bibliography{biblio}
+% \section*{References}
+% References follow the acknowledgments. Use unnumbered first-level heading for
+% the references. Any choice of citation style is acceptable as long as you are
+% consistent. It is permissible to reduce the font size to \verb+small+ (9 point)
+% when listing the references.
+% {\bf Note that the Reference section does not count towards the eight pages of content that are allowed.}
+% \medskip
+% \small
+% [1] Alexander, J.A.\ \& Mozer, M.C.\ (1995) Template-based algorithms for
+% connectionist rule extraction. In G.\ Tesauro, D.S.\ Touretzky and T.K.\ Leen
+% (eds.), {\it Advances in Neural Information Processing Systems 7},
+% pp.\ 609--616. Cambridge, MA: MIT Press.
+% [2] Bower, J.M.\ \& Beeman, D.\ (1995) {\it The Book of GENESIS: Exploring
+%   Realistic Neural Models with the GEneral NEural SImulation System.}  New York:
+% TELOS/Springer--Verlag.
+% [3] Hasselmo, M.E., Schnell, E.\ \& Barkai, E.\ (1995) Dynamics of learning and
+% recall at excitatory recurrent synapses and cholinergic modulation in rat
+% hippocampal region CA3. {\it Journal of Neuroscience} {\bf 15}(7):5249-5262.
+
+\section{Further Directions}
+
+\begin{itemize}
+    \item Use Dirichlet distribution for arms (Need Boojum distribution, a conjugate prior of dirichlet distribution)
+    \item Check this article for Boojum distribution \url{https://arxiv.org/abs/1811.05266}
+\end{itemize}
+
+\end{document}
+ 
+ 
+ 
+
