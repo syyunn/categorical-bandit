@@ -274,7 +274,7 @@ Therefore, I randomly generate the category of interest of each interest group.
 I use the normalized cumulative regret 
 as the performance metric in the following simulations.
 The normalized cumulative regret is 
-defined as $\sum_t^T (p_{\phi(j)}^{\text{max}}-p_{a_t}^j) / (p_{\phi(j)}^{\text{max}}-p_{\phi(j)}^{\text{min}})$ 
+defined as $\sum_t^T (p_{\phi(j)}^{\text{max}}-p_{a_t}^j) / \sum_t^T(p_{\phi(j)}^{\text{max}}-p_{\phi(j)}^{\text{min}})$ 
 where $p_{\phi(j)}^{\text{max}} = \operatorname{argmax}_{k \in K}\{p_1^{({\phi(j)})}, p_2^{({\phi(j)})}, \hdots, p_K^{({\phi(j)})}\} $,
 $p_{\phi(j)}^{\text{min}} = \operatorname{argmin}_{k \in K}\{p_1^{({\phi(j)})}, p_2^{({\phi(j)})}, \hdots, p_K^{({\phi(j)})}\} $
 and $a_t$ represent the action (choice of legislator) taken by the interest group at time $t$.
@@ -431,7 +431,35 @@ I choose $|J|=5$ based on the
 average number of clients per each issue code in 
 \textit{Lobbying Disclosure Act} data in $2020$.
 
+With a lobbyist, average lowest 
 
+\begin{figure}[h!]
+    \centering % Not {needed}
+    \begin{subfigure}[b]{1\columnwidth}
+        \centering
+        \subfloat[]{
+        \includegraphics[width=0.7\textwidth]{images/large_search_lobbyist/rs.png}
+        }
+        \caption{Cumulative normalized regret of interest groups in small search space}
+        \label{fig:rs_lg}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{1\columnwidth}
+        \centering
+        \includegraphics[width=0.7\textwidth]{images/large_search_lobbyist/freq.png}
+        \caption{Real probabilities of category of interest $\phi(j)$ across legislators $p_1^{(\phi(j))}, p_2^{(\phi(j))} \hdots p_K^{(\phi(j))}$ and estimated probabilities of category of interest across legislators $\hat{p}_1^{(\phi(j))}, \hat{p}_2^{(\phi(j))} \hdots \hat{p}_K^{(\phi(j))}$ for random seed $0$.}
+        \label{fig:lgproba}
+    \end{subfigure}
+    %% leave a blank line to create a line break
+
+    \begin{subfigure}[b]{1\columnwidth}
+        \centering
+        \includegraphics[width=0.7\textwidth]{images/large_search_lobbyist/best_arm.png}
+        \caption{The proportion of each legislator taken by the interest group across legislators for random seed $0$.}
+        \label{fig:lgpropo}
+    \end{subfigure}
+    \caption{\textbf{Simulation II} Large Search Space}
+\end{figure}
 
 
 % to interact with by sampling $\mathbf{\hat{p}_{1j}}, \mathbf{\hat{p}_{2j}}, \hdots \mathbf{\hat{p}_{Kj}}$ from $\operatorname{Dir}(C, \mathbf{\alpha_{j1}})$,  $\operatorname{Dir}(C, \mathbf{\alpha_{j2}}), \hdots, \operatorname{Dir}(C, \mathbf{\alpha_{jK}})$ and
@@ -452,7 +480,7 @@ average number of clients per each issue code in
 
 
 
-\subsection{Simulation III: Large Search Space with Lobbyist}
+\section{Specialization of Lobbyists and Expert knowledge}
 I conjecture 
 that with the existence of lobbyist 
 interest groups can find the best legislator
