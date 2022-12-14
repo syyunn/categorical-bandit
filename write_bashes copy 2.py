@@ -1,10 +1,8 @@
 import numpy as np
 
-ptemps = np.linspace(0,1,11)
-expids = range(0, 100)
+ptemps = np.linspace(0,1,101)
 
 for ptemp in ptemps:
-    # for expid in expids:
     with open(f'./submit_ptemp{ptemp}.sh', 'w') as f:
         f.write(
 f"""#!/bin/bash

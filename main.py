@@ -520,35 +520,35 @@ if __name__ == "__main__":
     #     seed_lobbyist = 100
     # )
 
-    for seed in range(0, 10):
-        experiment(
-            B=1,
-            K=112,
-            C=26,
-            L=0,
-            N=2000,
-            cois=[0],
-            show=False,
-            prior=False,
-            prior_temp= args.ptemp, # ptemp \in [0,1]
-            expid = args.expid,
-            seed = seed,
-            legiswise = False,
-            seed_lobbyist = 100
-        )
+    # for seed in range(0, 10):
+    #     experiment(
+    #         B=1,
+    #         K=112,
+    #         C=26,
+    #         L=0,
+    #         N=2000,
+    #         cois=[0],
+    #         show=False,
+    #         prior=False,
+    #         prior_temp= args.ptemp, # ptemp \in [0,1]
+    #         expid = args.expid,
+    #         seed = seed,
+    #         legiswise = False,
+    #         seed_lobbyist = 100
+    #     )
 
-    # experiment(
-    #     B=1,
-    #     K=112,
-    #     C=26,
-    #     L=0,
-    #     N=2000,
-    #     cois=[0],
-    #     show=False,
-    #     prior=False,
-    #     prior_temp= args.ptemp, # ptemp \in [0,1]
-    #     expid = args.expid,
-    #     seed = args.seed,
-    #     legiswise = False,
-    #     seed_lobbyist = 100
-    # )
+    experiment(
+        B=10,
+        K=112,
+        C=26,
+        L=2,
+        N=2000,
+        cois=[0]*5 + [1]*5,
+        show=False,
+        prior=True,
+        prior_temp= args.ptemp, # ptemp \in [0,1]
+        expid = args.expid,
+        seed = args.seed,
+        legiswise = False,
+        seed_lobbyist = 100
+    )
