@@ -10,18 +10,6 @@ Grossman, G.~M. and Helpman, E. (1994).
 \newblock {Protection for Sale}.
 \newblock {\em American Economic Review}, 84(4):833--850.
 
-\bibitem[Jedor et~al., 2019]{NEURIPS2019_83462e22}
-Jedor, M., Perchet, V., and Louedec, J. (2019).
-\newblock Categorized bandits.
-\newblock In Wallach, H., Larochelle, H., Beygelzimer, A., d\textquotesingle
-  Alch\'{e}-Buc, F., Fox, E., and Garnett, R., editors, {\em Advances in Neural
-  Information Processing Systems}, volume~32. Curran Associates, Inc.
-
-\bibitem[Kaufmann et~al., 2018]{catego}
-Kaufmann, E., Koolen, W., and Garivier, A. (2018).
-\newblock Sequential test for the lowest mean: From thompson to murphy
-  sampling.
-
 \bibitem[Milbrath, 1984]{milbrath1984washington}
 Milbrath, L. (1984).
 \newblock {\em Washington Lobbyists Survey, 1956-1957}.

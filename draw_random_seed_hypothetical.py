@@ -14,22 +14,22 @@ import matplotlib.pyplot as plt
 plt.title("Normalized regrets in time")
 
 
-with open(f"/Users/suyeol/Dropbox (MIT)/categorical-bandit/experiment/results_K112_C26_N2000_B_5_L1_priorFalse_priorTemp_0.5_expid0_seed2139_legiswiseFalse_seed_lobbyist{100}/env.pickle", "rb") as f:
-    envp = pickle.load(f)
+# with open(f"/Users/suyeol/Dropbox (MIT)/categorical-bandit/experiment/results_K112_C26_N2000_B_5_L1_priorFalse_priorTemp_0.5_expid0_seed2139_legiswiseFalse_seed_lobbyist{100}/env.pickle", "rb") as f:
+#     envp = pickle.load(f)
 
-bandit = envp.bandits[0]
+# bandit = envp.bandits[0]
 
-plt.plot(
-    range(len(envp.bandits[0].regrets)),
-    [
-        (bandit.regrets[i] / ((bandit.best_proba - bandit.worst_proba) * i))
-        for i in range(len(bandit.regrets))
-    ],
-    label=f"flat prior",
-)
+# plt.plot(
+#     range(len(envp.bandits[0].regrets)),
+#     [
+#         (bandit.regrets[i] / ((bandit.best_proba - bandit.worst_proba) * i))
+#         for i in range(len(bandit.regrets))
+#     ],
+#     label=f"flat prior",
+# )
 
-for i in range(1,7):
-    with open(f"/Users/suyeol/Dropbox (MIT)/categorical-bandit/experiment/results_K112_C26_N2000_B_5_L1_priorFalse_priorTemp_0.5_expid0_seed2139_legiswiseFalse_seed_lobbyist{i}/env.pickle", "rb") as f:
+for i in range(0,10):
+    with open(f"/Users/MIT/Dropbox (MIT)/categorical-bandit/experiment5/results_K112_C26_N2000_B_1_L1_priorFalse_priorTemp_0.5_expid0_seed{i}_legiswiseFalse_seed_lobbyist100/env.pickle", "rb") as f:
         envp = pickle.load(f)
 
     bandit = envp.bandits[0]

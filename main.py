@@ -18,6 +18,7 @@ from env import CategoricalBanditEnv
 import argparse
 
 parser = argparse.ArgumentParser()
+parser.add_argument('--seed', type=int, default=0)
 parser.add_argument('--ptemp', type=float, default=0.5)
 parser.add_argument('--expid', type=int, default=0)
 args = parser.parse_args()
@@ -519,19 +520,35 @@ if __name__ == "__main__":
     #     seed_lobbyist = 100
     # )
 
-    for seed in range(0, 10):
-        experiment(
-            B=10,
-            K=32,
-            C=4,
-            L=1,
-            N=2000,
-            cois=[0]*10,
-            show=False,
-            prior=False,
-            prior_temp= args.ptemp, # ptemp \in [0,1]
-            expid = args.expid,
-            seed = seed,
-            legiswise = False,
-            seed_lobbyist = 100
-        )
+    # for seed in range(0, 10):
+    #     experiment(
+    #         B=1,
+    #         K=112,
+    #         C=26,
+    #         L=1,
+    #         N=2000,
+    #         cois=[0],
+    #         show=False,
+    #         prior=False,
+    #         prior_temp= args.ptemp, # ptemp \in [0,1]
+    #         expid = args.expid,
+    #         seed = seed,
+    #         legiswise = False,
+    #         seed_lobbyist = 100
+    #     )
+
+    experiment(
+        B=5,
+        K=112,
+        C=26,
+        L=1,
+        N=2000,
+        cois=[0]*5,
+        show=False,
+        prior=False,
+        prior_temp= args.ptemp, # ptemp \in [0,1]
+        expid = args.expid,
+        seed = args.seed,
+        legiswise = False,
+        seed_lobbyist = 100
+    )

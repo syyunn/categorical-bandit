@@ -12,6 +12,10 @@
 % to avoid loading the natbib package, add option nonatbib:
 % \usepackage[nonatbib]{neurips_2020} % anonymous version
 \usepackage[preprint]{neurips_2020}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{amssymb}
+\usepackage{float}
 \usepackage{amsmath}
 \usepackage{hyperref}
 \usepackage{physics}
@@ -234,8 +238,8 @@ At each timestep $t\in T$, interest group $j$ choose the $k$-th legislator to
 interact with and sample $X_k^t \in C$ from $\operatorname{Cat(C, \mathbf{p_k})}$.
 Then the interest group $j$ updates its prior belief over $\operatorname{Cat(C, \mathbf{p_k})}$ by adding $1$ to $\alpha_{jk}^{(X_k^t)}$.
 After update, the interest group $j$ chooses the next legislator $k_{t+1}$
-to interact with by sampling $\mathbf{\hat{p}_1}, \mathbf{\hat{p}_2}, \hdots \mathbf{\hat{p}_K}$ from $\operatorname{Dir}(C, \mathbf{\alpha_{j1}})$,  $\operatorname{Dir}(C, \mathbf{\alpha_{j2}}), \hdots, \operatorname{Dir}(C, \mathbf{\alpha_{jK}})$ and
-choose $k_{t+1} = \underset{K}{\operatorname{argmax}}\{\hat{p}^{(\phi(j))}_1, \hat{p}^{(\phi(j))}_2, \hdots, \hat{p}^{(\phi(j))}_K\}$.
+to interact with by sampling $\mathbf{\hat{p}_{1j}}, \mathbf{\hat{p}_{2j}}, \hdots \mathbf{\hat{p}_{Kj}}$ from $\operatorname{Dir}(C, \mathbf{\alpha_{j1}})$,  $\operatorname{Dir}(C, \mathbf{\alpha_{j2}}), \hdots, \operatorname{Dir}(C, \mathbf{\alpha_{jK}})$ and
+choose $k_{t+1} = \underset{K}{\operatorname{argmax}}\{\hat{p}^{(\phi(j))}_{1j}, \hat{p}^{(\phi(j))}_{2j}, \hdots, \hat{p}^{(\phi(j))}_{Kj}\}$.
 In this way the interest group $j$ can systematically update
 its prior belief and
 balance the exploration and exploitation by 
@@ -249,8 +253,7 @@ This strategy is called \textit{Thompson sampling} \citep{tom}.
 In this section, I provide a supportive evidence
 that interest groups 
 have incentives to delegate information acquisition process to lobbyists
-to solve the large search space problem in lobbying industry.
-Starting from showing that 
+to solve the large search space problem. Starting from showing that 
 interest groups fail to 
 find the best legislator to interact in
 case of large search space,
@@ -260,31 +263,229 @@ by hiring lobbyists by simulation.
 
 \subsection{Simulation I: Small Search Space}
 
+First, I simulate the case of small search space.
+In this simulation, I used $|K|=32, |C|=4, |J|=1\footnote{This is single agent setting}$ and $|T|=2000$.
+Since I don't have 
+have a good representation of
+the categorical distributions of legislators in real world,
+I randomly generate the categorical distribution of each legislator.
+Therefore, I randomly generate the category of interest of each interest group.
 
-\ref{vanilla} models the payoff of each arm as Bernoulli distribution. However, this paper models the payoff of each arm as categorical distribution.
-This is to represent each legislator's varying level of authority over different issue areas. 
-% For example, senator Joe Manchin has a high authority
-% over the issue area of energy and natural resources because he is the chair of the Senate Energy and Natural Resources Committee.
-% In comparison, senator Ron Wyden has a higher authority over the issue area of tax policy because he is the chair of the Senate Finance Committee.
-To model this varying level of authority over different issue areas, this paper models the payoff of each arm as categorical distribution. This scenario is recognized under the name of \textit{categorized bandit} and 
-\cite{catego} generalizes \textit{Thomposon sampling} \citep{tom} and introduces \textit{Murphy Sampling} to solve the categorical bandit problem. However, this solution doesn't consider the case of each agent having ordered preference over different categories.
-In the lobbying industry, it's common that clients have ordered preference over different issue areas. Therefore, the reward should be maximized when the ordered preference of each agent aligns with the categorical distribution of the legislator.
-% For example, \textit{Hyundai Motors, Co.}, a South Korea automobile manufacturer, was recently excluded from the U.S. government's environmental subsidy program for electric cars.
-% Since this exclusion is included in \textit{Inflation Reduction Act of 2022} and the bill was introduced by Rep. John Yarmuth, \textit{Hyundai Motors, Co.} has a huge incentive to interact with Rep. John Yarmuth to acquire information about the bill.
-In this context, \cite{NEURIPS2019_83462e22} introduces a new algorithm called \textit{CatSE}\label{cat} to solve the categorized bandit problem under the assumption of ordered preference of each agent. Therefore, this paper will use this algorithm to solve the categorized bandit problem.
+I use the normalized cumulative regret 
+as the performance metric in the following simulations.
+The normalized cumulative regret is 
+defined as $\sum_t^T (p_{\phi(j)}^{\text{max}}-p_{a_t}^j) / (p_{\phi(j)}^{\text{max}}-p_{\phi(j)}^{\text{min}})$ 
+where $p_{\phi(j)}^{\text{max}} = \operatorname{argmax}_{k \in K}\{p_1^{({\phi(j)})}, p_2^{({\phi(j)})}, \hdots, p_K^{({\phi(j)})}\} $,
+$p_{\phi(j)}^{\text{min}} = \operatorname{argmin}_{k \in K}\{p_1^{({\phi(j)})}, p_2^{({\phi(j)})}, \hdots, p_K^{({\phi(j)})}\} $
+and $a_t$ represent the action (choice of legislator) taken by the interest group at time $t$.
+Regret represents how much the agent could have been done better in terms of the reward if it had chosen the best action.
+Similarly, cumulative normalized regret 
+is sum of normalized regret over the entire time horizon $T$.
 
-\subsection{Multi-Agent Multi-Armed (MAMA) Bandit Problem}
-% Since this paper aims to plausibly abstractize U.S. lobbying industry and observe the emergence of lobbyists by simulation, this paper allows the delegation of exploration to other agents. 
-% Now let's think about multiple bandit agents that can successfully update their posterior distribution by interacting with arms.
+Figure \ref{fig:rs_small} shows that 
+normalized cumulative regrests of interest groups 
+decrease as the number of timesteps increases regardless of random seed which 
+represent different set of categorical distributions of legislators. This means that 
+interest groups successfully find the suitable legislator to interact with in small search space.
+In this scenario, search space consists of 
+$|K| \times |C| = 128$ number of parameters 
+which are relatively small 
+and interest groups can easily find the best legislator to interact with.
+Figure {fig:smallproba} shows that prior belief of the interest group estimates the real probabilities of category of interest across legislators closely. 
+In addition, figure \ref{fig:smallpropo} shows that the interest group successfully found the best legislator and keep interacting with the best one with the highest ratio.
 
-Simply creating multiple agents doesn't make it a meaningful multi-agent problem because the agents are not interacting with each other.
-To plausibly abstractize the U.S. lobbying industry, this paper assumes a special institutional structure where agents can delegate their exploration to other agents.
-To implment this, this paper provides a special arm to each agent on every round. Except the initial round, all agents get provided with the best rewarding arm to them from the pool of learned arms' distribution of all agents. 
-This arm represents "delegation" and agents who chose that delegating arm will get the reward following the action of the agent who is the master of that arm. However, since this delegation always give the benefit to agents,
-the reward from this special arm will be discounted with proper hyperparameter. Then total sum of discounted rewards will be conferred to the delegated agents. This resembles the situation where the lobbying firm is the master of the delegation arm and the client is the agent who delegates its exploration to the lobbying firm. Then the discount factor represents the cost of hiring the lobbying firm.
+\begin{figure}[h!]  
+    \centering % Not {needed}
+    \begin{subfigure}[b]{1\columnwidth}
+        \centering
+        \includegraphics[width=0.7\textwidth]{images/rs_small_search_space.png}
+        \caption{Cumulative normalized regret of interest groups in small search space}
+        \label{fig:rs_small}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{1\columnwidth}
+        \centering
+        \includegraphics[width=0.7\textwidth]{images/small_search_space/estimated_proba.png}
+        \caption{Real probabilities of category of interest $\phi(j)$ across legislators $p_1^{(\phi(j))}, p_2^{(\phi(j))} \hdots p_K^{(\phi(j))}$ and estimated probabilities of category of interest across legislators $\hat{p}_1^{(\phi(j))}, \hat{p}_2^{(\phi(j))} \hdots \hat{p}_K^{(\phi(j))}$ for random seed $0$.}
+        \label{fig:smallproba}
+    \end{subfigure}
+    %% leave a blank line to create a line break
 
-This paper expects that agents who have more biased preference over specific category will be eventually be the master of the delegation arm. This is because the agents who have more biased preference over specific category will be more likely to choose the arm that has the highest reward for them. 
-This represents the U.S. lobbying industry where the lobbyists are specialized in specific issue areas and the clients delegate their exploration to those specialized lobbyists.
+    \begin{subfigure}[b]{1\columnwidth}
+        \centering
+        \includegraphics[width=0.7\textwidth]{images/small_search_space/propo_action_taken.png}
+        \caption{The proportion of each legislator taken by the interest group across legislators for random seed $0$.}
+        \label{fig:smallpropo}
+    \end{subfigure}
+    \caption{\textbf{Simulation I} Small Search Space}
+\end{figure}
+    
+\subsection{Simulation II: Large Search Space}
+In the previous simulaton, 
+I used 
+arbitrary hyperparameters for $|K|$ and $|C|$.
+To closely approximate the real world case,
+now I use the hyperparameters of $|K|=112, |C|=26, |J|=1$ and $|T|=2000$.
+$|K|=112$ is the average number of 
+legislators to whom top 
+$10$ lobbying firms campaign contribute 
+and $|C|=26$ is the average number of
+issue areas per clients in $2020$.
+Both numbers are obtained from \textit{Lobbying Disclosure Act} data\footnote{Data is available through https://lda.senate.gov/filings/public/filing/search/}.
+
+In this case, interset groups fail to find the best legislator to interact with 
+regardless of the random seeds as shown in Fig \ref{fig:rs_lg}. 
+Compared to the previous simulation, cumulative normalized regret doesn't converge close to $0$
+within the time horizon $T=2000$.
+This is because 
+the search space is almost $23$ times larger than the previous simulation.
+Due to the large search space, 
+within the time constraint of $T=2000$,
+it's difficult for interest groups to 
+explore enough to find the best legislator to interact with.
+Therefore, prior belief of the interest group fails to estimate 
+the real world probabilities of legislators as shown in Fig \ref{fig:lgproba}.
+This result in exploiting 
+a worse legislator compared to the best one with the highest ratio 
+as shown in Figure $\ref{fig:lgpropo}$.
+
+\begin{figure}[h!]
+    \centering % Not {needed}
+    \begin{subfigure}[b]{1\columnwidth}
+        \centering
+        \subfloat[]{
+        \includegraphics[width=0.7\textwidth]{images/large_search_space/rs.png}
+        }
+        \caption{Cumulative normalized regret of interest groups in small search space}
+        \label{fig:rs_lg}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{1\columnwidth}
+        \centering
+        \includegraphics[width=0.7\textwidth]{images/large_search_space/estimated_proba.png}
+        \caption{Real probabilities of category of interest $\phi(j)$ across legislators $p_1^{(\phi(j))}, p_2^{(\phi(j))} \hdots p_K^{(\phi(j))}$ and estimated probabilities of category of interest across legislators $\hat{p}_1^{(\phi(j))}, \hat{p}_2^{(\phi(j))} \hdots \hat{p}_K^{(\phi(j))}$ for random seed $0$.}
+        \label{fig:lgproba}
+    \end{subfigure}
+    %% leave a blank line to create a line break
+
+    \begin{subfigure}[b]{1\columnwidth}
+        \centering
+        \includegraphics[width=0.7\textwidth]{images/large_search_space/propo_action_taken.png}
+        \caption{The proportion of each legislator taken by the interest group across legislators for random seed $0$.}
+        \label{fig:lgpropo}
+    \end{subfigure}
+    \caption{\textbf{Simulation II} Large Search Space}
+\end{figure}
+
+\subsection{Introducing Lobbyists into the Multi-Armed Bandit Setting}
+
+% Based on the  lobbying as a 
+% delegated infomration acquisition process,
+I conjecture 
+that interest groups
+with a shared category of interest 
+can hire the same lobbyist
+to find the best legislators 
+even in the large search space.
+To allow interest groups to hire lobbyists,
+I introduce a lobbyist $l \in L$ with its own set 
+of prior beliefs $\operatorname{Dir}(C, \boldmath{\alpha}_{lk})$ 
+where $\mathbf{\alpha_{lk}} = [\alpha_{lk}^{(1)}, \alpha_{lk}^{(2)}, \hdots, \alpha_{lk}^{(C)}]\quad \forall k \in K$.
+At each timestep $t$,
+an interest group $j$ choose 
+the next legislator $k_{t+1} = \underset{K}{\operatorname{argmax}}\left[\{\hat{p}^{(\phi(j))}_{1j}, \hat{p}^{(\phi(j))}_{2j}, \hdots, \hat{p}^{(\phi(j))}_{Kj}\}\cup\bigcup_{l\in L}\{\hat{p}^{(\phi(j))}_{1l}, \hat{p}^{(\phi(j))}_{2l}, \hdots, \hat{p}^{(\phi(j))}_{Kl}\}\right]$. 
+This means that 
+interest group $j$ chooses the best rewarding legislator based on the prior belief of all lobbyists and himself.
+For this to work, I assume complete information so that 
+any interest groups can 
+access to any lobbyists' prior belief. 
+In this setting, 
+if the interest group $j$ 
+chooses the next legislator $k_{t+1}$ 
+based on 
+the prior belief of lobbyist $l \in L$, 
+I update the prior belief of lobbyist 
+$l$ with the sampled observation $X_{k}^{t+1} \sim \operatorname{Cat(C, \mathbf{p_k})}$
+by adding $1$ to $\alpha_{lk}^{(X_k^{t+1})}$.
+However, 
+I don't update the 
+prior belief of interest group $j$, $\alpha_{jk}^{(X_k^{t+1})}$.
+This is because
+if an interest group hires a lobbyist,
+the lobbyist explore the legislative space on behalf of the interest group. 
+This means that the interest group who hired lobbyist 
+barely accumulates any experience what 
+the lobbyist has experienced.
+In addition, 
+if an interest group choose the next legislator based on their own prior belief,
+we update the prior belief of interest group $j$ as usual.
+
+\subsubsection{Simulation III: Large Search Space with a Lobbyist}
+
+Now, I simulate the 
+configuration of $|K|=112, |C|=26$ and $|T|=2000$
+with a lobbyist $|L|=1$ and $|J|=5$ number of 
+interest groups with a shared category of interest.
+This maintains the size of the search space as in the previous simulation.
+I choose $|J|=5$ based on the 
+average number of clients per each issue code in 
+\textit{Lobbying Disclosure Act} data in $2020$.
+
+
+
+
+% to interact with by sampling $\mathbf{\hat{p}_{1j}}, \mathbf{\hat{p}_{2j}}, \hdots \mathbf{\hat{p}_{Kj}}$ from $\operatorname{Dir}(C, \mathbf{\alpha_{j1}})$,  $\operatorname{Dir}(C, \mathbf{\alpha_{j2}}), \hdots, \operatorname{Dir}(C, \mathbf{\alpha_{jK}})$ and
+
+
+% This conjecture 
+% ,
+% they can concentrate 
+% their resources 
+% into a single agent (which is lobbyist)
+% and find the best legislator even in the case of large search space.
+
+% To model this scenario into the multi-armed bandit setting,
+
+
+
+ 
+
+
+
+\subsection{Simulation III: Large Search Space with Lobbyist}
+I conjecture 
+that with the existence of lobbyist 
+interest groups can find the best legislator
+even in the large search space.
+This is because lobbyists 
+concentrate 
+ 
+
+% \ref{vanilla} models the payoff of each arm as Bernoulli distribution. However, this paper models the payoff of each arm as categorical distribution.
+% This is to represent each legislator's varying level of authority over different issue areas. 
+% % For example, senator Joe Manchin has a high authority
+% % over the issue area of energy and natural resources because he is the chair of the Senate Energy and Natural Resources Committee.
+% % In comparison, senator Ron Wyden has a higher authority over the issue area of tax policy because he is the chair of the Senate Finance Committee.
+% To model this varying level of authority over different issue areas, this paper models the payoff of each arm as categorical distribution. This scenario is recognized under the name of \textit{categorized bandit} and 
+% \cite{catego} generalizes \textit{Thomposon sampling} \citep{tom} and introduces \textit{Murphy Sampling} to solve the categorical bandit problem. However, this solution doesn't consider the case of each agent having ordered preference over different categories.
+% In the lobbying industry, it's common that clients have ordered preference over different issue areas. Therefore, the reward should be maximized when the ordered preference of each agent aligns with the categorical distribution of the legislator.
+% % For example, \textit{Hyundai Motors, Co.}, a South Korea automobile manufacturer, was recently excluded from the U.S. government's environmental subsidy program for electric cars.
+% % Since this exclusion is included in \textit{Inflation Reduction Act of 2022} and the bill was introduced by Rep. John Yarmuth, \textit{Hyundai Motors, Co.} has a huge incentive to interact with Rep. John Yarmuth to acquire information about the bill.
+% In this context, \cite{NEURIPS2019_83462e22} introduces a new algorithm called \textit{CatSE}\label{cat} to solve the categorized bandit problem under the assumption of ordered preference of each agent. Therefore, this paper will use this algorithm to solve the categorized bandit problem.
+
+% \subsection{Multi-Agent Multi-Armed (MAMA) Bandit Problem}
+% % Since this paper aims to plausibly abstractize U.S. lobbying industry and observe the emergence of lobbyists by simulation, this paper allows the delegation of exploration to other agents. 
+% % Now let's think about multiple bandit agents that can successfully update their posterior distribution by interacting with arms.
+
+% Simply creating multiple agents doesn't make it a meaningful multi-agent problem because the agents are not interacting with each other.
+% To plausibly abstractize the U.S. lobbying industry, this paper assumes a special institutional structure where agents can delegate their exploration to other agents.
+% To implment this, this paper provides a special arm to each agent on every round. Except the initial round, all agents get provided with the best rewarding arm to them from the pool of learned arms' distribution of all agents. 
+% This arm represents "delegation" and agents who chose that delegating arm will get the reward following the action of the agent who is the master of that arm. However, since this delegation always give the benefit to agents,
+
+% the reward from this special arm will be discounted with proper hyperparameter. Then total sum of discounted rewards will be conferred to the delegated agents. This resembles the situation where the lobbying firm is the master of the delegation arm and the client is the agent who delegates its exploration to the lobbying firm. Then the discount factor represents the cost of hiring the lobbying firm.
+
+% This paper expects that agents who have more biased preference over specific category will be eventually be the master of the delegation arm. This is because the agents who have more biased preference over specific category will be more likely to choose the arm that has the highest reward for them. 
+% This represents the U.S. lobbying industry where the lobbyists are specialized in specific issue areas and the clients delegate their exploration to those specialized lobbyists.
 
 
 % Therefore, this paper expects that the agents who have more biased preference over specific category will be eventually be the master of the delegation arm. This is because the agents who have more biased preference over specific category will be more likely to choose the arm that has the highest reward for them. Therefore, this paper expects that the agents who have more biased preference over specific category will be eventually be the master of the delegation arm. This is because the agents who have more biased preference over specific category will be more likely to choose the arm that has the highest reward for them. Therefore, this paper expects that the agents who have more biased preference over specific category will be eventually be the master of the delegation arm. This is because the agents who have more biased preference over specific category will be more likely to choose the arm that has the highest reward for them. Therefore, this paper expects that the agents who have more biased preference over specific category will be eventually be the master of the delegation arm. This is because the agents who have more biased preference over specific category will be more likely to choose the arm that has the highest reward for them. Therefore, this paper expects that the agents who have more biased preference over specific category will be eventually be the master of the delegation arm. This is because the agents who have more biased preference over specific category will be more likely to choose the arm that has the highest reward for them. Therefore, this paper expects that the agents who have more biased preference over specific category will be eventually be the master of the delegation arm. This is because the agents who have more biased preference over specific category will be more likely to choose the arm that has the highest reward for them. Therefore, this paper expects that the agents who have more biased preference over specific category will be eventually be the master of the delegation arm. This is because the agents who have more biased preference over specific category will be more likely to choose the arm that has the highest reward for them. Therefore, this paper expects that the agents who have more biased preference over specific category will be eventually be the master of the delegation arm. This is because the agents who have more biased preference over specific category will be more likely to choose the arm that has the highest reward for them. 
@@ -319,274 +520,275 @@ This represents the U.S. lobbying industry where the lobbyists are specialized i
 % This kind of decision will be possible to incorporate by including another $\mathrm{Bernoulli}$ arm that represents the decision of the agent to keep delegating exploration to other agents or not.
 % By doing so, this paper will be able to interpret the posterior distribution of those $\mathrm{Bernoulli}$ arms as the probability of the agent to keep delegating exploration to other agents. Therefore, this will prove or disprove the stable existence of lobbyists in the system.
 
-\subsection{Purely Simulative Environment and Claim of the Paper}
-In this paper, I focus on the varying equalibrium across the different hyperparmeters that deterimines the number of legislators, number of categories and discount factors for delegation.
-% ratios of the number of legilsators to the number of clients.
-If the number of legislstors are very small, the incentive of delegation is weak because the exchaustive exploration is possible.
-However, if the number of legislators are sufficiently large, the incentive of delegation is strong because the exchaustive exploration is impossible
-and benefits from the delegation become more significant. To explore the emergence of lobbyists within the framework of exploitation and exploration dillemma with regard to the size of the exploration space, this paper purely relies on the simulation without involving any empirical data. 
-However, by observing the change of the equalibrium of the system with varying number of legilsators and issue areas, this paper aims to prove that lobbyists emerge when the number of legislators and number of issue categories are sufficiently large.
+% \subsection{Purely Simulative Environment and Claim of the Paper}
+% In this paper, I focus on the varying equalibrium across the different hyperparmeters that deterimines the number of legislators, number of categories and discount factors for delegation.
+% % ratios of the number of legilsators to the number of clients.
+% If the number of legislstors are very small, the incentive of delegation is weak because the exchaustive exploration is possible.
+% However, if the number of legislators are sufficiently large, the incentive of delegation is strong because the exchaustive exploration is impossible
+% and benefits from the delegation become more significant. To explore the emergence of lobbyists within the framework of exploitation and exploration dillemma with regard to the size of the exploration space, this paper purely relies on the simulation without involving any empirical data. 
+% However, by observing the change of the equalibrium of the system with varying number of legilsators and issue areas, this paper aims to prove that lobbyists emerge when the number of legislators and number of issue categories are sufficiently large.
 
 
 
-\section{Summary of the Proposal and Future Directions}
+% \section{Summary of the Proposal and Future Directions}
  
-This paper aims to reproduce the emergence of lobbyists in a simulated environment.
-To do so, it's required to implement $(1)$ categorized bandit \citep{NEURIPS2019_83462e22} and $(2)$ institutional feature that enables delegation.
-After implementation, this paper will simulate the system and observe $(1)$ stability of the practice of delegation among agents and $(2)$ distributional characteristics of agents who keep delegated by other agents.
+% This paper aims to reproduce the emergence of lobbyists in a simulated environment.
+% To do so, it's required to implement $(1)$ categorized bandit \citep{NEURIPS2019_83462e22} and $(2)$ institutional feature that enables delegation.
+% After implementation, this paper will simulate the system and observe $(1)$ stability of the practice of delegation among agents and $(2)$ distributional characteristics of agents who keep delegated by other agents.
  
-The biggest motivation to adopt this simulative approach is to prepare a computational environment that can model the different behavioral and institutional features that different theories of lobbying highlight.
-% For example, \textit{persuasion} theories of lobbying are attacked under the empirical findings that people also lobby already like-minded legislators who don't need to be further persuaded.
-% However, I suspect this is because of the dynamically changing authority of legislators over time.
-% For the simplicity, this paper doesn't plan to model this dynamically changing authority of legislators over time.
-Once this simulative environment is prepared, we can gradually build up and test the different theories of lobbying in this simulation environment.
-Moreover, although this paper doesn't plan to involve any empirical data, this simulative environment can be equipped with the empirical data to more closely approximate the U.S. lobbying industry.
-For example, we can use the actual bill sponsor information to model the varying authorities of legislators over different issue areas. Also, we can use the actual lobbying data to model the varying preferences of clients over different issue areas.
-In conclusion, by preparing this computational environment, researchers will be able to test different theories on lobbying in a simulative environment. By doing so, this paper expects to facilitates agreement among scholars on answer to the question - "What is lobbying?".
-% The style files for NeurIPS and other conference information are available on
-% the World Wide Web at
-% \begin{center}
-%   \url{http://www.neurips.cc/}
-% \end{center}
-% The file \verb+neurips_2020.pdf+ contains these instructions and illustrates the
-% various formatting requirements your NeurIPS paper must satisfy.
-% The only supported style file for NeurIPS 2020 is \verb+neurips_2020.sty+,
-% rewritten for \LaTeXe{}.  \textbf{Previous style files for \LaTeX{} 2.09,
-%   Microsoft Word, and RTF are no longer supported!}
-% The \LaTeX{} style file contains three optional arguments: \verb+final+, which
-% creates a camera-ready copy, \verb+preprint+, which creates a preprint for
-% submission to, e.g., arXiv, and \verb+nonatbib+, which will not load the
-% \verb+natbib+ package for you in case of package clash.
-% \paragraph{Preprint option}
-% If you wish to post a preprint of your work online, e.g., on arXiv, using the
-% NeurIPS style, please use the \verb+preprint+ option. This will create a
-% nonanonymized version of your work with the text ``Preprint. Work in progress.''
-% in the footer. This version may be distributed as you see fit. Please \textbf{do
-%   not} use the \verb+final+ option, which should \textbf{only} be used for
-% papers accepted to NeurIPS.
-% At submission time, please omit the \verb+final+ and \verb+preprint+
-% options. This will anonymize your submission and add line numbers to aid
-% review. Please do \emph{not} refer to these line numbers in your paper as they
-% will be removed during generation of camera-ready copies.
-% The file \verb+neurips_2020.tex+ may be used as a ``shell'' for writing your
-% paper. All you have to do is replace the author, title, abstract, and text of
-% the paper with your own.
-% The formatting instructions contained in these style files are summarized in
-% Sections \ref{gen_inst}, \ref{headings}, and \ref{others} below.
-% \section{General formatting instructions}
-% \label{gen_inst}
-% The text must be confined within a rectangle 5.5~inches (33~picas) wide and
-% 9~inches (54~picas) long. The left margin is 1.5~inch (9~picas).  Use 10~point
-% type with a vertical spacing (leading) of 11~points.  Times New Roman is the
-% preferred typeface throughout, and will be selected for you by default.
-% Paragraphs are separated by \nicefrac{1}{2}~line space (5.5 points), with no
-% indentation.
-% The paper title should be 17~point, initial caps/lower case, bold, centered
-% between two horizontal rules. The top rule should be 4~points thick and the
-% bottom rule should be 1~point thick. Allow \nicefrac{1}{4}~inch space above and
-% below the title to rules. All pages should start at 1~inch (6~picas) from the
-% top of the page.
-% For the final version, authors' names are set in boldface, and each name is
-% centered above the corresponding address. The lead author's name is to be listed
-% first (left-most), and the co-authors' names (if different address) are set to
-% follow. If there is only one co-author, list both author and co-author side by
-% side.
-% Please pay special attention to the instructions in Section \ref{others}
-% regarding figures, tables, acknowledgments, and references.
-% \section{Headings: first level}
-% \label{headings}
-% All headings should be lower case (except for first word and proper nouns),
-% flush left, and bold.
-% First-level headings should be in 12-point type.
-% \subsection{Headings: second level}
-% Second-level headings should be in 10-point type.
-% \subsubsection{Headings: third level}
-% Third-level headings should be in 10-point type.
-% \paragraph{Paragraphs}
-% There is also a \verb+\paragraph+ command available, which sets the heading in
-% bold, flush left, and inline with the text, with the heading followed by 1\,em
-% of space.
-% \section{Citations, figures, tables, references}
-% \label{others}
-% These instructions apply to everyone.
-% \subsection{Citations within the text}
-% The \verb+natbib+ package will be loaded for you by default.  Citations may be
-% author/year or numeric, as long as you maintain internal consistency.  As to the
-% format of the references themselves, any style is acceptable as long as it is
-% used consistently.
-% The documentation for \verb+natbib+ may be found at
-% \begin{center}
-%   \url{http://mirrors.ctan.org/macros/latex/contrib/natbib/natnotes.pdf}
-% \end{center}
-% Of note is the command \verb+\citet+, which produces citations appropriate for
-% use in inline text.  For example,
-% \begin{verbatim}
-%    \citet{hasselmo} investigated\dots
-% \end{verbatim}
-% produces
-% \begin{quote}
-%   Hasselmo, et al.\ (1995) investigated\dots
-% \end{quote}
-% If you wish to load the \verb+natbib+ package with options, you may add the
-% following before loading the \verb+neurips_2020+ package:
-% \begin{verbatim}
-%    \PassOptionsToPackage{options}{natbib}
-% \end{verbatim}
-% If \verb+natbib+ clashes with another package you load, you can add the optional
-% argument \verb+nonatbib+ when loading the style file:
-% \begin{verbatim}
-%    \usepackage[nonatbib]{neurips_2020}
-% \end{verbatim}
-% As submission is double blind, refer to your own published work in the third
-% person. That is, use ``In the previous work of Jones et al.\ [4],'' not ``In our
-% previous work [4].'' If you cite your other papers that are not widely available
-% (e.g., a journal paper under review), use anonymous author names in the
-% citation, e.g., an author of the form ``A.\ Anonymous.''
-% \subsection{Footnotes}
-% Footnotes should be used sparingly.  If you do require a footnote, indicate
-% footnotes with a number\footnote{Sample of the first footnote.} in the
-% text. Place the footnotes at the bottom of the page on which they appear.
-% Precede the footnote with a horizontal rule of 2~inches (12~picas).
-% Note that footnotes are properly typeset \emph{after} punctuation
-% marks.\footnote{As in this example.}
-% \subsection{Figures}
-% \begin{figure}
-%   \centering
-%   \fbox{\rule[-.5cm]{0cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
-%   \caption{Sample figure caption.}
-% \end{figure}
-% All artwork must be neat, clean, and legible. Lines should be dark enough for
-% purposes of reproduction. The figure number and caption always appear after the
-% figure. Place one line space before the figure caption and one line space after
-% the figure. The figure caption should be lower case (except for first word and
-% proper nouns); figures are numbered consecutively.
-% You may use color figures.  However, it is best for the figure captions and the
-% paper body to be legible if the paper is printed in either black/white or in
-% color.
-% \subsection{Tables}
-% All tables must be centered, neat, clean and legible.  The table number and
-% title always appear before the table.  See Table~\ref{sample-table}.
-% Place one line space before the table title, one line space after the
-% table title, and one line space after the table. The table title must
-% be lower case (except for first word and proper nouns); tables are
-% numbered consecutively.
-% Note that publication-quality tables \emph{do not contain vertical rules.} We
-% strongly suggest the use of the \verb+booktabs+ package, which allows for
-% typesetting high-quality, professional tables:
-% \begin{center}
-%   \url{https://www.ctan.org/pkg/booktabs}
-% \end{center}
-% This package was used to typeset Table~\ref{sample-table}.
-% \begin{table}
-%   \caption{Sample table title}
-%   \label{sample-table}
-%   \centering
-%   \begin{tabular}{lll}
-%     \toprule
-%     \multicolumn{2}{c}{Part}                   \\
-%     \cmidrule(r){1-2}
-%     Name     & Description     & Size ($\mu$m) \\
-%     \midrule
-%     Dendrite & Input terminal  & $\sim$100     \\
-%     Axon     & Output terminal & $\sim$10      \\
-%     Soma     & Cell body       & up to $10^6$  \\
-%     \bottomrule
-%   \end{tabular}
-% \end{table}
-% \section{Final instructions}
-% Do not change any aspects of the formatting parameters in the style files.  In
-% particular, do not modify the width or length of the rectangle the text should
-% fit into, and do not change font sizes (except perhaps in the
-% \textbf{References} section; see below). Please note that pages should be
-% numbered.
-% \section{Preparing PDF files}
-% Please prepare submission files with paper size ``US Letter,'' and not, for
-% example, ``A4.''
-% Fonts were the main cause of problems in the past years. Your PDF file must only
-% contain Type 1 or Embedded TrueType fonts. Here are a few instructions to
-% achieve this.
-% \begin{itemize}
-% \item You should directly generate PDF files using \verb+pdflatex+.
-% \item You can check which fonts a PDF files uses.  In Acrobat Reader, select the
-%   menu Files$>$Document Properties$>$Fonts and select Show All Fonts. You can
-%   also use the program \verb+pdffonts+ which comes with \verb+xpdf+ and is
-%   available out-of-the-box on most Linux machines.
-% \item The IEEE has recommendations for generating PDF files whose fonts are also
-%   acceptable for NeurIPS. Please see
-%   \url{http://www.emfield.org/icuwb2010/downloads/IEEE-PDF-SpecV32.pdf}
-% \item \verb+xfig+ "patterned" shapes are implemented with bitmap fonts.  Use
-%   "solid" shapes instead.
-% \item The \verb+\bbold+ package almost always uses bitmap fonts.  You should use
-%   the equivalent AMS Fonts:
-% \begin{verbatim}
-%    \usepackage{amsfonts}
-% \end{verbatim}
-% followed by, e.g., \verb+\mathbb{R}+, \verb+\mathbb{N}+, or \verb+\mathbb{C}+
-% for $\mathbb{R}$, $\mathbb{N}$ or $\mathbb{C}$.  You can also use the following
-% workaround for reals, natural and complex:
-% \begin{verbatim}
-%    \newcommand{\RR}{I\!\!R} %real numbers
-%    \newcommand{\Nat}{I\!\!N} %natural numbers
-%    \newcommand{\CC}{I\!\!\!\!C} %complex numbers
-% \end{verbatim}
-% Note that \verb+amsfonts+ is automatically loaded by the \verb+amssymb+ package.
-% \end{itemize}
-% If your file contains type 3 fonts or non embedded TrueType fonts, we will ask
-% you to fix it.
-% \subsection{Margins in \LaTeX{}}
-% Most of the margin problems come from figures positioned by hand using
-% \verb+\special+ or other commands. We suggest using the command
-% \verb+\includegraphics+ from the \verb+graphicx+ package. Always specify the
-% figure width as a multiple of the line width as in the example below:
-% \begin{verbatim}
-%    \usepackage[pdftex]{graphicx} ...
-%    \includegraphics[width=0.8\linewidth]{myfile.pdf}
-% \end{verbatim}
-% See Section 4.4 in the graphics bundle documentation
-% (\url{http://mirrors.ctan.org/macros/latex/required/graphics/grfguide.pdf})
-% A number of width problems arise when \LaTeX{} cannot properly hyphenate a
-% line. Please give LaTeX hyphenation hints using the \verb+\-+ command when
-% necessary.
-% \section*{Broader Impact}
-% Authors are required to include a statement of the broader impact of their work, including its ethical aspects and future societal consequences.
-% Authors should discuss both positive and negative outcomes, if any. For instance, authors should discuss a)
-% who may benefit from this research, b) who may be put at disadvantage from this research, c) what are the consequences of failure of the system, and d) whether the task/method leverages
-% biases in the data. If authors believe this is not applicable to them, authors can simply state this.
-% Use unnumbered first level headings for this section, which should go at the end of the paper. {\bf Note that this section does not count towards the eight pages of content that are allowed.}
-% \begin{ack}
-% Use unnumbered first level headings for the acknowledgments. All acknowledgments
-% go at the end of the paper before the list of references. Moreover, you are required to declare
-% funding (financial activities supporting the submitted work) and competing interests (related financial activities outside the submitted work).
-% More information about this disclosure can be found at: \url{https://neurips.cc/Conferences/2020/PaperInformation/FundingDisclosure}.
-% Do {\bf not} include this section in the anonymized submission, only in the final paper. You can use the \texttt{ack} environment provided in the style file to autmoatically hide this section in the anonymized submission.
-% \end{ack}
+% The biggest motivation to adopt this simulative approach is to prepare a computational environment that can model the different behavioral and institutional features that different theories of lobbying highlight.
+% % For example, \textit{persuasion} theories of lobbying are attacked under the empirical findings that people also lobby already like-minded legislators who don't need to be further persuaded.
+% % However, I suspect this is because of the dynamically changing authority of legislators over time.
+% % For the simplicity, this paper doesn't plan to model this dynamically changing authority of legislators over time.
+% Once this simulative environment is prepared, we can gradually build up and test the different theories of lobbying in this simulation environment.
+% Moreover, although this paper doesn't plan to involve any empirical data, this simulative environment can be equipped with the empirical data to more closely approximate the U.S. lobbying industry.
+% For example, we can use the actual bill sponsor information to model the varying authorities of legislators over different issue areas. Also, we can use the actual lobbying data to model the varying preferences of clients over different issue areas.
+% In conclusion, by preparing this computational environment, researchers will be able to test different theories on lobbying in a simulative environment. By doing so, this paper expects to facilitates agreement among scholars on answer to the question - "What is lobbying?".
+% % The style files for NeurIPS and other conference information are available on
+% % the World Wide Web at
+% % \begin{center}
+% %   \url{http://www.neurips.cc/}
+% % \end{center}
+% % The file \verb+neurips_2020.pdf+ contains these instructions and illustrates the
+% % various formatting requirements your NeurIPS paper must satisfy.
+% % The only supported style file for NeurIPS 2020 is \verb+neurips_2020.sty+,
+% % rewritten for \LaTeXe{}.  \textbf{Previous style files for \LaTeX{} 2.09,
+% %   Microsoft Word, and RTF are no longer supported!}
+% % The \LaTeX{} style file contains three optional arguments: \verb+final+, which
+% % creates a camera-ready copy, \verb+preprint+, which creates a preprint for
+% % submission to, e.g., arXiv, and \verb+nonatbib+, which will not load the
+% % \verb+natbib+ package for you in case of package clash.
+% % \paragraph{Preprint option}
+% % If you wish to post a preprint of your work online, e.g., on arXiv, using the
+% % NeurIPS style, please use the \verb+preprint+ option. This will create a
+% % nonanonymized version of your work with the text ``Preprint. Work in progress.''
+% % in the footer. This version may be distributed as you see fit. Please \textbf{do
+% %   not} use the \verb+final+ option, which should \textbf{only} be used for
+% % papers accepted to NeurIPS.
+% % At submission time, please omit the \verb+final+ and \verb+preprint+
+% % options. This will anonymize your submission and add line numbers to aid
+% % review. Please do \emph{not} refer to these line numbers in your paper as they
+% % will be removed during generation of camera-ready copies.
+% % The file \verb+neurips_2020.tex+ may be used as a ``shell'' for writing your
+% % paper. All you have to do is replace the author, title, abstract, and text of
+% % the paper with your own.
+% % The formatting instructions contained in these style files are summarized in
+% % Sections \ref{gen_inst}, \ref{headings}, and \ref{others} below.
+% % \section{General formatting instructions}
+% % \label{gen_inst}
+% % The text must be confined within a rectangle 5.5~inches (33~picas) wide and
+% % 9~inches (54~picas) long. The left margin is 1.5~inch (9~picas).  Use 10~point
+% % type with a vertical spacing (leading) of 11~points.  Times New Roman is the
+% % preferred typeface throughout, and will be selected for you by default.
+% % Paragraphs are separated by \nicefrac{1}{2}~line space (5.5 points), with no
+% % indentation.
+% % The paper title should be 17~point, initial caps/lower case, bold, centered
+% % between two horizontal rules. The top rule should be 4~points thick and the
+% % bottom rule should be 1~point thick. Allow \nicefrac{1}{4}~inch space above and
+% % below the title to rules. All pages should start at 1~inch (6~picas) from the
+% % top of the page.
+% % For the final version, authors' names are set in boldface, and each name is
+% % centered above the corresponding address. The lead author's name is to be listed
+% % first (left-most), and the co-authors' names (if different address) are set to
+% % follow. If there is only one co-author, list both author and co-author side by
+% % side.
+% % Please pay special attention to the instructions in Section \ref{others}
+% % regarding figures, tables, acknowledgments, and references.
+% % \section{Headings: first level}
+% % \label{headings}
+% % All headings should be lower case (except for first word and proper nouns),
+% % flush left, and bold.
+% % First-level headings should be in 12-point type.
+% % \subsection{Headings: second level}
+% % Second-level headings should be in 10-point type.
+% % \subsubsection{Headings: third level}
+% % Third-level headings should be in 10-point type.
+% % \paragraph{Paragraphs}
+% % There is also a \verb+\paragraph+ command available, which sets the heading in
+% % bold, flush left, and inline with the text, with the heading followed by 1\,em
+% % of space.
+% % \section{Citations, figures, tables, references}
+% % \label{others}
+% % These instructions apply to everyone.
+% % \subsection{Citations within the text}
+% % The \verb+natbib+ package will be loaded for you by default.  Citations may be
+% % author/year or numeric, as long as you maintain internal consistency.  As to the
+% % format of the references themselves, any style is acceptable as long as it is
+% % used consistently.
+% % The documentation for \verb+natbib+ may be found at
+% % \begin{center}
+% %   \url{http://mirrors.ctan.org/macros/latex/contrib/natbib/natnotes.pdf}
+% % \end{center}
+% % Of note is the command \verb+\citet+, which produces citations appropriate for
+% % use in inline text.  For example,
+% % \begin{verbatim}
+% %    \citet{hasselmo} investigated\dots
+% % \end{verbatim}
+% % produces
+% % \begin{quote}
+% %   Hasselmo, et al.\ (1995) investigated\dots
+% % \end{quote}
+% % If you wish to load the \verb+natbib+ package with options, you may add the
+% % following before loading the \verb+neurips_2020+ package:
+% % \begin{verbatim}
+% %    \PassOptionsToPackage{options}{natbib}
+% % \end{verbatim}
+% % If \verb+natbib+ clashes with another package you load, you can add the optional
+% % argument \verb+nonatbib+ when loading the style file:
+% % \begin{verbatim}
+% %    \usepackage[nonatbib]{neurips_2020}
+% % \end{verbatim}
+% % As submission is double blind, refer to your own published work in the third
+% % person. That is, use ``In the previous work of Jones et al.\ [4],'' not ``In our
+% % previous work [4].'' If you cite your other papers that are not widely available
+% % (e.g., a journal paper under review), use anonymous author names in the
+% % citation, e.g., an author of the form ``A.\ Anonymous.''
+% % \subsection{Footnotes}
+% % Footnotes should be used sparingly.  If you do require a footnote, indicate
+% % footnotes with a number\footnote{Sample of the first footnote.} in the
+% % text. Place the footnotes at the bottom of the page on which they appear.
+% % Precede the footnote with a horizontal rule of 2~inches (12~picas).
+% % Note that footnotes are properly typeset \emph{after} punctuation
+% % marks.\footnote{As in this example.}
+% % \subsection{Figures}
+% % \begin{figure}
+% %   \centering
+% %   \fbox{\rule[-.5cm]{0cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
+% %   \caption{Sample figure caption.}
+% % \end{figure}
+% % All artwork must be neat, clean, and legible. Lines should be dark enough for
+% % purposes of reproduction. The figure number and caption always appear after the
+% % figure. Place one line space before the figure caption and one line space after
+% % the figure. The figure caption should be lower case (except for first word and
+% % proper nouns); figures are numbered consecutively.
+% % You may use color figures.  However, it is best for the figure captions and the
+% % paper body to be legible if the paper is printed in either black/white or in
+% % color.
+% % \subsection{Tables}
+% % All tables must be centered, neat, clean and legible.  The table number and
+% % title always appear before the table.  See Table~\ref{sample-table}.
+% % Place one line space before the table title, one line space after the
+% % table title, and one line space after the table. The table title must
+% % be lower case (except for first word and proper nouns); tables are
+% % numbered consecutively.
+% % Note that publication-quality tables \emph{do not contain vertical rules.} We
+% % strongly suggest the use of the \verb+booktabs+ package, which allows for
+% % typesetting high-quality, professional tables:
+% % \begin{center}
+% %   \url{https://www.ctan.org/pkg/booktabs}
+% % \end{center}
+% % This package was used to typeset Table~\ref{sample-table}.
+% % \begin{table}
+% %   \caption{Sample table title}
+% %   \label{sample-table}
+% %   \centering
+% %   \begin{tabular}{lll}
+% %     \toprule
+% %     \multicolumn{2}{c}{Part}                   \\
+% %     \cmidrule(r){1-2}
+% %     Name     & Description     & Size ($\mu$m) \\
+% %     \midrule
+% %     Dendrite & Input terminal  & $\sim$100     \\
+% %     Axon     & Output terminal & $\sim$10      \\
+% %     Soma     & Cell body       & up to $10^6$  \\
+% %     \bottomrule
+% %   \end{tabular}
+% % \end{table}
+% % \section{Final instructions}
+% % Do not change any aspects of the formatting parameters in the style files.  In
+% % particular, do not modify the width or length of the rectangle the text should
+% % fit into, and do not change font sizes (except perhaps in the
+% % \textbf{References} section; see below). Please note that pages should be
+% % numbered.
+% % \section{Preparing PDF files}
+% % Please prepare submission files with paper size ``US Letter,'' and not, for
+% % example, ``A4.''
+% % Fonts were the main cause of problems in the past years. Your PDF file must only
+% % contain Type 1 or Embedded TrueType fonts. Here are a few instructions to
+% % achieve this.
+% % \begin{itemize}
+% % \item You should directly generate PDF files using \verb+pdflatex+.
+% % \item You can check which fonts a PDF files uses.  In Acrobat Reader, select the
+% %   menu Files$>$Document Properties$>$Fonts and select Show All Fonts. You can
+% %   also use the program \verb+pdffonts+ which comes with \verb+xpdf+ and is
+% %   available out-of-the-box on most Linux machines.
+% % \item The IEEE has recommendations for generating PDF files whose fonts are also
+% %   acceptable for NeurIPS. Please see
+% %   \url{http://www.emfield.org/icuwb2010/downloads/IEEE-PDF-SpecV32.pdf}
+% % \item \verb+xfig+ "patterned" shapes are implemented with bitmap fonts.  Use
+% %   "solid" shapes instead.
+% % \item The \verb+\bbold+ package almost always uses bitmap fonts.  You should use
+% %   the equivalent AMS Fonts:
+% % \begin{verbatim}
+% %    \usepackage{amsfonts}
+% % \end{verbatim}
+% % followed by, e.g., \verb+\mathbb{R}+, \verb+\mathbb{N}+, or \verb+\mathbb{C}+
+% % for $\mathbb{R}$, $\mathbb{N}$ or $\mathbb{C}$.  You can also use the following
+% % workaround for reals, natural and complex:
+% % \begin{verbatim}
+% %    \newcommand{\RR}{I\!\!R} %real numbers
+% %    \newcommand{\Nat}{I\!\!N} %natural numbers
+% %    \newcommand{\CC}{I\!\!\!\!C} %complex numbers
+% % \end{verbatim}
+% % Note that \verb+amsfonts+ is automatically loaded by the \verb+amssymb+ package.
+% % \end{itemize}
+% % If your file contains type 3 fonts or non embedded TrueType fonts, we will ask
+% % you to fix it.
+% % \subsection{Margins in \LaTeX{}}
+% % Most of the margin problems come from figures positioned by hand using
+% % \verb+\special+ or other commands. We suggest using the command
+% % \verb+\includegraphics+ from the \verb+graphicx+ package. Always specify the
+% % figure width as a multiple of the line width as in the example below:
+% % \begin{verbatim}
+% %    \usepackage[pdftex]{graphicx} ...
+% %    \includegraphics[width=0.8\linewidth]{myfile.pdf}
+% % \end{verbatim}
+% % See Section 4.4 in the graphics bundle documentation
+% % (\url{http://mirrors.ctan.org/macros/latex/required/graphics/grfguide.pdf})
+% % A number of width problems arise when \LaTeX{} cannot properly hyphenate a
+% % line. Please give LaTeX hyphenation hints using the \verb+\-+ command when
+% % necessary.
+% % \section*{Broader Impact}
+% % Authors are required to include a statement of the broader impact of their work, including its ethical aspects and future societal consequences.
+% % Authors should discuss both positive and negative outcomes, if any. For instance, authors should discuss a)
+% % who may benefit from this research, b) who may be put at disadvantage from this research, c) what are the consequences of failure of the system, and d) whether the task/method leverages
+% % biases in the data. If authors believe this is not applicable to them, authors can simply state this.
+% % Use unnumbered first level headings for this section, which should go at the end of the paper. {\bf Note that this section does not count towards the eight pages of content that are allowed.}
+% % \begin{ack}
+% % Use unnumbered first level headings for the acknowledgments. All acknowledgments
+% % go at the end of the paper before the list of references. Moreover, you are required to declare
+% % funding (financial activities supporting the submitted work) and competing interests (related financial activities outside the submitted work).
+% % More information about this disclosure can be found at: \url{https://neurips.cc/Conferences/2020/PaperInformation/FundingDisclosure}.
+% % Do {\bf not} include this section in the anonymized submission, only in the final paper. You can use the \texttt{ack} environment provided in the style file to autmoatically hide this section in the anonymized submission.
+% % \end{ack}
+\pagebreak
 \bibliographystyle{apalike}
 \bibliography{biblio}
 % \section*{References}
-% References follow the acknowledgments. Use unnumbered first-level heading for
-% the references. Any choice of citation style is acceptable as long as you are
-% consistent. It is permissible to reduce the font size to \verb+small+ (9 point)
-% when listing the references.
-% {\bf Note that the Reference section does not count towards the eight pages of content that are allowed.}
-% \medskip
-% \small
-% [1] Alexander, J.A.\ \& Mozer, M.C.\ (1995) Template-based algorithms for
-% connectionist rule extraction. In G.\ Tesauro, D.S.\ Touretzky and T.K.\ Leen
-% (eds.), {\it Advances in Neural Information Processing Systems 7},
-% pp.\ 609--616. Cambridge, MA: MIT Press.
-% [2] Bower, J.M.\ \& Beeman, D.\ (1995) {\it The Book of GENESIS: Exploring
-%   Realistic Neural Models with the GEneral NEural SImulation System.}  New York:
-% TELOS/Springer--Verlag.
-% [3] Hasselmo, M.E., Schnell, E.\ \& Barkai, E.\ (1995) Dynamics of learning and
-% recall at excitatory recurrent synapses and cholinergic modulation in rat
-% hippocampal region CA3. {\it Journal of Neuroscience} {\bf 15}(7):5249-5262.
+% % References follow the acknowledgments. Use unnumbered first-level heading for
+% % the references. Any choice of citation style is acceptable as long as you are
+% % consistent. It is permissible to reduce the font size to \verb+small+ (9 point)
+% % when listing the references.
+% % {\bf Note that the Reference section does not count towards the eight pages of content that are allowed.}
+% % \medskip
+% % \small
+% % [1] Alexander, J.A.\ \& Mozer, M.C.\ (1995) Template-based algorithms for
+% % connectionist rule extraction. In G.\ Tesauro, D.S.\ Touretzky and T.K.\ Leen
+% % (eds.), {\it Advances in Neural Information Processing Systems 7},
+% % pp.\ 609--616. Cambridge, MA: MIT Press.
+% % [2] Bower, J.M.\ \& Beeman, D.\ (1995) {\it The Book of GENESIS: Exploring
+% %   Realistic Neural Models with the GEneral NEural SImulation System.}  New York:
+% % TELOS/Springer--Verlag.
+% % [3] Hasselmo, M.E., Schnell, E.\ \& Barkai, E.\ (1995) Dynamics of learning and
+% % recall at excitatory recurrent synapses and cholinergic modulation in rat
+% % hippocampal region CA3. {\it Journal of Neuroscience} {\bf 15}(7):5249-5262.
 
-\section{Further Directions}
+% \section{Further Directions}
 
-\begin{itemize}
-    \item Use Dirichlet distribution for arms (Need Boojum distribution, a conjugate prior of dirichlet distribution)
-    \item Check this article for Boojum distribution \url{https://arxiv.org/abs/1811.05266}
-\end{itemize}
+% \begin{itemize}
+%     \item Use Dirichlet distribution for arms (Need Boojum distribution, a conjugate prior of dirichlet distribution)
+%     \item Check this article for Boojum distribution \url{https://arxiv.org/abs/1811.05266}
+% \end{itemize}
 
 \end{document}
  
