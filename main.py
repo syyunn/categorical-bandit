@@ -341,7 +341,7 @@ def experiment(
 
     # plot_results(bandit_index_to_plot, env, show=show)
     # plot_results(bandit_index_to_plot, env, show=show)
-    experiment_dir = "./experiment5"
+    experiment_dir = "./experiment6"
     dir_name = "results_K{}_C{}_N{}_B_{}_L{}_prior{}_priorTemp_{}_expid{}_seed{}_legiswise{}_seed_lobbyist{}".format(
         env.k,
         env.c,
