@@ -75,10 +75,10 @@ Cambridge, MA 02139 \\
 \maketitle
 \begin{abstract}
 What is lobbying?
-In this work, 
+To answer this question, 
 I model the lobbying industry 
 with a multi-agent multi-armed bandit problem.
-Under this setting,
+Then by simulation,
 I provide supportive evidence 
 for the argument 
 that explains lobbying 
@@ -91,12 +91,12 @@ Second, I show that
 lobbyists become specialized
 when lobbyists have 
 expert knowledge on a specific issue area across 
-multiple legislators.
-Those resulsts  
+ legislators.
+These two resulsts  
 provide supportive evidence
 why interest groups 
 have incentives to delegate information acquisition process to lobbyists
-and why lobbyists in real world interact with both sides of the legislators in terms of interest of their clients.
+and why real-world lobbyists interact with both sides of the legislators in terms of interest of their clients.
 \end{abstract}
 
 \section{Introduction}
@@ -129,11 +129,11 @@ interest groups can successfully explore
 a large legislative space by delegating information acquisition process to lobbyists.
 
 In addition, 
-simulation results show that 
+I show that 
 lobbyists become specialized
 when lobbyists have
 expert knowledge on a specific issue area across
-multiple legislators.
+multiple legislators by simulation.
 This result provides a supportive evidence
 why lobbyists in real world interact 
 with both sides of the legislators 
@@ -193,12 +193,13 @@ with respect to the interest of their clients.
 % According to \cite{rif}, interest groups hire lobbyisyt to delegate their information acquisition process.
 In lobbying industry, interest groups 
 need to specify which legislator
-have a highest potential power to influence the issue area of their interest.
+has the biggest power to influence the issue area of their interest.
 To do so, 
 they need to interact with different legislators 
-to explore the potential expected rewards from each legislator.
+to explore the expected rewards from each legislator.
 However, total chances of exploration is limited 
-and interest groups 
+because of the cost of interaction.
+Therefore, interest groups 
 need to decide 
 whether to 
 keep exploring or 
@@ -223,7 +224,7 @@ Whenever an intesrest group $j$ interact with the $k$-th legislator, they
 sample $X_k \in C$ from $\operatorname{Cat(C, \mathbf{p_k})}$.
 If the sampled category $X_k$ matches with the category of interest of the interest group, i.e. 
 $X_k = \phi(j)$,
-it gets the reward of $r_j^k = \mathbbm{1}(x_j^{k} = \phi(j))$.
+it gets the reward of $r_j^k = \mathbbm{1}(X_{k} = \phi(j))$.
 
 \subsection{Thompson Sampling as a Bandit Strategy}
 Let's assume that 
@@ -236,14 +237,17 @@ $\operatorname{Dir}(C, \boldmath{\alpha}_{jk})$ where
 $\mathbf{\alpha_{jk}} = [\alpha_{jk}^{(1)}, \alpha_{jk}^{(2)}, \hdots, \alpha_{jk}^{(C)}]$.
 At each timestep $t\in T$, interest group $j$ choose the $k$-th legislator to 
 interact with and sample $X_k^t \in C$ from $\operatorname{Cat(C, \mathbf{p_k})}$.
-Then the interest group $j$ updates its prior belief over $\operatorname{Cat(C, \mathbf{p_k})}$ by adding $1$ to $\alpha_{jk}^{(X_k^t)}$.
-After update, the interest group $j$ chooses the next legislator $k_{t+1}$
-to interact with by sampling $\mathbf{\hat{p}_{1j}}, \mathbf{\hat{p}_{2j}}, \hdots \mathbf{\hat{p}_{Kj}}$ from $\operatorname{Dir}(C, \mathbf{\alpha_{j1}})$,  $\operatorname{Dir}(C, \mathbf{\alpha_{j2}}), \hdots, \operatorname{Dir}(C, \mathbf{\alpha_{jK}})$ and
+Then the interest group $j$ updates its prior belief by adding $1$ to $\alpha_{jk}^{(X_k^t)}$.
+After update, the interest group $j$ chooses the next legislator $k_{t+1}$ 
+to interact at time $t+1$
+by sampling $\mathbf{\hat{p}_{1j}}, \mathbf{\hat{p}_{2j}}, \hdots \mathbf{\hat{p}_{Kj}}$ 
+from $\operatorname{Dir}(C, \mathbf{\alpha_{j1}})$,  $\operatorname{Dir}(C, \mathbf{\alpha_{j2}}), \hdots, \operatorname{Dir}(C, \mathbf{\alpha_{jK}})$ respectively.
+Then it
 choose $k_{t+1} = \underset{K}{\operatorname{argmax}}\{\hat{p}^{(\phi(j))}_{1j}, \hat{p}^{(\phi(j))}_{2j}, \hdots, \hat{p}^{(\phi(j))}_{Kj}\}$.
 In this way the interest group $j$ can systematically update
 its prior belief and
-balance the exploration and exploitation by 
-randomness of sampling from Dirichlet distribution.
+balance the exploration and exploitation based on the 
+randomness of sampling from Dirichlet distributions.
 This strategy is called \textit{Thompson sampling} \citep{tom}.
 % \subsection{Validation of Thompson Sampling Strategy}
 % To validate the effectiveness of Thompson sampling strategy, 
@@ -267,11 +271,10 @@ First, I simulate the case of small search space.
 In this simulation, I used $|K|=32, |C|=4, |J|=1\footnote{This is single agent setting}$ and $|T|=2000$.
 Since I don't have 
 have a good representation of
-the categorical distributions of legislators in real world,
-I randomly generate the categorical distribution of each legislator.
-Therefore, I randomly generate the category of interest of each interest group.
+the categorical distributions of legislators,
+I randomly generate a hypothetical categorical distribution of each legislator for simulation.
 
-I use the normalized cumulative regret 
+Besides, I use the normalized cumulative regret 
 as the performance metric in the following simulations.
 The normalized cumulative regret is 
 defined as $\sum_t^T (p_{\phi(j)}^{\text{max}}-p_{a_t}^j) / \sum_t^T(p_{\phi(j)}^{\text{max}}-p_{\phi(j)}^{\text{min}})$ 
@@ -280,69 +283,87 @@ $p_{\phi(j)}^{\text{min}} = \operatorname{argmin}_{k \in K}\{p_1^{({\phi(j)})}, 
 and $a_t$ represent the action (choice of legislator) taken by the interest group at time $t$.
 Regret represents how much the agent could have been done better in terms of the reward if it had chosen the best action.
 Similarly, cumulative normalized regret 
-is sum of normalized regret over the entire time horizon $T$.
+is sum of regret over the entire time horizon $T$ normalized 
+by the sum of upper bound of regret\footnote{I use this metric to compare the 
+level of regret between different hyperparameter settings.
+}.
 
 Figure \ref{fig:rs_small} shows that 
 normalized cumulative regrests of interest groups 
-decrease as the number of timesteps increases regardless of random seed which 
-represent different set of categorical distributions of legislators. This means that 
-interest groups successfully find the suitable legislator to interact with in small search space.
+decrease as the number of timesteps increases.
+The mean of cumulative normalized regrets at time $T$ from 
+$10$ different random seeds\footnote{Each random seed  
+corresponds to the different set of categorical distributions of legislators. 
+} is $0.012$ with 
+the variance of $5.98e-05$. 
+This means that 
+a interest group can successfully find the 
+best rewarding legislator to interact in case of small search space.
 In this scenario, search space consists of 
 $|K| \times |C| = 128$ number of parameters 
-which are relatively small 
-and interest groups can easily find the best legislator to interact with.
-Figure {fig:smallproba} shows that prior belief of the interest group estimates the real probabilities of category of interest across legislators closely. 
-In addition, figure \ref{fig:smallpropo} shows that the interest group successfully found the best legislator and keep interacting with the best one with the highest ratio.
+which is relatively small compared to the case of 
+actual lobbying industry.
+% and interest groups can easily find the best legislator to interact with.
+Figure \ref{fig:smallproba} shows that 
+prior belief of the interest group precisely 
+estimates the real probabilities of category of interest across legislators. 
+This means that the interest group successfully
+reconstructed the categorical distributions of legislators by $2000$ times of interaction.
+Therefore, figure \ref{fig:smallpropo} shows that the interest group 
+successfully found the best legislator and keep interacting 
+with the best one with the highest ratio.
 
 \begin{figure}[h!]  
     \centering % Not {needed}
-    \begin{subfigure}[b]{1\columnwidth}
-        \centering
-        \includegraphics[width=0.7\textwidth]{images/rs_small_search_space.png}
+    \begin{subfigure}[b]{0.45\textwidth}
+        % \centering
+        \includegraphics[width=\linewidth]{images/rs_small_search_space.png}
         \caption{Cumulative normalized regret of interest groups in small search space}
         \label{fig:rs_small}
     \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{1\columnwidth}
-        \centering
-        \includegraphics[width=0.7\textwidth]{images/small_search_space/estimated_proba.png}
-        \caption{Real probabilities of category of interest $\phi(j)$ across legislators $p_1^{(\phi(j))}, p_2^{(\phi(j))} \hdots p_K^{(\phi(j))}$ and estimated probabilities of category of interest across legislators $\hat{p}_1^{(\phi(j))}, \hat{p}_2^{(\phi(j))} \hdots \hat{p}_K^{(\phi(j))}$ for random seed $0$.}
+    % \hfill
+    \begin{subfigure}[b]{0.5\textwidth}
+        % \centering
+        \includegraphics[width=\linewidth]{images/small_search_space/estimated_proba.png}
+        \caption{$p_1^{(\phi(j))}, p_2^{(\phi(j))} \hdots p_K^{(\phi(j))} \text{ and } \hat{p}_1^{(\phi(j))}, \hat{p}_2^{(\phi(j))} \hdots \hat{p}_K^{(\phi(j))}$ for random seed $0$.}
         \label{fig:smallproba}
     \end{subfigure}
     %% leave a blank line to create a line break
 
     \begin{subfigure}[b]{1\columnwidth}
         \centering
-        \includegraphics[width=0.7\textwidth]{images/small_search_space/propo_action_taken.png}
-        \caption{The proportion of each legislator taken by the interest group across legislators for random seed $0$.}
+        \includegraphics[width=0.5\textwidth]{images/small_search_space/propo_action_taken.png}
+        \caption{The proportion of legislators being chosen by the interest group for random seed $0$.}
         \label{fig:smallpropo}
     \end{subfigure}
-    \caption{\textbf{Simulation I} Small Search Space}
+    \caption{Simulation in case of Small Search Space}
 \end{figure}
     
 \subsection{Simulation II: Large Search Space}
 In the previous simulaton, 
 I used 
-arbitrary hyperparameters for $|K|$ and $|C|$.
-To closely approximate the real world case,
-now I use the hyperparameters of $|K|=112, |C|=26, |J|=1$ and $|T|=2000$.
+arbitrary small numbers for $|K|$ and $|C|$.
+Now I use $|K|=112, |C|=26, |J|=1$ and $|T|=2000$.
 $|K|=112$ is the average number of 
 legislators to whom top 
 $10$ lobbying firms campaign contribute 
 and $|C|=26$ is the average number of
 issue areas per clients in $2020$.
-Both numbers are obtained from \textit{Lobbying Disclosure Act} data\footnote{Data is available through https://lda.senate.gov/filings/public/filing/search/}.
+Both numbers are obtained from \textit{Lobbying Disclosure Act} data\footnote{Data is available through https://lda.senate.gov/filings/public/filing/search/}
+and I expect this simulation to be more realistic compared to the previous simulation.
 
-In this case, interset groups fail to find the best legislator to interact with 
-regardless of the random seeds as shown in Fig \ref{fig:rs_lg}. 
-Compared to the previous simulation, cumulative normalized regret doesn't converge close to $0$
-within the time horizon $T=2000$.
+In this simulation, the mean of cumulative normalized regrets at time $T$ from 
+$10$ different random seeds\footnote{Each random seed  
+corresponds to the different set of categorical distributions of legislators. 
+} is $0.48$ with the variance of $0.023$ which is much higher mean regret compared to the previous simulation 
+(See Fig \ref{fig:rs_lg}).
+It implies that interset group fails to find the best rewarding legislator.
 This is because 
 the search space is almost $23$ times larger than the previous simulation.
 Due to the large search space, 
 within the time constraint of $T=2000$,
-it's difficult for interest groups to 
-explore enough to find the best legislator to interact with.
+it's difficult for the interest group to 
+explore enough and find the best legislator alone.
 Therefore, prior belief of the interest group fails to estimate 
 the real world probabilities of legislators as shown in Fig \ref{fig:lgproba}.
 This result in exploiting 
@@ -351,19 +372,19 @@ as shown in Figure $\ref{fig:lgpropo}$.
 
 \begin{figure}[h!]
     \centering % Not {needed}
-    \begin{subfigure}[b]{1\columnwidth}
-        \centering
-        \subfloat[]{
-        \includegraphics[width=0.7\textwidth]{images/large_search_space/rs.png}
-        }
-        \caption{Cumulative normalized regret of interest groups in small search space}
+    \begin{subfigure}[b]{0.45\textwidth}
+        % \centering
+        
+        \includegraphics[width=\linewidth]{images/large_search_space/rs.png}
+        
+        \caption{Cumulative normalized regret of interest groups in large search space}
         \label{fig:rs_lg}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{1\columnwidth}
-        \centering
-        \includegraphics[width=0.7\textwidth]{images/large_search_space/estimated_proba.png}
-        \caption{Real probabilities of category of interest $\phi(j)$ across legislators $p_1^{(\phi(j))}, p_2^{(\phi(j))} \hdots p_K^{(\phi(j))}$ and estimated probabilities of category of interest across legislators $\hat{p}_1^{(\phi(j))}, \hat{p}_2^{(\phi(j))} \hdots \hat{p}_K^{(\phi(j))}$ for random seed $0$.}
+    \begin{subfigure}[b]{0.45\textwidth}
+        % \centering
+        \includegraphics[width=\linewidth]{images/large_search_space/estimated_proba.png}
+        \caption{$p_1^{(\phi(j))}, p_2^{(\phi(j))} \hdots p_K^{(\phi(j))} \text{ and } \hat{p}_1^{(\phi(j))}, \hat{p}_2^{(\phi(j))} \hdots \hat{p}_K^{(\phi(j))}$ for random seed $0$.}
         \label{fig:lgproba}
     \end{subfigure}
     %% leave a blank line to create a line break
@@ -371,13 +392,13 @@ as shown in Figure $\ref{fig:lgpropo}$.
     \begin{subfigure}[b]{1\columnwidth}
         \centering
         \includegraphics[width=0.7\textwidth]{images/large_search_space/propo_action_taken.png}
-        \caption{The proportion of each legislator taken by the interest group across legislators for random seed $0$.}
+        \caption{The proportion of legislators being chosen by the interest group for random seed $0$.}
         \label{fig:lgpropo}
     \end{subfigure}
-    \caption{\textbf{Simulation II} Large Search Space}
+    \caption{Simulation in case of Large Search Space}
 \end{figure}
 
-\subsection{Introducing Lobbyists into the Multi-Armed Bandit Setting}
+\subsection{Introducing Lobbyists into the Multi-Armed Bandit Setting}\label{arml}
 
 % Based on the  lobbying as a 
 % delegated infomration acquisition process,
@@ -389,21 +410,21 @@ to find the best legislators
 even in the large search space.
 To allow interest groups to hire lobbyists,
 I introduce a lobbyist $l \in L$ with its own set 
-of prior beliefs $\operatorname{Dir}(C, \boldmath{\alpha}_{lk})$ 
-where $\mathbf{\alpha_{lk}} = [\alpha_{lk}^{(1)}, \alpha_{lk}^{(2)}, \hdots, \alpha_{lk}^{(C)}]\quad \forall k \in K$.
+of prior beliefs $\operatorname{Dir}(C, \boldmath{\alpha}_{lk}) \quad \forall k \in K$ 
+where $\mathbf{\alpha_{lk}} = [\alpha_{lk}^{(1)}, \alpha_{lk}^{(2)}, \hdots, \alpha_{lk}^{(C)}]$.
 At each timestep $t$,
 an interest group $j$ choose 
 the next legislator $k_{t+1} = \underset{K}{\operatorname{argmax}}\left[\{\hat{p}^{(\phi(j))}_{1j}, \hat{p}^{(\phi(j))}_{2j}, \hdots, \hat{p}^{(\phi(j))}_{Kj}\}\cup\bigcup_{l\in L}\{\hat{p}^{(\phi(j))}_{1l}, \hat{p}^{(\phi(j))}_{2l}, \hdots, \hat{p}^{(\phi(j))}_{Kl}\}\right]$. 
 This means that 
 interest group $j$ chooses the best rewarding legislator based on the prior belief of all lobbyists and himself.
-For this to work, I assume complete information so that 
+I assume complete information so that 
 any interest groups can 
-access to any lobbyists' prior belief. 
+access to any lobbyists' prior belief at any timestep. 
 In this setting, 
 if the interest group $j$ 
 chooses the next legislator $k_{t+1}$ 
 based on 
-the prior belief of lobbyist $l \in L$, 
+the prior belief of lobbyist $l$, 
 I update the prior belief of lobbyist 
 $l$ with the sampled observation $X_{k}^{t+1} \sim \operatorname{Cat(C, \mathbf{p_k})}$
 by adding $1$ to $\alpha_{lk}^{(X_k^{t+1})}$.
@@ -413,81 +434,134 @@ prior belief of interest group $j$, $\alpha_{jk}^{(X_k^{t+1})}$.
 This is because
 if an interest group hires a lobbyist,
 the lobbyist explore the legislative space on behalf of the interest group. 
-This means that the interest group who hired lobbyist 
+This means that the interest group who is employer of lobbyist 
 barely accumulates any experience what 
 the lobbyist has experienced.
-In addition, 
-if an interest group choose the next legislator based on their own prior belief,
+In contrast, 
+if an interest group choose the next legislator 
+based on their own prior belief,
 we update the prior belief of interest group $j$ as usual.
 
 \subsubsection{Simulation III: Large Search Space with a Lobbyist}
 
-Now, I simulate the 
-configuration of $|K|=112, |C|=26$ and $|T|=2000$
-with a lobbyist $|L|=1$ and $|J|=5$ number of 
-interest groups with a shared category of interest.
-This maintains the size of the search space as in the previous simulation.
-I choose $|J|=5$ based on the 
+In this simulation, I maintain the size of the search space as same as the previous simulation 
+by configuration of $|K|=112, |C|=26, |T|=2000$
+with a lobbyist $|L|=1$ and $|J|=5$. I assume that $5$ different interest groups
+share the same category of interest. I choose $|J|=5$ based on the 
 average number of clients per each issue code in 
-\textit{Lobbying Disclosure Act} data in $2020$.
+\textit{Lobbying Disclosure Act} data in $2020$ to be more realistic.
 
-With a lobbyist, average lowest 
+In this simulation, the mean of cumulative normalized regrets at time $T$ from 
+$10$ different random seeds\footnote{Each random seed  
+corresponds to the different set of categorical distributions of legislators. 
+} is $0.25$ with the variance of $0.007$ which is lower than the previous simulation. 
+(See Fig \ref{fig:rs_lb}).
+In addition, with lobbyist and group of 
+interest groups who share the same category of interest,
+an interest group found the best legislator as shown in Fig \ref{fig:lbpropo}.  
+This is possible because multiple agents 
+share the same lobbyist and collectively update 
+the prior belief of the lobbyist
+by keep selecting the lobbyist. Fig \ref{fig:lbproba} 
+shows that the interest group keep selecting into using 
+the lobbyist's prior rather than its own prior. 
+This is because
+the lobbyist's prior 
+finds the best rewarding legislator fast compared to its own prior.
+
+\subsection{Lobbying as a Delegated Information Acquisition Process}
+
+Simulations in this section 
+suggest a supportive evidence that 
+lobbyists can be used to find the best legislators
+when interest groups face large search space problem.
+If the interest groups share the 
+same category of interest, they can form a collaborative
+relationship via lobbyist 
+to find the best legislator for their shared category of interest.
+This can be interpreted as 
+interest groups are 
+forming a coalition through lobbyist.
+For example, associations are one of the most 
+common type of registered 
+lobbyists in the United States. 
+With this modeling, we can understand that the 
+associations are coalition between members
+to successfully explore the legislative space 
+by concentrating their resources.
+
 
 \begin{figure}[h!]
     \centering % Not {needed}
-    \begin{subfigure}[b]{1\columnwidth}
-        \centering
-        \subfloat[]{
-        \includegraphics[width=0.7\textwidth]{images/large_search_lobbyist/rs.png}
-        }
-        \caption{Cumulative normalized regret of interest groups in small search space}
-        \label{fig:rs_lg}
+    \begin{subfigure}[b]{0.45\textwidth}
+        % \centering
+        
+        \includegraphics[width=\linewidth]{images/large_search_lobbyist/rs.png}
+        
+        \caption{Cumulative normalized regret of interest groups in large search space with lobbyist}
+        \label{fig:rs_lb}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{1\columnwidth}
-        \centering
-        \includegraphics[width=0.7\textwidth]{images/large_search_lobbyist/freq.png}
-        \caption{Real probabilities of category of interest $\phi(j)$ across legislators $p_1^{(\phi(j))}, p_2^{(\phi(j))} \hdots p_K^{(\phi(j))}$ and estimated probabilities of category of interest across legislators $\hat{p}_1^{(\phi(j))}, \hat{p}_2^{(\phi(j))} \hdots \hat{p}_K^{(\phi(j))}$ for random seed $0$.}
-        \label{fig:lgproba}
+    \begin{subfigure}[b]{0.45\textwidth}
+        % \centering
+        \includegraphics[width=\linewidth]{images/large_search_lobbyist/freq.png}
+        \caption{Frquency of using lobbyist. $0$ represents using lobbyist and $-1$ represents 
+        not using lobbyist.
+        }
+        \label{fig:lbproba}
     \end{subfigure}
     %% leave a blank line to create a line break
 
     \begin{subfigure}[b]{1\columnwidth}
         \centering
         \includegraphics[width=0.7\textwidth]{images/large_search_lobbyist/best_arm.png}
-        \caption{The proportion of each legislator taken by the interest group across legislators for random seed $0$.}
-        \label{fig:lgpropo}
+        \caption{The proportion of each legislator taken by an interest group across legislators for random seed $0$.}
+        \label{fig:lbpropo}
     \end{subfigure}
-    \caption{\textbf{Simulation II} Large Search Space}
+    \caption{Simulation in case of Large Search Space with Lobbyist}
+\end{figure}
+
+\section{Specialization of Lobbyists and Expert knowledge}
+In this section, I explain 
+why lobbyists lobby both sides of legislators in reality
+by comparing the simulation results from the two differet types of expert knowledge of lobbyists.
+This ``both sides lobbying'' 
+is regarded as a puzzle\footnote{Puzzle refers to the phenomenon that exisiting theories can't explain in political science. 
+} in the literatures because lobbyists don't need to 
+lobby already supportive legislators.
+
+% . However, in reality,
+% lobbyists keep lobbying the supportive side of legislators as well as 
+% the opposing side of legislators.
+
+In the section \ref{arml}, I assumed 
+that each lobbyist $l$ has its own prior belief of legislators $\mathbf{\alpha_{l1}}, \mathbf{\alpha_{l2}}, \hdots, \mathbf{\alpha_{lK}} \in \mathbb{N}^C$ which are $K$ number of concentration parameter of dirichlet distributions.
+It can be visualized as shown in Fig \ref{fig:mesh1}. 
+A lobbyist can either have expert knowledge 
+on a specific issue area across all legislators (blue in Fig \ref{fig:mesh1}) or
+have expert knowledge on a specific legislator (red in Fig \ref{fig:mesh1})
+across all issue areas.
+
+I conjecture that lobbyists can be specialized 
+in case of having expert knowledge on a specific issue area across all legislators
+rather than having expert knowledge on a specific legislator.
+I provide a supportive evidence to this conjecture by comparing the simulation results 
+from two different types of expert knowledge of lobbyists.
+
+
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{images/pos.png}
+    \caption{Prior belief of lobbyist is paramaterized by $K \times C$ matrix.}
+    \label{fig:mesh1}
 \end{figure}
 
 
-% to interact with by sampling $\mathbf{\hat{p}_{1j}}, \mathbf{\hat{p}_{2j}}, \hdots \mathbf{\hat{p}_{Kj}}$ from $\operatorname{Dir}(C, \mathbf{\alpha_{j1}})$,  $\operatorname{Dir}(C, \mathbf{\alpha_{j2}}), \hdots, \operatorname{Dir}(C, \mathbf{\alpha_{jK}})$ and
-
-
-% This conjecture 
-% ,
-% they can concentrate 
-% their resources 
-% into a single agent (which is lobbyist)
-% and find the best legislator even in the case of large search space.
-
-% To model this scenario into the multi-armed bandit setting,
 
 
 
- 
-
-
-
-\section{Specialization of Lobbyists and Expert knowledge}
-I conjecture 
-that with the existence of lobbyist 
-interest groups can find the best legislator
-even in the large search space.
-This is because lobbyists 
-concentrate 
- 
 
 % \ref{vanilla} models the payoff of each arm as Bernoulli distribution. However, this paper models the payoff of each arm as categorical distribution.
 % This is to represent each legislator's varying level of authority over different issue areas. 

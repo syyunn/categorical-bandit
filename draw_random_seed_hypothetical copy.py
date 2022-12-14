@@ -30,7 +30,7 @@ plt.title("Normalized regrets in time")
 
 final = []
 for i in range(0,10):
-    with open(f"/Users/MIT/Dropbox (MIT)/categorical-bandit/experiment5/results_K112_C26_N2000_B_1_L0_priorFalse_priorTemp_0.5_expid0_seed{i}_legiswiseFalse_seed_lobbyist100/env.pickle", "rb") as f:
+    with open(f"/Users/suyeol/Dropbox (MIT)/categorical-bandit/experiment5/results_K112_C26_N2000_B_5_L1_priorFalse_priorTemp_0.5_expid0_seed{i}_legiswiseFalse_seed_lobbyist100/env.pickle", "rb") as f:
         envp = pickle.load(f)
 
     bandit = envp.bandits[0]
