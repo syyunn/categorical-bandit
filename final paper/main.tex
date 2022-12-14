@@ -234,38 +234,19 @@ At each timestep $t\in T$, interest group $j$ choose the $k$-th legislator to
 interact with and sample $X_k^t \in C$ from $\operatorname{Cat(C, \mathbf{p_k})}$.
 Then the interest group $j$ updates its prior belief over $\operatorname{Cat(C, \mathbf{p_k})}$ by adding $1$ to $\alpha_{jk}^{(X_k^t)}$.
 After update, the interest group $j$ chooses the next legislator $k_{t+1}$
-to interact with by sampling $\{\mathbf{\hat{p}_1}, \mathbf{\hat{p}_2}, \hdots \mathbf{\hat{p}_K}\}$ from $\operatorname{Dir}(C, \mathbf{\alpha_{j1}})$,  $\operatorname{Dir}(C, \mathbf{\alpha_{j2}}), \hdots, \operatorname{Dir}(C, \mathbf{\alpha_{jK}})$ and
+to interact with by sampling $\mathbf{\hat{p}_1}, \mathbf{\hat{p}_2}, \hdots \mathbf{\hat{p}_K}$ from $\operatorname{Dir}(C, \mathbf{\alpha_{j1}})$,  $\operatorname{Dir}(C, \mathbf{\alpha_{j2}}), \hdots, \operatorname{Dir}(C, \mathbf{\alpha_{jK}})$ and
 choose $k_{t+1} = \underset{K}{\operatorname{argmax}}\{\hat{p}^{(\phi(j))}_1, \hat{p}^{(\phi(j))}_2, \hdots, \hat{p}^{(\phi(j))}_K\}$.
 In this way the interest group $j$ can systematically update
 its prior belief and
-balance the exploration and exploitation trade-off by 
+balance the exploration and exploitation by 
 randomness of sampling from Dirichlet distribution.
 This strategy is called \textit{Thompson sampling} \citep{tom}.
 
-
-% This means that 
-% an interest group 
-% gets the reward of $1$ if the sampled category 
-% matches with the category of interest of the interest group,
-% and gets the reward of $0$ otherwise.
+\subsection{Validation of Thompson Sampling Strategy}
+To validate the effectiveness of Thompson sampling strategy, 
 
 
-
-% $k$th arm $n$ times, sum of rewards $Y_k=\sum_{i=1}^{n} X_k \sim \mathrm{Binomial}(n, \theta_k)$ because the sum of Bernoulli random variables is Binomial.
-% Then our goal is to infer $p(\theta_k|y_k)$ which represents the posterior distribution of $\theta_k$ given the observed rewards $y_k$. Intuitively, this represents the learned experience of the agent about the payoff of $k$th arm.
-% Most widely used method to find the posterior distribution $p(\theta_k|y_k)$ is \textit{Thomposon sampling} \citep{tom}, that uses the $\mathrm{Beta}(\alpha, \beta)$ distribution as the prior which is conjugate for the Binomial likelihood $p(y|\theta_k)$. Formally speaking,
-% \begin{align*}
-% p(\theta_k \mid y_k) & \propto p(y \mid \theta) p(\theta) =\left(\begin{array}{l}
-% n \\
-% y
-% \end{array}\right) \theta^y(1-\theta)^{n-y} \frac{1}{B(\alpha, \beta)} \theta_k^{\alpha-1}(1-\theta_k)^{\beta-1} \\
-% & \propto \theta_k^{y_k+\alpha-1}(1-\theta_k)^{n-y_k+\beta-1} \\
-% & \propto \operatorname{Beta}(y_k+\alpha, n-y_k+\beta) \\
-% & \propto \operatorname{Beta}(\text{number of success}+\alpha, \text{number of failure}+\beta) && (1)\\
-% \end{align*}
-% $(1)$ implies that by adding $1$ to the $\alpha$ when we get a reward from $\mathrm{Bernoulli}(\theta_k)$ and otherwise by adding $1$ to $\beta$,
-% we can update the posterior distribution $p(\theta_k \mid y_k)$.
-\subsection{Adopting Categorized Bandit}
+\section{Large }
 \ref{vanilla} models the payoff of each arm as Bernoulli distribution. However, this paper models the payoff of each arm as categorical distribution.
 This is to represent each legislator's varying level of authority over different issue areas. 
 % For example, senator Joe Manchin has a high authority

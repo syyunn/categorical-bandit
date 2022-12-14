@@ -340,7 +340,7 @@ def experiment(
 
     # plot_results(bandit_index_to_plot, env, show=show)
     # plot_results(bandit_index_to_plot, env, show=show)
-    experiment_dir = "./experiment"
+    experiment_dir = "./experiment5"
     dir_name = "results_K{}_C{}_N{}_B_{}_L{}_prior{}_priorTemp_{}_expid{}_seed{}_legiswise{}_seed_lobbyist{}".format(
         env.k,
         env.c,
@@ -503,18 +503,35 @@ if __name__ == "__main__":
     #         legiswise = False
     #     )
 
-    experiment(
-        B=10,
-        K=112,
-        C=26,
-        L=2,
-        N=2000,
-        cois=[0]*5 + [1]*5,
-        show=False,
-        prior=True,
-        prior_temp= args.ptemp, # ptemp \in [0,1]
-        expid = args.expid,
-        seed = 10000,
-        legiswise = False,
-        seed_lobbyist = 100
-    )
+    # experiment(
+    #     B=10,
+    #     K=112,
+    #     C=26,
+    #     L=2,
+    #     N=2000,
+    #     cois=[0]*5 + [1]*5,
+    #     show=False,
+    #     prior=True,
+    #     prior_temp= args.ptemp, # ptemp \in [0,1]
+    #     expid = args.expid,
+    #     seed = 10000,
+    #     legiswise = False,
+    #     seed_lobbyist = 100
+    # )
+
+    for seed in range(0, 10):
+        experiment(
+            B=10,
+            K=32,
+            C=4,
+            L=1,
+            N=2000,
+            cois=[0]*10,
+            show=False,
+            prior=False,
+            prior_temp= args.ptemp, # ptemp \in [0,1]
+            expid = args.expid,
+            seed = seed,
+            legiswise = False,
+            seed_lobbyist = 100
+        )
