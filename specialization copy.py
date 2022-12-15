@@ -4,7 +4,7 @@ from env import CategoricalBanditEnv
 from collections import Counter
 import numpy as np
 
-dirs = os.listdir("./experiment6/")
+dirs = os.listdir("./experiment7/")
 dirs.sort()
 
 Xs = list(set([float(dirs[i].split('_')[9]) for i in range(len(dirs))]))
