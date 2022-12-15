@@ -1,14 +1,14 @@
 # Fdb version 3
-["bibtex main"] 1671061159 "main.aux" "main.bbl" "main" 1671061830
+["bibtex main"] 1671072879 "main.aux" "main.bbl" "main" 1671073082
   "/usr/local/texlive/2021/texmf-dist/bibtex/bst/base/apalike.bst" 1292289607 24635 604dafcc79f521a11ea73e506e1fbd98 ""
   "biblio.bib" 1666997924 8638 ad1db06d36f7171b73fca1cca8717087 ""
-  "main.aux" 1671061830 6878 e5be649e96ed033abfade86e5488b582 "pdflatex"
+  "main.aux" 1671073070 7391 e9ad7d1c608311d125bb60b08b9ae5b1 "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
-["pdflatex"] 1671061824 "/Users/suyeol/Dropbox (MIT)/categorical-bandit/final paper/main.tex" "/Users/suyeol/Dropbox (MIT)/categorical-bandit/final paper/main.pdf" "main" 1671061830
-  "/Users/suyeol/Dropbox (MIT)/categorical-bandit/final paper/main.aux" 1671061830 6878 e5be649e96ed033abfade86e5488b582 ""
-  "/Users/suyeol/Dropbox (MIT)/categorical-bandit/final paper/main.tex" 1671061824 57222 bc4c615b115b50d3200497e9950a85f5 ""
+["pdflatex"] 1671073067 "/Users/suyeol/Dropbox (MIT)/categorical-bandit/final paper/main.tex" "/Users/suyeol/Dropbox (MIT)/categorical-bandit/final paper/main.pdf" "main" 1671073082
+  "/Users/suyeol/Dropbox (MIT)/categorical-bandit/final paper/main.aux" 1671073070 7391 e9ad7d1c608311d125bb60b08b9ae5b1 ""
+  "/Users/suyeol/Dropbox (MIT)/categorical-bandit/final paper/main.tex" 1671073082 61915 ad65618b325af74f76f41f13866bea47 ""
   "/Users/suyeol/Library/texlive/2021/texmf-var/fonts/pk/ljfour/public/bbm/bbm10.600pk" 1670175281 6964 1b1b435fccfd23505d0b00f8b1b9bb18 ""
   "/usr/local/texlive/2021/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2021/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc" 1136849721 2971 def0b6c1f0b107b3b936def894055589 ""
@@ -58,6 +58,7 @@
   "/usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb" 1248133631 32762 224316ccc9ad3ca0423a14971cfa7fc1 ""
   "/usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb" 1248133631 33993 9b89b85fd2d9df0482bd47194d1d3bf3 ""
   "/usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1248133631 32569 5e5ddc8df908dea60932f3c484a54c0d ""
+  "/usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb" 1248133631 32915 7bf7720c61a5b3a7ff25b0964421c9b6 ""
   "/usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb" 1248133631 32716 08e384dc442464e7285e891af9f45947 ""
   "/usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb" 1248133631 32442 c975af247b6702f7ca0c299af3616b80 ""
   "/usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb" 1248133631 34694 ad62b13721ee8eda1dcc8993c8bd7041 ""
@@ -153,6 +154,7 @@
   "/usr/local/texlive/2021/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1616695603 5169178 a2ce6e2d73f603b690db6777d06dbccb ""
   "/usr/local/texlive/2021/texmf-var/web2c/pdftex/pdflatex.fmt" 1646782660 2724738 e86a448c49eed426125fc5a7bcbada1c ""
   "/usr/local/texlive/2021/texmf.cnf" 1616695596 577 4c1911a7228e554c6032256d3cf5567d ""
+  "images/Figure_1_scatter.png" 1671070594 28790 acc59f09b8eae41e3f58e5220069939f ""
   "images/large_search_lobbyist/best_arm.png" 1671025921 190308 6f76cf6b283d8b9ec217639839df7ecf ""
   "images/large_search_lobbyist/freq.png" 1671025921 140019 5457dc1b372cadaa6af77d0943ba1b77 ""
   "images/large_search_lobbyist/rs.png" 1671047622 102971 884db80b6753e46e766ea33c44c5db25 ""
@@ -163,15 +165,15 @@
   "images/rs_small_search_space.png" 1671033781 71598 77caa8a71b9ccb61effb45437434d7e7 ""
   "images/small_search_space/estimated_proba.png" 1671025921 260756 d191807471e0b078eb6bf982b2c4103f ""
   "images/small_search_space/propo_action_taken.png" 1671025921 199933 48b88e55fb0e2da9b3bf514f5be2e48b ""
-  "main.aux" 1671061830 6878 e5be649e96ed033abfade86e5488b582 "pdflatex"
-  "main.bbl" 1671061159 1102 bfd66df218f0dff53c71bb9fad3027d7 "bibtex main"
-  "main.out" 1671061830 3121 c2347a7f6cd1477c4eb6b73878e10d4d "pdflatex"
-  "main.tex" 1671061824 57222 bc4c615b115b50d3200497e9950a85f5 ""
+  "main.aux" 1671073070 7391 e9ad7d1c608311d125bb60b08b9ae5b1 "pdflatex"
+  "main.bbl" 1671072879 1102 bfd66df218f0dff53c71bb9fad3027d7 "bibtex main"
+  "main.out" 1671073071 3296 c48aa2e0a8214d1046ada90984692a1c "pdflatex"
+  "main.tex" 1671073082 61915 ad65618b325af74f76f41f13866bea47 ""
   "neurips_2020.sty" 1671001721 11459 c0597a000ead3c083b4bc29e6c883bf7 ""
   (generated)
+  "main.pdf"
   "main.out"
   "/Users/suyeol/Dropbox (MIT)/categorical-bandit/final paper/main.pdf"
-  "main.pdf"
   "/Users/suyeol/Dropbox (MIT)/categorical-bandit/final paper/main.log"
-  "main.log"
   "main.aux"
+  "main.log"

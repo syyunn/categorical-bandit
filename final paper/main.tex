@@ -528,7 +528,7 @@ by comparing the simulation results from the two differet types of expert knowle
 This ``both sides lobbying'' 
 is regarded as a puzzle\footnote{Puzzle refers to the phenomenon that exisiting theories can't explain in political science. 
 } in the literatures because lobbyists don't need to 
-lobby already supportive legislators.
+lobby already supportive legislators according to the exisiting theories on lobbying.
 
 % . However, in reality,
 % lobbyists keep lobbying the supportive side of legislators as well as 
@@ -553,21 +553,7 @@ to acquire
 the expert knowledge on a specific issue area
 across all legislators.
 
-% I provide a supportive evidence to this conjecture by comparing the simulation results 
-% from two different types of expert knowledge of lobbyists.
-
-\subsection{Simulation Setting}
-
-In this simulation, 
-I maintain the same setting as the previous simulation
-for $|K|=112$ and $|C|=26$ to be realistic.
-
-However, I add a new setting that 
-
-except that I assume that lobbyists have expert knowledge
-
-
-\begin{figure}[h]
+\begin{figure}[h!]
     \centering
     \includegraphics[width=0.6\textwidth]{images/pos.png}
     \caption{Prior belief of lobbyist is paramaterized by $K \times C$ matrix.}
@@ -575,14 +561,98 @@ except that I assume that lobbyists have expert knowledge
 \end{figure}
 
 
+% I provide a supportive evidence to this conjecture by comparing the simulation results 
+% from two different types of expert knowledge of lobbyists.
 
+\subsection{Simulation Setting}
 
+In this simulation, 
+I use $|K|=112, |C|=26, |T|=2000, |J|=10$ and $|L|=2$. 
+Partition $10$ number of interest groups 
+into two groups of $5$ interest groups each
+with the shared category of interest $c_1$ and $c_2$ 
+for each group respectively.
+In addition, I also define a category of expert knowledge of a lobbyist $l$ as 
+$\phi(l)$. For the two lobbyist $l_1$ and $l_2$, I assign $\phi(l_1) = c_1$ and $\phi(l_2) = c_2$.
+
+First, to model the expert knowledge of lobbyists 
+on a specific issue area across all legislators,
+I preset the prior belief of lobbyists to be close to the categorical distribution of legislators.
+In other words, 
+by setting $\alpha_{lk}^{(c)} = p_k^{(c)} \cdot |C| \cdot \delta $ and $\alpha_{lk}^{(-c)} = (|C| - p_k^{(c)} \cdot |C| \cdot \delta)/(|C|-1) \text{ } \forall k$, 
+I introduced expert knowledge on a specific issue area $c$ across all legislators.
+$\delta \in [0,1]$ is temperature parameter to control the degree of expert knowledge.
+
+Second, to model the expert knowledge of lobbyists 
+on a specific legislator across all issue areas,
+I set $\alpha_{lk^*}^{(c)} = p_{k^*}^{(c)}\cdot |C| \cdot \delta + \epsilon \text{ } \forall c$ where $k^* = \operatorname{argmax_K}\{p_1^{(\phi(l))}, p_2^{(\phi(l))}, \hdots, p_K^{(\phi(l))}\}$ .
+$\epsilon$ is a small number to prevent concentration parameter from being zero by $\delta \in [0,1]$.
+By doing this, I can gradually introduce expert knowledge on a specific legislator $k^*$ across all issue areas.
+
+With this setting, I ran the simulation and measure 
+the ratio of hiring ``matching'' lobbyist. 
+Since each group of interest groups has the shared category of interest $c_1, c_2$
+and two lobbyist $l_1, l_2$ have the expert knowledge on $c_1, c_2$, 
+I expect that the ratio of hiring ``matching'' lobbyist indicates that 
+how much lobbying industry is specialized and 
+lobbyist can be selected by their clients based on their expert knowledge.
+
+Figure \ref{fig:specialization} shows the simulation results.
+The simulation is ran twice for two different types of expert knowledge of lobbyists.
+The figure shows that only in case of expert knowledge on a specific issue area across all legislators,
+the ratio of hiring ``matching'' lobbyist is higher than $0.5$ which is a baseline of randomly selecting lobbyist.
+In case of lobbyist having expert knowledge on a specific issue area across all legislators,
+ratio of hiring "matching" lobbyist converges to $1$ as the temperature parameter $\delta$ increases. 
+However, in case of lobbyist having expert knowledge on a specific legislator across all issue areas,
+ratio of hiring "matching" lobbyist never become clearly higher than $0.5$.
+This result indicates that lobbyists are specialized in lobbying industry
+toward the direction to acquire expert knowledge on a specific issue area across all legislators.
+By doing so, lobbyists can be selected by their clients and survive in the market.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=1\textwidth]{images/Figure_1_scatter.png}
+    \caption{Mean ratio of hiring ``matching'' lobbyist for two different types of expert knowledge of lobbyist.}
+    \label{fig:specialization}
+\end{figure}
+
+\section{Conclsuion and Limitation}
+
+In this work, 
+I modeled the lobbying industry as a multi-armed bandit problem.
+With this modeling, I found that 
+interest groups are facing large search space problem 
+and they can overcome this problem by using lobbyists by simulations.
+In addition, I found that lobbyists are specialized in lobbying industry
+with their expert knowledge on a specific issue area across all legislators.
+This finding explains a puzzle in the literatures why lobbyists lobby to both sides of legislators.
+This is because lobbyists need to equip themselves with expert knowledge on a specific issue area across all legislators.
+Therefore, they need to keep in touch with supportive legislators as well as opposing legislators.
+
+Although this work shed a light on understanding lobbying industry, 
+there are still many limitations in this work. First, this work 
+uses a hypothetical categorical distribution of 
+legislators' authority over different issue areas.
+Since this distribution is hypothetical, 
+conclusion from a few random seeds might be limited to 
+extend to the understanding of real world.
+Second, this work assumes each interest group has a unique 
+category of interest. However, in reality, each 
+interest group has multiple categories of interest. 
+In addition, those categories are not orthogonal to each other 
+as this work assumes.
+Third, this work provides simulation results with 
+very small number of interest groups and lobbyists. In reality,
+there are more than 70,000 interest groups and 20,000 lobbyists.
+Therefore, this work needs to be extended to a larger scale
+to model the lobbying industry more realistically.
 
 
 % \ref{vanilla} models the payoff of each arm as Bernoulli distribution. However, this paper models the payoff of each arm as categorical distribution.
 % This is to represent each legislator's varying level of authority over different issue areas. 
 % % For example, senator Joe Manchin has a high authority
-% % over the issue area of energy and natural resources because he is the chair of the Senate Energy and Natural Resources Committee.
+% % over the issue area of energy and natural re
+% sources because he is the chair of the Senate Energy and Natural Resources Committee.
 % % In comparison, senator Ron Wyden has a higher authority over the issue area of tax policy because he is the chair of the Senate Finance Committee.
 % To model this varying level of authority over different issue areas, this paper models the payoff of each arm as categorical distribution. This scenario is recognized under the name of \textit{categorized bandit} and 
 % \cite{catego} generalizes \textit{Thomposon sampling} \citep{tom} and introduces \textit{Murphy Sampling} to solve the categorical bandit problem. However, this solution doesn't consider the case of each agent having ordered preference over different categories.
@@ -879,7 +949,7 @@ except that I assume that lobbyists have expert knowledge
 % % More information about this disclosure can be found at: \url{https://neurips.cc/Conferences/2020/PaperInformation/FundingDisclosure}.
 % % Do {\bf not} include this section in the anonymized submission, only in the final paper. You can use the \texttt{ack} environment provided in the style file to autmoatically hide this section in the anonymized submission.
 % % \end{ack}
-\pagebreak
+% \pagebreak
 \bibliographystyle{apalike}
 \bibliography{biblio}
 % \section*{References}

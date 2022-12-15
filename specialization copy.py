@@ -4,7 +4,7 @@ from env import CategoricalBanditEnv
 from collections import Counter
 import numpy as np
 
-dirs = os.listdir("./experiment7/")
+dirs = os.listdir("./experiment6/")
 dirs.sort()
 
 Xs = list(set([float(dirs[i].split('_')[9]) for i in range(len(dirs))]))
@@ -19,10 +19,11 @@ X = []
 Y = []
 Z = []
 for x in Xs:
-    if (f'results_K112_C26_N2000_B_10_L2_priorTrue_priorTemp_{x}_expid0_seed0_legiswiseFalse_seed_lobbyist100' in dirs) and (f'results_K112_C26_N2000_B_10_L2_priorTrue_priorTemp_{x}_expid0_seed0_legiswiseTrue_seed_lobbyist100' in dirs):
+    if (f'results_K112_C26_N2000_B_10_L2_priorTrue_priorTemp_{x}_expid0_seed10000_legiswiseFalse_seed_lobbyist100' in dirs) and (f'results_K112_C26_N2000_B_10_L2_priorFalse_priorTemp_{x}_expid0_seed10000_legiswiseTrue_seed_lobbyist100' in dirs):
+        print("here")
         X.append(x)
-        dir_pair_true.append(f'results_K112_C26_N2000_B_10_L2_priorTrue_priorTemp_{x}_expid0_seed0_legiswiseTrue_seed_lobbyist100')
-        dir_pair_false.append(f'results_K112_C26_N2000_B_10_L2_priorTrue_priorTemp_{x}_expid0_seed0_legiswiseFalse_seed_lobbyist100')
+        dir_pair_true.append(f'results_K112_C26_N2000_B_10_L2_priorTrue_priorTemp_{x}_expid0_seed10000_legiswiseFalse_seed_lobbyist100')
+        dir_pair_false.append(f'results_K112_C26_N2000_B_10_L2_priorFalse_priorTemp_{x}_expid0_seed10000_legiswiseTrue_seed_lobbyist100')
 
 print(len(dir_pair_true))
 print(len(dir_pair_false))
@@ -59,9 +60,9 @@ for dir in dir_pair_true:
 import numpy as np
 import matplotlib.pyplot as plt
 
-plt.plot(X,Y, label="Expertise in Issue Area")
-plt.plot(X,Z, label="Expertise in Legislator")
-plt.xticks(np.linspace(0,1,101))
+plt.scatter(X,Y, label="Expertise in Issue Area")
+plt.scatter(X,Z, label="Expertise in Legislator")
+plt.xticks(np.linspace(0,1,11))
 plt.legend()
 plt.xlabel("Prior Temperature")
 plt.ylabel("Ratio of Hiring Matching Expertise Lobbyist")

@@ -66,6 +66,7 @@ class CategoricalLobbyist(Lobbyist):
             ) # reset  
             best_arm = np.argmax(self.env.probas[:, coe])
             self.belief[best_arm, coe] = env.probas[best_arm, coe] * env.c * prior_temp + sys.float_info.epsilon
+            
             for col in range(env.c):
                 if col == coe:
                     continue
