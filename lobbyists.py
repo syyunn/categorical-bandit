@@ -39,7 +39,7 @@ class CategoricalLobbyist(Lobbyist):
         #         np.ones(self.env.c), size=self.env.k
         #     )
 
-        if coe != -1:
+        if coe != -1: # this handles across legis specialization
             print("prior_temp", prior_temp)
             for row in range(env.k):
                 self.belief[row, :] = (env.c - env.probas[row, coe] * env.c * prior_temp)/ (env.c-1) 

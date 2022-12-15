@@ -7,4 +7,4 @@
 # module load anaconda/2020a
 
 # Run the script
-python main.py --ptemp 0.58
+python main.py --ptemp 0.58 --seed 10000

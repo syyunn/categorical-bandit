@@ -14,5 +14,5 @@ f"""#!/bin/bash
 # module load anaconda/2020a
 
 # Run the script
-python main.py --ptemp {ptemp}
+python main.py --ptemp {ptemp} --seed 10000
 """)
