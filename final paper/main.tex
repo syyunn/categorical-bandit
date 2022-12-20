@@ -78,20 +78,19 @@ What is lobbying?
 To answer this question, 
 I model the lobbying industry 
 with a multi-agent multi-armed bandit problem.
-Then by simulation,
-I provide supportive evidence 
+Then I provide supportive evidence 
 for the argument 
 that explains lobbying 
-as a delegated information acquisition process.
+as a delegated information acquisition process by simulation.
 First, I show that 
 interest groups can successfully explore 
 a large legislative space
-by delegating information acquisition process to lobbyists.
+by delegating information acquisition to lobbyists.
 Second, I show that 
-lobbyists become specialized
+lobbyists are hired by interest groups
 when lobbyists have 
-expert knowledge on a specific issue area across 
- legislators.
+expert knowledge on a specific issue area 
+across legislators.
 These two resulsts  
 provide supportive evidence
 why interest groups 
@@ -101,12 +100,14 @@ and why real-world lobbyists interact with both sides of the legislators in term
 
 \section{Introduction}
 What is lobbying? 
-This simple question has been asked in different literatures but there is no clear answer with agreement among scholars.
+This simple question has been answered in different literatures 
+\citep{hall_deardorff_2006, 10.2307/43495360, 10.2307/3216842}
+but there is no clear answer with agreement among scholars.
 For example, \textit{vote-buying} theory argues 
 that lobbying is to buy votes in legislation \citep{grossman}. 
 However, this theory doesn't explain 
 why the average price of vote is too cheap compared 
-to the expected return of lobbying.
+to the expected return of lobbying \citep{10.2307/3216842}.
 As another example, \textit{persuasion} 
 theory argue that lobbying is to persuade 
 legislators to change their positions on legislation close to 
@@ -115,29 +116,62 @@ the position of the lobbyists
 However, this theory doesn't 
 explain why lobbyists lobby 
 already like-minded legislators 
-those who don't need any persuasions.
+those who don't need any persuasions \citep{10.2307/2586303}.
 
-Apart from these theories,
+Apart from those orthodox theories,
 this work 
-provides a supportive evidence
-that interest groups 
+provides a supportive evidence 
+to the theory 
+that explains lobbying as a 
+delegated information acquisition process.
+According to this theory, interest groups 
 have incentives to delegate information acquisition process to lobbyists.
 By modeling the lobbying industry 
-with a multi-agent multi-armed bandit problem,
+using a multi-agent multi-armed bandit problem,
 I simulatively show that
 interest groups can successfully explore 
 a large legislative space by delegating information acquisition process to lobbyists.
 
 In addition, 
-I show that 
-lobbyists become specialized
+I also show that 
+lobbyists are hired by interest groups 
 when lobbyists have
-expert knowledge on a specific issue area across
-multiple legislators by simulation.
-This result provides a supportive evidence
-why lobbyists in real world interact 
-with both sides of the legislators 
-with respect to the interest of their clients.
+expert knowledge on a specific issue area across 
+legislators by simulation.
+This result explains 
+why lobbyists interact 
+with both sides of the legislators
+in terms of interest of their clients
+\citep{10.2307/2586303}.
+In other words, 
+lobbyists interact with 
+every relevant legislator 
+in order to acquire information
+on the issue area of their clients
+regardless of the legislator's position on the issue area.
+
+% In summary,
+% this work models the lobbying industry 
+% using a multi-agent multi-armed bandit (MMAB) problem.
+% The motivation of using MMAB is 
+% based on the fact   
+
+
+% provides two different simulation results.
+% First result shows why interest groups 
+% have incentives to delegate information acquisition process to lobbyists.
+% Second result shows why real-world lobbyists 
+% interact with both sides of the legislators
+% in terms of interest of their clients.
+
+
+
+% In summary, 
+% this work provides two different simulation results.
+% First, I show that lobbying is a delegated information acquisition process.
+% Second, I show that 
+
+
 
 
 
@@ -188,29 +222,75 @@ with respect to the interest of their clients.
 % By allowing those agents to delegate their future exploration to other agents, this paper expects to observe the emergence of lobbyists where the system converges to the stable existence of delegation.
 
 
-\section{Multi-Agent Multi-Armed Bandit Problem}
+\section{Information Acquisition: Multi-Agent Multi-Armed Bandit Problem}
 
+In this section, I explain 
+the relationship between 
+the U.S. lobbying industry
+and multi-agent multi-armed bandit problem.
 % According to \cite{rif}, interest groups hire lobbyisyt to delegate their information acquisition process.
-In lobbying industry, interest groups 
-need to specify which legislator
-has the biggest power to influence the issue area of their interest.
-To do so, 
+In U.S. lobbying industry, interest groups 
+need to find which legislator
+has the biggest influence over the issue area 
+of their interest.
+To do so,
 they need to interact with different legislators 
-to explore the expected rewards from each legislator.
-However, total chances of exploration is limited 
+to understand the expected rewards from each legislator.
+However, total chances of interaction is limited 
 because of the cost of interaction.
 Therefore, interest groups 
-need to decide 
+need to design their 
+exploration strategy
+how to interact with different legislators
+to maximize their expected rewards.
+This situation can be modeled by multi-agent multi-armed bandit problem.
+They decide 
 whether to 
 keep exploring or 
-exploiting the best legislator they have already explored at each timestep.
+exploiting the best legislator according to their current knowledge
+at each timestep.
 % groups need to maximize their expected rewards from the exploration process.
-This situation can be modeled by multi-armed bandit problem
-which formalizes the exploration–exploitation dilemma.
+Multi-armed bandit 
+is a metaphor of a reward-seeking agent 
+who has multiple choices of actions over multiple timesteps.
+It formalizes the exploration–exploitation dilemma 
+in sequential decision making\footnote{The problem is orginally 
+proposed by \cite{Robbins1952SomeAO}
+}.
+Interest groups in the U.S. lobbying industry
+need to maximize their expected rewards from the exploration process
+by choosing the best strategy of exploration and exploitation of legislators at each timestep.
+Therefore, 
+I model the U.S. lobbying industry as multi-agent multi-armed bandit problem
+and simulate to prove two conjectures. 
+The First conjecture is  
+the incentive of hiring lobbying firm increases
+as the size of the exploration space increases.
+The Second conjecture is
+the incentive of hiring lobbying firm is higher in 
+case that the lobbyist has expert knowledge on a 
+particular issue area across different legislators
+compared to the case that 
+the lobbyist has expert knowledge 
+on a particular legislator across different issue areas.
 
 
-\subsection{Categorical Multi-Armed Bandit Problem} \label{vanilla}
-Since legislators have varying level of authorities over different issue areas,
+\subsection{\large{ 
+Categorical Multi-Armed Bandit Problem}} \label{vanilla}
+
+Multi-armed bandit problem 
+assumes unknown reward distributions 
+of each arm
+which are unknown to agents.
+In this section, I explain 
+the \textit{categorical multi-armed bandit problem}
+which I used to model the 
+environment of the U.S. lobbying industry.
+Categorical multi-armed bandit problem
+is a multi-armed bandit problem
+that assumes the reward distribution of each arm to be categorical distribution.
+Since legislators have varying level of authorities (or influences) 
+over different issue areas,
 I model this situation by categorical multi-armed bandit problem. There exists $|J|$ number of interest groups 
 $\{1, 2, \hdots, J\}$, $|K|$ number of legislators $\{1, 2, \hdots, K\}$ 
 , $|C|$ number of categories of interset $\{1,2, \hdots, C\}$ and
@@ -219,12 +299,24 @@ Then each interst group $j \in J$ has its
 own category of interest $\phi(j) \in C$ and
 each legislator $k \in K$ has a categorical distribution 
 $\operatorname{Cat(C, \mathbf{p_k})}$ where
-$C=\{1,2,\hdots, C\}$ and $\mathbf{p_k} = [p_k^{(1)}, p_k^{(2)}, \hdots, p_k^{(C)}]$.
-Whenever an intesrest group $j$ interact with the $k$-th legislator, they
+$C=\{1,2,\hdots, C\}$ and $\mathbf{p_k} = [p_k^{(1)}, p_k^{(2)}, \hdots, p_k^{(C)}]$
+which represents the support of the distribution
+and the vector of probabilities for each category of interest respectively.
+Whenever an intesrest group $j \in J$ interact with the $k$-th legislator, they
 sample $X_k \in C$ from $\operatorname{Cat(C, \mathbf{p_k})}$.
 If the sampled category $X_k$ matches with the category of interest of the interest group, i.e. 
 $X_k = \phi(j)$,
-it gets the reward of $r_j^k = \mathbbm{1}(X_{k} = \phi(j))$.
+it gets the reward of $r_j^k = \mathbbm{1}(X_{k} = \phi(j))$. 
+In other words, 
+interest group $j \in J$
+get the reward of $1$
+when the sampled category $X_k$ matches with the category of interest of the interest group $\phi(j)$.
+Otherwise, it gets the reward of $0$.
+Therefore, interest groups 
+need to find the best rewarding 
+legislator in terms of their category of interest, i.e. 
+$\operatorname{argmax}_{k \in K} p_k^{\phi(j)}$.
+
 
 \subsection{Thompson Sampling as a Bandit Strategy}
 Let's assume that 
@@ -253,7 +345,7 @@ This strategy is called \textit{Thompson sampling} \citep{tom}.
 % To validate the effectiveness of Thompson sampling strategy, 
 % I 
 \section{Large Search Space Problem in Lobbying Industry}
-
+1
 In this section, I provide a supportive evidence
 that interest groups 
 have incentives to delegate information acquisition process to lobbyists

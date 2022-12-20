@@ -1,14 +1,14 @@
 # Fdb version 3
-["bibtex main"] 1671072879 "main.aux" "main.bbl" "main" 1671073238
+["bibtex main"] 1671568253 "main.aux" "main.bbl" "main" 1671568259
   "/usr/local/texlive/2021/texmf-dist/bibtex/bst/base/apalike.bst" 1292289607 24635 604dafcc79f521a11ea73e506e1fbd98 ""
-  "biblio.bib" 1666997924 8638 ad1db06d36f7171b73fca1cca8717087 ""
-  "main.aux" 1671073237 7391 e9ad7d1c608311d125bb60b08b9ae5b1 "pdflatex"
+  "biblio.bib" 1671568173 16493 b14b12e19b99af600093a7f4f2b94ebd ""
+  "main.aux" 1671568257 7954 97a4c331d451b70e90688521a8522f53 "pdflatex"
   (generated)
-  "main.blg"
   "main.bbl"
-["pdflatex"] 1671073234 "/Users/suyeol/Dropbox (MIT)/categorical-bandit/final paper/main.tex" "/Users/suyeol/Dropbox (MIT)/categorical-bandit/final paper/main.pdf" "main" 1671073238
-  "/Users/suyeol/Dropbox (MIT)/categorical-bandit/final paper/main.aux" 1671073237 7391 e9ad7d1c608311d125bb60b08b9ae5b1 ""
-  "/Users/suyeol/Dropbox (MIT)/categorical-bandit/final paper/main.tex" 1671073082 61915 ad65618b325af74f76f41f13866bea47 ""
+  "main.blg"
+["pdflatex"] 1671568254 "/Users/suyeol/Dropbox (MIT)/categorical-bandit/final paper/main.tex" "/Users/suyeol/Dropbox (MIT)/categorical-bandit/final paper/main.pdf" "main" 1671568259
+  "/Users/suyeol/Dropbox (MIT)/categorical-bandit/final paper/main.aux" 1671568257 7954 97a4c331d451b70e90688521a8522f53 ""
+  "/Users/suyeol/Dropbox (MIT)/categorical-bandit/final paper/main.tex" 1671568259 65197 6a5575a6b0f4b9e5b9c52f6461d9e270 ""
   "/Users/suyeol/Library/texlive/2021/texmf-var/fonts/pk/ljfour/public/bbm/bbm10.600pk" 1670175281 6964 1b1b435fccfd23505d0b00f8b1b9bb18 ""
   "/usr/local/texlive/2021/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2021/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc" 1136849721 2971 def0b6c1f0b107b3b936def894055589 ""
@@ -167,15 +167,15 @@
   "images/rs_small_search_space.png" 1671033781 71598 77caa8a71b9ccb61effb45437434d7e7 ""
   "images/small_search_space/estimated_proba.png" 1671025921 260756 d191807471e0b078eb6bf982b2c4103f ""
   "images/small_search_space/propo_action_taken.png" 1671025921 199933 48b88e55fb0e2da9b3bf514f5be2e48b ""
-  "main.aux" 1671073237 7391 e9ad7d1c608311d125bb60b08b9ae5b1 "pdflatex"
-  "main.bbl" 1671072879 1102 bfd66df218f0dff53c71bb9fad3027d7 "bibtex main"
-  "main.out" 1671073237 3296 c48aa2e0a8214d1046ada90984692a1c "pdflatex"
-  "main.tex" 1671073082 61915 ad65618b325af74f76f41f13866bea47 ""
-  "neurips_2020.sty" 1671073234 11511 b50b5de869cbe8ef5aaf87dc46773230 ""
+  "main.aux" 1671568257 7954 97a4c331d451b70e90688521a8522f53 "pdflatex"
+  "main.bbl" 1671568254 2276 5d086f9bffaf47d3072b7c559adbdd40 "bibtex main"
+  "main.out" 1671568257 3435 414e9f77f35833661fce045a98dab582 "pdflatex"
+  "main.tex" 1671568259 65197 6a5575a6b0f4b9e5b9c52f6461d9e270 ""
+  "neurips_2020.sty" 1671556717 11521 0c4daf6d88153292bc5879cf5b398d0a ""
   (generated)
+  "/Users/suyeol/Dropbox (MIT)/categorical-bandit/final paper/main.log"
+  "main.log"
+  "main.aux"
   "main.out"
   "main.pdf"
-  "main.log"
-  "/Users/suyeol/Dropbox (MIT)/categorical-bandit/final paper/main.log"
-  "main.aux"
   "/Users/suyeol/Dropbox (MIT)/categorical-bandit/final paper/main.pdf"
