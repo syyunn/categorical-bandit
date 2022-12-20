@@ -294,7 +294,7 @@ over different issue areas,
 I model this situation by categorical multi-armed bandit problem. There exists $|J|$ number of interest groups 
 $\{1, 2, \hdots, J\}$, $|K|$ number of legislators $\{1, 2, \hdots, K\}$ 
 , $|C|$ number of categories of interset $\{1,2, \hdots, C\}$ and
-$|T|$ number of timesteps $\{1,2, \hdots, T\}$.  
+$|T|$ number of timesteps $\{0, 1, 2, \hdots, T\}$.  
 Then each interst group $j \in J$ has its 
 own category of interest $\phi(j) \in C$ and
 each legislator $k \in K$ has a categorical distribution 
@@ -318,54 +318,76 @@ legislator in terms of their category of interest, i.e.
 $\operatorname{argmax}_{k \in K} p_k^{\phi(j)}$.
 
 
-\subsection{Thompson Sampling as a Bandit Strategy}
+\subsection{\large{Thompson Sampling as a Bandit Strategy}}
+There are many bandit strategies to solve the multi-armed bandit problem
+such as $\epsilon$-greedy \citep{egrdy}, Upper Confidence Bound (UCB) \citep{ucb}, and Thompson Sampling \citep{tom}.
+Those strategies are based on different exploration strategies.
+
+Among those strategies,
+Thompson Sampling is a Bayesian bandit strategy 
+which models agent's prior and posterior belief over the reward distribution of each arm 
+and systematically update it based on the observations.
+I use Thompson Sampling as a bandit strategy in this work. 
+This is because I can explicitly model the level of belief of each interest group over the reward distribution of each legislator.
+This intuitively aligns with the real-world situation where 
+interest groups have different level of understanding (which is belief) over the each legislator.
+
+
+
 Let's assume that 
 each interest group
 hold a prior belief over the 
 categorical distribution of each legislator.
 Since Dirichlet distribution is conjugate prior of categorical distribution,
-I model the prior belief of each interest group $j$ over the categorical distribution of the $k$-th legislator as
-$\operatorname{Dir}(C, \boldmath{\alpha}_{jk})$ where 
-$\mathbf{\alpha_{jk}} = [\alpha_{jk}^{(1)}, \alpha_{jk}^{(2)}, \hdots, \alpha_{jk}^{(C)}]$.
-At each timestep $t\in T$, interest group $j$ choose the $k$-th legislator to 
+I model the prior belief of each interest group $j$ over the categorical distribution of the $k$-th legislator at timestep $t$, as
+$\operatorname{Dir}(C, \mathbf{\alpha^t_{jk}})$ where 
+$\mathbf{\alpha_{jk}} = [\alpha_{jk}^{t(1)}, \alpha_{jk}^{t(2)}, \hdots, \alpha_{jk}^{t(C)}]$.
+At the beginning of the exploration process $t=0$, interest group $j$ 
+holds the \textit{flat prior} belief over all legislators, i.e. $\mathbf{\alpha^{t=0}_{jk}} = [1, 1, \hdots, 1]\quad \forall k \in K$.
+Then at each timestep $t\in T$, interest group $j$ choose the $k$-th legislator to 
 interact with and sample $X_k^t \in C$ from $\operatorname{Cat(C, \mathbf{p_k})}$.
-Then the interest group $j$ updates its prior belief by adding $1$ to $\alpha_{jk}^{(X_k^t)}$.
+Then the interest group $j$ updates its prior belief by adding $1$ to $\alpha_{jk}^{t(X_k^t)}$. 
+This yields the posterior belief at time $t+1$, $\operatorname{Dir}(C, \mathbf{\alpha}^{t+1}_{jk})$.
 After update, the interest group $j$ chooses the next legislator $k_{t+1}$ 
-to interact at time $t+1$
-by sampling $\mathbf{\hat{p}_{1j}}, \mathbf{\hat{p}_{2j}}, \hdots \mathbf{\hat{p}_{Kj}}$ 
-from $\operatorname{Dir}(C, \mathbf{\alpha_{j1}})$,  $\operatorname{Dir}(C, \mathbf{\alpha_{j2}}), \hdots, \operatorname{Dir}(C, \mathbf{\alpha_{jK}})$ respectively.
-Then it
-choose $k_{t+1} = \underset{K}{\operatorname{argmax}}\{\hat{p}^{(\phi(j))}_{1j}, \hat{p}^{(\phi(j))}_{2j}, \hdots, \hat{p}^{(\phi(j))}_{Kj}\}$.
-In this way the interest group $j$ can systematically update
+by sampling $\mathbf{\hat{p}_{1j}}, \mathbf{\hat{p}_{2j}}, \hdots \mathbf{\hat{p}_{Kj}}$ from posterior beliefs 
+from $\operatorname{Dir}(C, \mathbf{\alpha^{t+1}_{j1}})$,  $\operatorname{Dir}(C, \mathbf{\alpha^{t+1}_{j2}}), \hdots, \operatorname{Dir}(C, \mathbf{\alpha^{t+1}_{jK}})$ respectively.
+$\mathbf{\hat{p}_{kj}}=[\hat{p}^{(1)}_{kj}, \hat{p}^{(2)}_{kj}, \hdots, \hat{p}^{(C)}_{kj}]$ is the vector of probabilities assigned for each category in case of legislator $k$.
+Then $j$ choose $k_{t+1} = \underset{K}{\operatorname{argmax}}\{\hat{p}^{(\phi(j))}_{1j}, \hat{p}^{(\phi(j))}_{2j}, \hdots, \hat{p}^{(\phi(j))}_{Kj}\}$.
+This means that the interest group $j$ chooses the next legislator $k_{t+1}$ 
+based on samples from its own posterior belief.
+Among the samples from posterior beliefs, $j$ only compares the 
+dimension $\phi(j)$ of those samples,
+probability of the category $\phi(j)$ for each legislator,
+and chooses $k$ which has the highest probability of giving category $\phi(j)$ when sampled.
+In this way, the interest group $j$ can systematically update
 its prior belief and
 balance the exploration and exploitation based on the 
-randomness of sampling from Dirichlet distributions.
+randomness from the sampling. 
 This strategy is called \textit{Thompson sampling} \citep{tom}.
-% \subsection{Validation of Thompson Sampling Strategy}
-% To validate the effectiveness of Thompson sampling strategy, 
-% I 
+
 \section{Large Search Space Problem in Lobbying Industry}
-1
+
 In this section, I provide a supportive evidence
 that interest groups 
 have incentives to delegate information acquisition process to lobbyists
-to solve the large search space problem. Starting from showing that 
+to solve the \textit{large search space problem}. 
+Starting from showing that 
 interest groups fail to 
-find the best legislator to interact in
+find the best rewarding legislator in
 case of large search space,
 I show that 
-interest groups can solve the large search space problem
+they can find the best rewarding legislator
 by hiring lobbyists by simulation.
 
-\subsection{Simulation I: Small Search Space}
+\subsection{\large{Simulation I: Small Search Space}}
 
 First, I simulate the case of small search space.
 In this simulation, I used $|K|=32, |C|=4, |J|=1\footnote{This is single agent setting}$ and $|T|=2000$.
 Since I don't have 
 have a good representation of
 the categorical distributions of legislators,
-I randomly generate a hypothetical categorical distribution of each legislator for simulation.
-
+I randomly generate a hypothetical categorical distribution of each legislator for simulation \footnote{By random sampling $\mathbf{p_k} = [p_k^{(1)}, p_k^{(2)}, \hdots, p_k^{(C)}]$ from $\operatorname{Dir}(C, \mathbf{\alpha})$ where $\alpha=[1,1, \hdots, 1]$,
+I can generate hypothetical categorical distribution of each legislator $k$.}.
 Besides, I use the normalized cumulative regret 
 as the performance metric in the following simulations.
 The normalized cumulative regret is 

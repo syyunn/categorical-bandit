@@ -5,6 +5,11 @@ Ansolabehere, S., de~Figueiredo, J.~M., and Snyder, J.~M. (2003).
 \newblock Why is there so little money in u.s. politics?
 \newblock {\em The Journal of Economic Perspectives}, 17(1):105--130.
 
+\bibitem[Auer, 2002]{ucb}
+Auer, P. (2002).
+\newblock Using confidence bounds for exploitation-exploration trade-offs.
+\newblock {\em Journal of Machine Learning Research}, 3:397--422.
+
 \bibitem[Bauer et~al., 2017]{Bauer2017}
 Bauer, R.~A., de~Sola~Pool, I., and Dexter, L.~A. (2017).
 \newblock {\em American Business and Public Policy}.
@@ -36,6 +41,14 @@ Milbrath, L. (1984).
 \newblock {\em Washington Lobbyists Survey, 1956-1957}.
 \newblock ICPSR (Collection : En ligne). Inter-university Consortium for
   Political and Social Research.
+
+\bibitem[Mnih et~al., 2015]{egrdy}
+Mnih, V., Kavukcuoglu, K., Silver, D., Rusu, A.~A., Veness, J., Bellemare,
+  M.~G., Graves, A., Riedmiller, M., Fidjeland, A.~K., Ostrovski, G., Petersen,
+  S., Beattie, C., Sadik, A., Antonoglou, I., King, H., Kumaran, D., Wierstra,
+  D., Legg, S., and Hassabis, D. (2015).
+\newblock Human-level control through deep reinforcement learning.
+\newblock {\em Nature}, 518(7540):529--533.
 
 \bibitem[Robbins, 1952]{Robbins1952SomeAO}
 Robbins, H.~E. (1952).
