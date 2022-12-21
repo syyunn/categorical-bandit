@@ -29,6 +29,8 @@ def plot_results(bandit_index: int, env: CategoricalBanditEnv, save_dir, show=Fa
     """
 
     bandit = env.bandits[bandit_index]
+    lobbyist = env.lobbyists[bandit_index]
+
 
     fig = plt.figure(figsize=(14, 10))
     fig.subplots_adjust(bottom=0.3, wspace=0.3)
@@ -362,13 +364,13 @@ def experiment(
     cum_regrets_of_agents = []
     lb_ratio = []
 
-    # for i in range(B):
-    #     plot_results(i, env, dir, show=show)
+    for i in range(B):
+        plot_results(i, env, dir, show=show)
 
-    #     cum_regrets_of_agents.append([((env.bandits[i].regrets[t]) / ((env.bandits[i].best_proba - env.bandits[i].worst_proba) * t))
-    #     for t in range(len(env.bandits[i].regrets))][-1])
-    #     lb_ratio.append((env.n - Counter(env.bandits[i].hires)[-1]) /env.n)
-    #     break
+        cum_regrets_of_agents.append([((env.bandits[i].regrets[t]) / ((env.bandits[i].best_proba - env.bandits[i].worst_proba) * t))
+        for t in range(len(env.bandits[i].regrets))][-1])
+        lb_ratio.append((env.n - Counter(env.bandits[i].hires)[-1]) /env.n)
+        break
 
     # pickle the result
     import pickle
@@ -537,18 +539,34 @@ if __name__ == "__main__":
     #         seed_lobbyist = 100
     #     )
 
+    # experiment(
+    #     B=10,
+    #     K=112,
+    #     C=26,
+    #     L=2,
+    #     N=2000,
+    #     cois=[0]*5 + [1]*5,
+    #     show=False,
+    #     prior=True,
+    #     prior_temp= args.ptemp, # ptemp \in [0,1]
+    #     expid = args.expid,
+    #     seed = args.seed,
+    #     legiswise = False,
+    #     seed_lobbyist = 100
+    # )
+
     experiment(
-        B=10,
+        B=5,
         K=112,
         C=26,
-        L=2,
+        L=1,
         N=2000,
-        cois=[0]*5 + [1]*5,
-        show=False,
-        prior=True,
+        cois=[0]*5,
+        show=True,
+        prior=False,
         prior_temp= args.ptemp, # ptemp \in [0,1]
         expid = args.expid,
-        seed = args.seed,
+        seed = 0,
         legiswise = False,
         seed_lobbyist = 100
     )

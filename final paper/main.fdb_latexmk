@@ -1,14 +1,14 @@
 # Fdb version 3
-["bibtex main"] 1671575146 "main.aux" "main.bbl" "main" 1671575233
+["bibtex main"] 1671594033 "main.aux" "main.bbl" "main" 1671594038
   "/usr/local/texlive/2021/texmf-dist/bibtex/bst/base/apalike.bst" 1292289607 24635 604dafcc79f521a11ea73e506e1fbd98 ""
-  "biblio.bib" 1671571202 16036 6adcafc14d95eac85683c3a5ddb2403a ""
-  "main.aux" 1671575232 8168 2016c3eb22aecc7eae05e6f2197afcdb "pdflatex"
+  "biblio.bib" 1671594010 17548 7eedb9b96f22725cd79386bb479ef54d ""
+  "main.aux" 1671594037 10341 c9bdf2bbd5dad1ecf680d7bf894aa233 "pdflatex"
   (generated)
   "main.blg"
   "main.bbl"
-["pdflatex"] 1671575227 "/Users/suyeol/Dropbox (MIT)/categorical-bandit/final paper/main.tex" "/Users/suyeol/Dropbox (MIT)/categorical-bandit/final paper/main.pdf" "main" 1671575233
-  "/Users/suyeol/Dropbox (MIT)/categorical-bandit/final paper/main.aux" 1671575232 8168 2016c3eb22aecc7eae05e6f2197afcdb ""
-  "/Users/suyeol/Dropbox (MIT)/categorical-bandit/final paper/main.tex" 1671575227 67047 340d3f0b34e547cbc9e0def0ec1c2043 ""
+["pdflatex"] 1671594033 "/Users/suyeol/Dropbox (MIT)/categorical-bandit/final paper/main.tex" "/Users/suyeol/Dropbox (MIT)/categorical-bandit/final paper/main.pdf" "main" 1671594038
+  "/Users/suyeol/Dropbox (MIT)/categorical-bandit/final paper/main.aux" 1671594037 10341 c9bdf2bbd5dad1ecf680d7bf894aa233 ""
+  "/Users/suyeol/Dropbox (MIT)/categorical-bandit/final paper/main.tex" 1671594024 75453 a4b6993470e1fdd8918904b737ac5802 ""
   "/Users/suyeol/Library/texlive/2021/texmf-var/fonts/pk/ljfour/public/bbm/bbm10.600pk" 1670175281 6964 1b1b435fccfd23505d0b00f8b1b9bb18 ""
   "/usr/local/texlive/2021/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2021/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc" 1136849721 2971 def0b6c1f0b107b3b936def894055589 ""
@@ -161,6 +161,7 @@
   "images/Figure_1_scatter.png" 1671070594 28790 acc59f09b8eae41e3f58e5220069939f ""
   "images/large_search_lobbyist/best_arm.png" 1671025921 190308 6f76cf6b283d8b9ec217639839df7ecf ""
   "images/large_search_lobbyist/freq.png" 1671025921 140019 5457dc1b372cadaa6af77d0943ba1b77 ""
+  "images/large_search_lobbyist/lb_esti.png" 1671578915 292456 d8c9d72a71f162f844dd27bafd931ed0 ""
   "images/large_search_lobbyist/rs.png" 1671047622 102971 884db80b6753e46e766ea33c44c5db25 ""
   "images/large_search_space/estimated_proba.png" 1671025921 289013 33b9b86db627060d5d0832cfb661ab61 ""
   "images/large_search_space/propo_action_taken.png" 1671025921 217310 a54d0d71d852c959840d63f5ba1f6b4b ""
@@ -169,15 +170,15 @@
   "images/rs_small_search_space.png" 1671033781 71598 77caa8a71b9ccb61effb45437434d7e7 ""
   "images/small_search_space/estimated_proba.png" 1671025921 260756 d191807471e0b078eb6bf982b2c4103f ""
   "images/small_search_space/propo_action_taken.png" 1671025921 199933 48b88e55fb0e2da9b3bf514f5be2e48b ""
-  "main.aux" 1671575232 8168 2016c3eb22aecc7eae05e6f2197afcdb "pdflatex"
-  "main.bbl" 1671575146 2883 94f0f379ecd5ae1fd390ea302cb2573f "bibtex main"
-  "main.out" 1671575232 3435 414e9f77f35833661fce045a98dab582 "pdflatex"
-  "main.tex" 1671575227 67047 340d3f0b34e547cbc9e0def0ec1c2043 ""
+  "main.aux" 1671594037 10341 c9bdf2bbd5dad1ecf680d7bf894aa233 "pdflatex"
+  "main.bbl" 1671594033 3257 e17edf888329dd46bce855c5f7297c27 "bibtex main"
+  "main.out" 1671594037 4286 a83ede3d7fdaead5b28a2acd1366b0c3 "pdflatex"
+  "main.tex" 1671594024 75453 a4b6993470e1fdd8918904b737ac5802 ""
   "neurips_2020.sty" 1671556717 11521 0c4daf6d88153292bc5879cf5b398d0a ""
   (generated)
-  "main.pdf"
-  "main.out"
   "main.aux"
   "/Users/suyeol/Dropbox (MIT)/categorical-bandit/final paper/main.log"
   "/Users/suyeol/Dropbox (MIT)/categorical-bandit/final paper/main.pdf"
+  "main.out"
   "main.log"
+  "main.pdf"

@@ -55,6 +55,11 @@ Robbins, H.~E. (1952).
 \newblock Some aspects of the sequential design of experiments.
 \newblock {\em Bulletin of the American Mathematical Society}, 58:527--535.
 
+\bibitem[Sutton and Barto, 2018]{Sutton1998}
+Sutton, R.~S. and Barto, A.~G. (2018).
+\newblock {\em Reinforcement Learning: An Introduction}.
+\newblock The MIT Press, second edition.
+
 \bibitem[Thompson, 1933]{tom}
 Thompson, W.~R. (1933).
 \newblock On the likelihood that one unknown probability exceeds another in
@@ -66,5 +71,10 @@ Young, R. and David, T. (1951).
 \newblock The governmental process: Political interests and public opinion.
 \newblock {\em The ANNALS of the American Academy of Political and Social
   Science}, 278(1):200--201.
+
+\bibitem[Zhang et~al., 2018]{decen}
+Zhang, K., Yang, Z., Liu, H., Zhang, T., and Başar, T. (2018).
+\newblock Fully decentralized multi-agent reinforcement learning with networked
+  agents.
 
 \end{thebibliography}
