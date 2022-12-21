@@ -95,7 +95,7 @@ These two resulsts
 provide supportive evidence
 why interest groups 
 have incentives to delegate information acquisition process to lobbyists
-and why real-world lobbyists interact with both sides of the legislators in terms of interest of their clients.
+and why real-world lobbyists interact with both sides of the legislators in reality.
 \end{abstract}
 
 \section{Introduction}
@@ -116,14 +116,14 @@ the position of the lobbyists
 However, this theory doesn't 
 explain why lobbyists lobby 
 already like-minded legislators 
-those who don't need any persuasions \citep{10.2307/2586303}.
+those who don't need any more persuasions \citep{10.2307/2586303}.
 
 Apart from those orthodox theories,
 this work 
 provides a supportive evidence 
 to the theory 
 that explains lobbying as a 
-delegated information acquisition process.
+delegated information acquisition process \citep{rif}.
 According to this theory, interest groups 
 have incentives to delegate information acquisition process to lobbyists.
 By modeling the lobbying industry 
@@ -145,10 +145,10 @@ in terms of interest of their clients
 \citep{10.2307/2586303}.
 In other words, 
 lobbyists interact with 
-every relevant legislator 
+legislators
 in order to acquire information
-on the issue area of their clients
-regardless of the legislator's position on the issue area.
+on the issue area of interest
+regardless of positions of legislators.
 
 % In summary,
 % this work models the lobbying industry 
@@ -240,14 +240,14 @@ However, total chances of interaction is limited
 because of the cost of interaction.
 Therefore, interest groups 
 need to design their 
-exploration strategy
+exploration strategy about 
 how to interact with different legislators
 to maximize their expected rewards.
 This situation can be modeled by multi-agent multi-armed bandit problem.
 They decide 
 whether to 
 keep exploring or 
-exploiting the best legislator according to their current knowledge
+exploiting the best legislator according to their current knowledge about legislators 
 at each timestep.
 % groups need to maximize their expected rewards from the exploration process.
 Multi-armed bandit 
@@ -258,18 +258,18 @@ in sequential decision making\footnote{The problem is orginally
 proposed by \cite{Robbins1952SomeAO}
 }.
 Interest groups in the U.S. lobbying industry
-need to maximize their expected rewards from the exploration process
+need to maximize their expected rewards 
 by choosing the best strategy of exploration and exploitation of legislators at each timestep.
 Therefore, 
 I model the U.S. lobbying industry as multi-agent multi-armed bandit problem
-and simulate to prove two conjectures. 
-The First conjecture is  
+and simulate to prove the following two conjectures. 
+The first conjecture is  
 the incentive of hiring lobbying firm increases
 as the size of the exploration space increases.
 The Second conjecture is
 the incentive of hiring lobbying firm is higher in 
 case that the lobbyist has expert knowledge on a 
-particular issue area across different legislators
+particular issue area across legislators
 compared to the case that 
 the lobbyist has expert knowledge 
 on a particular legislator across different issue areas.
@@ -293,7 +293,7 @@ Since legislators have varying level of authorities (or influences)
 over different issue areas,
 I model this situation by categorical multi-armed bandit problem. There exists $|J|$ number of interest groups 
 $\{1, 2, \hdots, J\}$, $|K|$ number of legislators $\{1, 2, \hdots, K\}$ 
-, $|C|$ number of categories of interset $\{1,2, \hdots, C\}$ and
+, $|C|$ number of categories of interset $\{1,2, \hdots, C\}$, and
 $|T|$ number of timesteps $\{0, 1, 2, \hdots, T\}$.  
 Then each interst group $j \in J$ has its 
 own category of interest $\phi(j) \in C$ and
@@ -302,7 +302,7 @@ $\operatorname{Cat(C, \mathbf{p_k})}$ where
 $C=\{1,2,\hdots, C\}$ and $\mathbf{p_k} = [p_k^{(1)}, p_k^{(2)}, \hdots, p_k^{(C)}]$
 which represents the support of the distribution
 and the vector of probabilities for each category of interest respectively.
-Whenever an intesrest group $j \in J$ interact with the $k$-th legislator, they
+Whenever an intesrest group $j \in J$ interact with the legislator $k$, they
 sample $X_k \in C$ from $\operatorname{Cat(C, \mathbf{p_k})}$.
 If the sampled category $X_k$ matches with the category of interest of the interest group, i.e. 
 $X_k = \phi(j)$,
@@ -314,8 +314,8 @@ when the sampled category $X_k$ matches with the category of interest of the int
 Otherwise, it gets the reward of $0$.
 Therefore, interest groups 
 need to find the best rewarding 
-legislator in terms of their category of interest, i.e. 
-$\operatorname{argmax}_{k \in K} p_k^{\phi(j)}$.
+legislator $k^*$ in terms of their category of interest $\phi(j)$, i.e. 
+$k^* = \operatorname{argmax}_{k \in K} p_k^{\phi(j)}$.
 
 
 \subsection{\large{Thompson Sampling as a Bandit Strategy}}
@@ -325,12 +325,12 @@ Those strategies are based on different exploration strategies.
 
 Among those strategies,
 Thompson Sampling is a Bayesian bandit strategy 
-which models agent's prior and posterior belief over the reward distribution of each arm 
-and systematically update it based on the observations.
+which models agent's prior and posterior beliefs over the reward distribution of each action 
+and systematically update those beliefs based on observations.
 I use Thompson Sampling as a bandit strategy in this work. 
 This is because I can explicitly model the level of belief of each interest group over the reward distribution of each legislator.
 This intuitively aligns with the real-world situation where 
-interest groups have different level of understanding (which is belief) over the each legislator.
+interest groups have different levels of understanding (which is belief) over each legislator.
 
 
 
@@ -339,17 +339,17 @@ each interest group
 hold a prior belief over the 
 categorical distribution of each legislator.
 Since Dirichlet distribution is conjugate prior of categorical distribution,
-I model the prior belief of each interest group $j$ over the categorical distribution of the $k$-th legislator at timestep $t$, as
+I model the prior belief of each interest group $j$ over the categorical distribution of legislator $k$ at timestep $t$, as
 $\operatorname{Dir}(C, \mathbf{\alpha^t_{jk}})$ where 
 $\mathbf{\alpha_{jk}} = [\alpha_{jk}^{t(1)}, \alpha_{jk}^{t(2)}, \hdots, \alpha_{jk}^{t(C)}]$.
 At the beginning of the exploration process $t=0$, interest group $j$ 
 holds the \textit{flat prior} belief over all legislators, i.e. $\mathbf{\alpha^{t=0}_{jk}} = [1, 1, \hdots, 1]\quad \forall k \in K$.
-Then at each timestep $t\in T$, interest group $j$ choose the $k$-th legislator to 
+Then at each timestep $t\in T$, interest group $j$ choose the legislator $k$ to 
 interact with and sample $X_k^t \in C$ from $\operatorname{Cat(C, \mathbf{p_k})}$.
 Then the interest group $j$ updates its prior belief by adding $1$ to $\alpha_{jk}^{t(X_k^t)}$. 
 This yields the posterior belief at time $t+1$, $\operatorname{Dir}(C, \mathbf{\alpha}^{t+1}_{jk})$.
 After update, the interest group $j$ chooses the next legislator $k_{t+1}$ 
-by sampling $\mathbf{\hat{p}_{1j}}, \mathbf{\hat{p}_{2j}}, \hdots \mathbf{\hat{p}_{Kj}}$ from posterior beliefs 
+based on samples $\mathbf{\hat{p}_{1j}}, \mathbf{\hat{p}_{2j}}, \hdots \mathbf{\hat{p}_{Kj}}$ from posterior beliefs 
 from $\operatorname{Dir}(C, \mathbf{\alpha^{t+1}_{j1}})$,  $\operatorname{Dir}(C, \mathbf{\alpha^{t+1}_{j2}}), \hdots, \operatorname{Dir}(C, \mathbf{\alpha^{t+1}_{jK}})$ respectively.
 $\mathbf{\hat{p}_{kj}}=[\hat{p}^{(1)}_{kj}, \hat{p}^{(2)}_{kj}, \hdots, \hat{p}^{(C)}_{kj}]$ is the vector of probabilities assigned for each category in case of legislator $k$.
 Then $j$ choose $k_{t+1} = \underset{K}{\operatorname{argmax}}\{\hat{p}^{(\phi(j))}_{1j}, \hat{p}^{(\phi(j))}_{2j}, \hdots, \hat{p}^{(\phi(j))}_{Kj}\}$.
@@ -361,7 +361,7 @@ probability of the category $\phi(j)$ for each legislator,
 and chooses $k$ which has the highest probability of giving category $\phi(j)$ when sampled.
 In this way, the interest group $j$ can systematically update
 its prior belief and
-balance the exploration and exploitation based on the 
+balance the exploration and exploitation based on 
 randomness from the sampling. 
 This strategy is called \textit{Thompson sampling} \citep{tom}.
 
@@ -377,17 +377,17 @@ find the best rewarding legislator in
 case of large search space,
 I show that 
 they can find the best rewarding legislator
-by hiring lobbyists by simulation.
+by hiring lobbyists.
 
 \subsection{\large{Simulation I: Small Search Space}}
 
-First, I simulate the case of small search space.
-In this simulation, I used $|K|=32, |C|=4, |J|=1\footnote{This is single agent setting}$ and $|T|=2000$.
+First, I simulate the case of a small search space.
+In this simulation, I used $|K|=32, |C|=4, |J|=1\footnote{This is single agent setting.}$ and $|T|=2000$.
 Since I don't have 
 have a good representation of
 the categorical distributions of legislators,
 I randomly generate a hypothetical categorical distribution of each legislator for simulation \footnote{By random sampling $\mathbf{p_k} = [p_k^{(1)}, p_k^{(2)}, \hdots, p_k^{(C)}]$ from $\operatorname{Dir}(C, \mathbf{\alpha})$ where $\alpha=[1,1, \hdots, 1]$,
-I can generate hypothetical categorical distribution of each legislator $k$.}.
+I can generate a hypothetical categorical distribution of each legislator $k$.}.
 Besides, I use the normalized cumulative regret 
 as the performance metric in the following simulations.
 The cumulative normalized regret is 
@@ -395,7 +395,7 @@ defined as $\sum_t^T (p_{\phi(j)}^{\text{max}}-p_{a_t}^{\phi(j)}) / \sum_t^T(p_{
 where $p_{\phi(j)}^{\text{max}} = \operatorname{max}_{k \in K}\{p_1^{({\phi(j)})}, p_2^{({\phi(j)})}, \hdots, p_K^{({\phi(j)})}\} $,
 $p_{\phi(j)}^{\text{min}} = \operatorname{min}_{k \in K}\{p_1^{({\phi(j)})}, p_2^{({\phi(j)})}, \hdots, p_K^{({\phi(j)})}\} $
 and $a_t$ represent the choice of legislator taken by the interest group at time $t$.
-Regret represents how much the agent could have done better in terms of the expected reward if it had chosen the best action.
+Regret represents how much the agent could have done better in terms of the expected reward if the agent had chosen the best action.
 Similarly, cumulative normalized regret 
 is sum of regret over the entire time horizon $T$ normalized 
 by the sum of upper bound of regret\footnote{I use this metric to compare the 
@@ -404,7 +404,7 @@ level of regret between different hyperparameter settings.
 the smaller the value is, the better the performance is.
 
 Figure \ref{fig:rs_small} shows that 
-normalized cumulative regrests of interest groups 
+normalized cumulative regrets of interest groups 
 decrease as the number of timesteps increases.
 The mean of cumulative normalized regrets at time $T$ from 
 $10$ different random seeds\footnote{Each random seed  
@@ -416,8 +416,8 @@ a interest group can successfully find the
 best rewarding legislator to interact in case of small search space.
 In this scenario, search space consists of 
 $|K| \times |C| = 128$ number of parameters 
-which is relatively small compared to the case of 
-actual lobbying industry.
+which is relatively small compared to the real world case of 
+lobbying industry.
 % and interest groups can easily find the best legislator to interact with.
 Figure \ref{fig:smallproba} shows that 
 prior belief of the interest group well 
@@ -456,7 +456,7 @@ with the best one with the highest ratio.
 \end{figure}
     
 \subsection{\large{Simulation II: Large Search Space}}\label{sim2}
-In the previous simulaton, 
+In the previous simulation, 
 I used 
 arbitrary small numbers for $|K|$ and $|C|$.
 Now I use $|K|=112, |C|=26, |J|=1$ and $|T|=2000$.
@@ -471,8 +471,8 @@ I expect the simulation with this configuration to be more realistic compared to
 Fig \ref{fig:rs_lg} shows that the mean of cumulative normalized regrets at time $T$ from 
 $10$ different random seeds\footnote{Each random seed  
 corresponds to the different set of categorical distributions of legislators. 
-} is $0.48$ with the variance of $0.023$ which is much higher and larger compared to the previous simulation, which was $0.012$ with the variance of $5.98e-05$ respectively.
-It implies that interset group fails to find the best rewarding legislator within $2000$ times of interaction.
+} is $0.48$ with the variance of $0.023$ which is much higher and larger respectively compared to the previous simulation, whose mean was $0.012$ with the variance of $5.98e-05$.
+It implies that the interest group fails to find the best rewarding legislator within the limited timesteps of $2000$.
 This is because 
 the search space is almost $23$ times larger than the previous simulation.
 Due to the large search space, 
@@ -484,7 +484,7 @@ This results in exploiting
 a worse legislator compared to the best one 
 as shown in Figure $\ref{fig:lgpropo}$.
 In this case, although the best legislator $k^*$ is the legislator $69$, 
-the interest group keeps interacting with the legislator $90$ with the highest ratio. 
+the interest group interacts with the legislator $90$ (which is worse than the legislator $69$) with the highest ratio. 
 
 \begin{figure}[h!]
     \centering % Not {needed}
@@ -516,8 +516,8 @@ the interest group keeps interacting with the legislator $90$ with the highest r
 \subsection{\large{Simulation III: Large Search Space with a Lobbyist}}\label{sim3}
 
 In this simulation, I introduce a lobbyist into the multi-armed bandit setting explained in Section \ref{categorical}.
-By showing that lobbyists can help interest groups to find the best legislators in the large search space, 
-I provide a supportive evidence that lobbying can be explained as a delegated information acquisition process by simulation.
+By showing that lobbyists can help interest groups to find the best legislators in large search space, 
+I provide supportive evidence that lobbying can be explained as a delegated information acquisition process.
 
 
 \subsubsection{\normalsize{Introducing Lobbyists into the Multi-Armed Bandit Setting}}\label{arml}
@@ -526,7 +526,7 @@ I provide a supportive evidence that lobbying can be explained as a delegated in
 I conjecture 
 that interest groups who share the same category of interest
 can collaborate by sharing the same lobbyist. 
-By doing so, they can concentrate their resources on finding the best legislators in the large search space.
+By doing so, they can concentrate their resources on finding the best legislators in a large search space.
 In addition to the settings introduced in Section \ref{categorical},
 I introduce a lobbyist $l \in L$ with its own set 
 of prior beliefs $\operatorname{Dir}(C, \mathbf{\alpha_{lk}}) \text{ } \forall k \in K$ 
@@ -536,8 +536,8 @@ an interest group $j$ choose
 the next legislator $k_{t+1} = \underset{K}{\operatorname{argmax}}\left[\{\hat{p}^{(\phi(j))}_{1j}, \hat{p}^{(\phi(j))}_{2j}, \hdots, \hat{p}^{(\phi(j))}_{Kj}\}\cup\bigcup_{l\in L}\{\hat{p}^{(\phi(j))}_{1l}, \hat{p}^{(\phi(j))}_{2l}, \hdots, \hat{p}^{(\phi(j))}_{Kl}\}\right]$. 
 This means that 
 interest group $j$ chooses the best rewarding legislator based on the samples from the prior beliefs of all lobbyists including that of himself.
-I assume complete information so that 
-any interest groups can 
+I assume \textit{complete information} so that 
+any interest groups have  
 access to prior beliefs of all lobbyists at any timestep. 
 In this setting, 
 if the interest group $j$ 
@@ -546,23 +546,22 @@ based on
 the prior belief of lobbyist $l$, 
 I update the prior belief of lobbyist 
 $l$ with the sampled observation $X_{k}^{t+1} \sim \operatorname{Cat(C, \mathbf{p_k})}$
-by adding $1$ to $\alpha_{lk}^{(X_k^{t+1})}$.
+by adding $1$ to $\alpha_{lk}^{t(X_k^{t+1})}$.
 However, 
 I don't update the 
-prior belief of interest group $j$, $\alpha_{jk}^{(X_k^{t+1})}$.
+prior belief of interest group $j$, $\alpha_{jk}^{t(X_k^{t+1})}$.
 This is because
 if an interest group hires a lobbyist,
-the lobbyist explore the legislative space on behalf of the interest group. 
-This is because an interest group 
-doesn't accumulate any experience when they hire a lobbyist.
-Lobbyists interact with the legislators on behalf 
-of the interest group and they accumulate the experience 
-to themselves but not necessarily to the interest group.
+the lobbyist explores the legislative space on behalf of the interest group. 
+In this case, the lobbyist can accumulate its own experience to understand the reward distribution of the legislators.
+However, 
+the interest group does not necessarily 
+accumulate the experience acquired by the lobbyist.
 In contrast, 
 if an interest group choose the next legislator 
-based on their own prior belief,
-we update the prior belief of interest group $j$ as usual.
-This modeling introduces the \textit{pros and cons} of hiring a lobbyist.
+based on its own prior belief,
+I update the prior belief of interest group $j$ as usual.
+This modeling explicitly introduces the \textit{pros and cons} of hiring a lobbyist.
 If an interest group hires a lobbyist, they 
 may find the better legislator. However, 
 they don't accumulate any experience to understand the reward distribution of the legislators
@@ -595,11 +594,11 @@ share the same lobbyist and collectively update
 the prior belief of the lobbyist. 
 Fig \ref{fig:lbproba} 
 shows that the interest group keep selecting into using 
-the lobbyist's prior rather than its own prior. 
-This is because
+lobbyist rather than using its own prior. 
+This is because 
 the lobbyist approximates the best rewarding legislator faster than interest groups.
 Fig \ref{fig:esti_lb} shows that the lobbyist approximates 
-the true reward distribution of the legislators closely after $2000$ timesteps. 
+the true reward distribution of the legislators very closely after $2000$ timesteps. 
  
 \subsection{\large{Lobbying as a Delegated Information Acquisition Process}}
 
@@ -613,12 +612,21 @@ relationship via lobbyist
 to find the best legislator for their shared category of interest.
 Regardless of whether interest groups intend to form a coalition or not, 
 I argue that interest groups 
-can form a coalition with other interst groups 
+can form a coalition with other interest groups 
 via lobbyists.
 This finding is important 
 because it provides a new perspective on 
 lobbying not just as a delegated information acquisition process
-but as a coalition formation process.
+but as a coalition formation process as well.
+\cite{hula} argues that 
+formal or informal links across organizations reduce the costs of coalition formation in U.S. politics.
+I argue that lobbying can be one of the informal links 
+and it can be used to form an informal coalition among interest groups.
+Therefore, I conjecture that lobbying industry 
+increase the complexity of U.S. politics exponentially 
+by adding a new dimension of coalition formation. 
+I will investigate this conjecture in the future.
+
 % \cite{hula} 
 % argues that 
 % formal or informal links across organizations reduce the costs of coalition formation in U.S. politics.
@@ -656,8 +664,8 @@ but as a coalition formation process.
     \begin{subfigure}[b]{0.45\textwidth}
         % \centering
         \includegraphics[width=\linewidth]{images/large_search_lobbyist/freq.png}
-        \caption{Frquency of using lobbyist. $0$ represents using lobbyist and $-1$ represents 
-        \textit{not} using lobbyist, relying on interst groups own prior.
+        \caption{Frquency of using lobbyists. $0$ represents using lobbyist and $-1$ represents 
+        \textit{not} using lobbyists, relying on interest groups own prior.
         }
         \label{fig:lbproba}
     \end{subfigure}
@@ -689,21 +697,20 @@ but as a coalition formation process.
 In this section, I find the reason
 why lobbyists lobby both sides of legislators in reality.
 This phenomenon that lobbyists lobbying both sides of legislators 
-is regarded as a puzzle in the literatures because lobbyists don't need to 
-lobby already supportive legislators according to the persuasion (informational) theories on lobbying \citep{10.2307/2586303}.
+is regarded as a puzzle because lobbyists don't need to 
+lobby \textit{already supportive} legislators according to the persuasion theories of lobbying \citep{10.2307/2586303}.
 
 
-To do so, I compare the simulation results from the two differet types of expert knowledge of lobbyists.
+To do so, I compare the simulation results from the two different types of expert knowledge of lobbyists.
 In the section \ref{arml}, I assumed 
-that each lobbyist $l$ has its own prior belief of legislators $\mathbf{\alpha_{l1}}, \mathbf{\alpha_{l2}}, \hdots, \mathbf{\alpha_{lK}} \in \mathbb{N}^C$ which are $K$ number of concentration parameter of dirichlet distributions.
+that each lobbyist $l$ has its own prior belief of legislators $\mathbf{\alpha_{l1}}, \mathbf{\alpha_{l2}}, \hdots, \mathbf{\alpha_{lK}} \in \mathbb{N}^C$ which are $K$ number of concentration parameters for each dirichlet distribution for the prior belief over legislator $k \in K$.
 It can be visualized as shown in Fig \ref{fig:mesh1}. 
 A lobbyist can either have expert knowledge 
 on a specific issue area across all legislators (blue in Fig \ref{fig:mesh1}) or
 have expert knowledge on a specific legislator (red in Fig \ref{fig:mesh1})
 across all issue areas. 
-Here, 
 
-I conjecture that lobbyists can be specialized 
+I conjecture that lobbyists can be ``specialized'' 
 in case lobbyists having 
 expert knowledge on a specific issue area across all legislators
 rather than having expert knowledge 
@@ -715,12 +722,12 @@ If the conjecture is true,
 lobbyists will lobby both sides of legislators
 to acquire 
 the expert knowledge on a specific issue area
-across all legislators.
+across \text{all} legislators.
 
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.6\textwidth]{images/pos.png}
-    \caption{Prior belief of lobbyist is paramaterized by $K \times C$ matrix.}
+    \caption{Prior belief of lobbyist is parameterized by $K \times C$ matrix.}
     \label{fig:mesh1}
 \end{figure}
 
@@ -737,60 +744,63 @@ Then partition $10$ interest groups
 into two groups, $5$ for each group and 
 assume that the interest groups in the same group share the same category of interest 
 while interest groups in different groups have different categories of interest $c_1$ and $c_2$.
-Therefore, I add $|L|=2$ lobbyists to represent the 
-category of interest of each group. I define a category of expert knowledge of a lobbyist $l$ as 
-$\upsilon(l)$. For the two lobbyist $l_1$ and $l_2$, I assign $\upsilon(l_1) = c_1$ and $\upsilon(l_2) = c_2$ respectively.
+Therefore, I add $|L|=2$ lobbyists to represent 
+the expert knowledge on $c_1$ and $c_2$ respectively.
+Formally speaking, I define a category of expert knowledge of a lobbyist $l$ as 
+$\upsilon(l)$. For the two lobbyists $l_1$ and $l_2$, I assign $\upsilon(l_1) = c_1$ and $\upsilon(l_2) = c_2$ respectively.
 
 \subsubsection{Simulation Setting For Expert Knowledge}
-In this subsection, I describe the simulation setting for the two different types of expert knowledge of lobbyists.
+In this subsection, I describe the simulation setting for the two different types of expert knowledge of lobbyists
+as shown in Fig \ref{fig:mesh1}.
 
 First, to model the expert knowledge of lobbyists 
 on a specific issue area across all legislators (blue in Fig \ref{fig:mesh1}),
-I preset the prior belief of lobbyists to be close to the categorical distribution of legislators.
+I set the prior belief of lobbyists to be close to the categorical distribution of all legislators for a particular category $c \in \{c_1, c_2\}$.
 By setting $\alpha_{lk}^{(c)} = p_k^{(c)} \cdot |C| \cdot \delta $ and $\alpha_{lk}^{(-c)} = (|C| - \alpha_{lk}^{(c)}/(|C|-1) \text{ } \forall k$, 
 I introduced expert knowledge on a specific issue area $c$ across all legislators.
 This setting is a redistribution of the sum of concentration parameter of dirichlet distribution which is equal to $|C|$.
 The distribution of the quantity $|C|$ across all categories determines the expectation over 
 the parameter of the categorical distribution of legislator $k$. 
 Therefore, if I set $\alpha_{lk}^{(c)} = p_k^{(c)} \cdot |C| \cdot \delta $ 
-and distribute remaining quantity $|C| - \alpha_{lk}^{(c)}$ across all other $|C|-1$ number of categories ,
-it makes the expectation of such dirichlet distribution for category $c$ to be eqaul to $p_k^{(c)}$.
+and evenly distribute remaining quantity $|C| - \alpha_{lk}^{(c)}$ across all other $|C|-1$ number of categories,
+it makes the expectation of such dirichlet distribution for category $c$ to be equal to $p_k^{(c)}$.
 In addition, by introducing $\delta \in [0,1]$ which is a temperature parameter to control the degree of expert knowledge,
-I can gradually introduce expert knowledge on a specific issue area $c$.
+I can gradually introduce expert knowledge on a specific issue area $c$. If $\delta = 0$, there's no expert knowledge on a specific issue area $c$.
+If $\delta = 1$, the expert knowledge on a specific issue area $c$ is fully introduced.
 
 Second, to model the expert knowledge of lobbyists 
 on a specific legislator $k^*$ across all issue areas (red in Fig \ref{fig:mesh1}),
 I set $\alpha_{lk^*}^{(c)} = p_{k^*}^{(c)}\cdot |C| \cdot \delta + \epsilon \text{  } \forall c$ where $k^* = \operatorname{argmax_K}\{p_1^{(c)}, p_2^{(c)}, \hdots, p_K^{(c)}\}$ .
-$\epsilon$ is a small number to prevent concentration parameter from being zero when $\delta = 0$.
+$\epsilon$ is a small number to prevent concentration parameters from being zero when $\delta = 0$.
 This means that first I find the $k^*$ which represent the best rewarding arm in terms of category $c$ and 
-copy his/her parameter of categorical distribution to dirichlet parameter of lobbyist.
+copy his/her parameter of categorical distribution to the dirichlet parameter of lobbyist.
 As same as the first setting, by introducing $\delta \in [0,1]$
 I can gradually introduce expert knowledge on a specific legislator $k^*$ across all issue areas.
 
 With this setting, I ran the simulation and measure 
-the ratio of hiring matching lobbyist. 
-Matching lobbyist is defined as the lobbyist who has the expert knowledge on the category of interest of interest groups.
+the ratio of hiring matching lobbyists. 
+Matching lobbyist is defined as the lobbyist who has the expert knowledge on the category of interest of an interest group.
 For example, if the category of interest of interest group $j$ is $c_1$
 and the expert knowledge of lobbyist $l_1$ is $c_1$, 
 then $l_1$ is a ``matching'' lobbyist for interest group $j$.
 Then the ratio of hiring matching lobbyist is defined as 
 the ratio of hiring ``matching'' lobbyist over the total number of timesteps $|T|=2000$.
 
-Since each group of interest groups has the shared category of interest $c_1, c_2$
-and two lobbyist $l_1, l_2$ have the expert knowledge on $c_1, c_2$ respectively, 
+Since two different groups of interest groups have the shared category of interest $c_1, c_2$
+and two lobbyists $l_1, l_2$ having the expert knowledge on $c_1, c_2$ respectively, 
 I expect that the ratio of hiring ``matching'' lobbyist increases 
-as the temperature parameter $\delta$ increases. 
+as the temperature parameter $\delta$ increases in case of lobbyists having expert knowledge on a specific issue area across all legislators.
 
 \subsection{\large{Simulation Result}}
 
 Figure \ref{fig:specialization} shows the simulation results.
-The simulation is ran twice for two different types of expert knowledge of lobbyists.
+The simulation is run twice for two different types of expert knowledge of lobbyists.
 The figure shows that only in case of expert knowledge on a specific issue area across all legislators (blue in Fig \ref{fig:mesh1}),
-the ratio of hiring ``matching'' lobbyist is higher than $0.5$, which is a baseline of randomly selecting a lobbyist between two available lobbyists.
+the ratio of hiring ``matching'' lobbyists is higher than $0.5$, which is a baseline of randomly selecting a lobbyist between two available lobbyists.
 In case of lobbyist having expert knowledge on a specific issue area across all legislators,
-ratio of hiring "matching" lobbyist converges to $1$ as the temperature parameter $\delta$ increases. 
+the ratio of hiring "matching" lobbyists converges to $1$ as the temperature parameter $\delta$ increases. 
 However, in case of lobbyist having expert knowledge on a specific legislator across all issue areas (red in Fig \ref{fig:mesh1}),
-ratio of hiring "matching" lobbyist never become explicitly higher than $0.5$.
+the ratio of hiring "matching" lobbyists never becomes explicitly higher than $0.5$.
 This result indicates that lobbyists are specialized in lobbying industry
 toward the direction of acquiring expert knowledge on a specific issue area across all legislators.
 In other words, lobbyists are selected by 
@@ -799,14 +809,14 @@ This is intuitively reasonable because lobbyists are
 a ``middleman'' between interest groups and legislators
 who explore the legislative space on behalf of interest groups.
 Since the meaning of exploration is to find the legislator 
-who has the best expected retrun on a specific issue area,
+who has the ``best'' expected return on a specific issue area,
 lobbyists need to equip themselves with expert knowledge on a specific issue area across all legislators
 which can provide ``comparison'' between legislators.
 Otherwise, simply knowing one best legislator without knowing other legislators' expected return
-is not enough to make a decision for interest groups to particularly hire such lobbyist.
+is not enough to make a decision for interest groups to particularly hire such lobbyists.
 Therefore, for lobbyists to survive in the market,
 they need to accumulate expert knowledge on a specific issue area across all legislators.
-This result explains a puzzle in the literatures why lobbyists lobby to both sides of legislators.
+This result explains a puzzle in the literature why lobbyists lobby to both sides of legislators.
 
 \begin{figure}[h!]
     \centering
@@ -823,18 +833,18 @@ By modeling lobbying industry as a simulative environment based on
 multi-armed bandit problem, I found that 
 interest groups are facing large search space problem 
 and they can overcome this by using lobbyists.
-In addition, I found that lobbyists are hired 
+In addition, I found that lobbyists are chosen 
 by interest groups 
-only when they have the expert knowledge on a specific issue area across all legislators.
-This finding explains a puzzle in the literatures why lobbyists lobby to both sides of legislators.
+only in case they have the expert knowledge on a specific issue area across all legislators.
+This finding explains a puzzle in the literature why lobbyists lobby to both sides of legislators.
 
 Although this work shed a light on understanding lobbying industry, 
 there are still many limitations in this work. First, this work 
 uses a \textit{hypothetical} categorical distribution of 
 legislators' influence over different issue areas.
 Since this distribution is hypothetical,
-finidngs from a few random seeds might be limited to 
-extend to the real world.
+findings from a few random seeds might be limited to 
+be generalized to the understanding over the real world.
 Second, this work assumes each interest group has a unique 
 category of interest and all categories are orthogonal to each other.
 However, each 
@@ -844,7 +854,7 @@ Third, this work provides simulation results with
 very small number of interest groups and lobbyists. In reality,
 there are more than 70,000 interest groups and 20,000 lobbyists interacting with each other.
 Therefore, this work needs to be extended to a larger scale simulation 
-to approximate the dynamics of lobbying industry more realistically.
+to approximate the dynamics of the lobbying industry more realistically.
 
 Based on those limitations,
 I plan to extend this work in the future. 
@@ -852,23 +862,23 @@ First, I plan to find the good representation of
 legislators' influence over different issue areas.
 Recent development of 
 \textit{reinforcement learning} 
-provides multiple methodologies to estimate the value of each action (or policy\footnote{Policy is defined as a function that maps state to optimal actions. In other words, policy represents a planning about how to act under varying situations. In \textit{reifn\
+provides multiple methodologies to estimate the value of each action (or policy\footnote{Policy is defined as a function that maps state to optimal actions. In other words, policy represents planning about how to act under varying situations. In \textit{reinforcement
  learning}, we keep evaluating the value of each policy and find the optimal policy.
- }) for different sitautions \citep{Sutton1998}.
+ }) for different situations \citep{Sutton1998}.
 By using those methodologies, 
 I can estimate the value of different actions which is interaction with different legislators in this case.
 If I model this value function 
 as a function of interest group and legislator specific characteristics,
-I can approximate more realistic reward function which accomodates the real world characteristics of interest groups and legislators.
+I can approximate a more realistic reward function which accommodates the real world characteristics of interest groups and legislators.
 Second, I plan to extend this work to a larger scale simulation. 
-Since this simulation is based on ``shared enviornment'' between multiple agents, 
+Since this simulation is based on ``shared environment'' between multiple agents, 
 simple parallelization based on multi-processing doesn't work because it requires a \textit{shared} memory between
 multiple agents. To overcome this, \textit{decentralized} multi-agent simulation method is needed.
-In this method, each agent uses its own memory and relies on its own estimation of the behavior of other agents and the environment \citep{decen}.
+In this method, each agent uses its own memory and relies on its own estimation of behavior of other agents and environment \citep{decen}.
 In this way, agents can be simulated in parallel and the entire simulation can be extended to a larger scale.
 
 In summary, this work provides 
-a supportive evidence for a new perspective on understanding lobbying industry. 
+supportive evidence for a new perspective on understanding the lobbying industry. 
 In addition,
 this work also provides a formal way of 
 modeling lobbying industry which can be simulatively 
@@ -876,10 +886,10 @@ tested with different assumptions and parameters.
 Since the components introduced in this modeling 
 are replaceable with more realistic components,
 this work is modular so that it can be extended based on 
-future researches that provide more realistic components.
+future research that will provide more realistic components.
 Although it's still controversial whether this kind of simulative research can 
 be accepted as a valid knowledge about the real world,
-more empirical studies based on findings from this kind of 
+more empirical studies based on findings from  
 simulations may indirectly prove the 
 usefulness and validity of this simulative research in the future.
 
@@ -1218,4 +1228,5 @@ usefulness and validity of this simulative research in the future.
  
  
  
+
 
